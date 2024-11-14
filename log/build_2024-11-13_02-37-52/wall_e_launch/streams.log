@@ -1,0 +1,26 @@
+[0.043s] Invoking command in '/home/mneuhaus/ros2_ws/build/wall_e_launch': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy /usr/bin/cmake --build /home/mneuhaus/ros2_ws/build/wall_e_launch -- -j4 -l4
+[0.092s] gmake[1]: Entering directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+[0.229s] gmake[1]: Leaving directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+[0.236s] Invoked command in '/home/mneuhaus/ros2_ws/build/wall_e_launch' returned '0': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy /usr/bin/cmake --build /home/mneuhaus/ros2_ws/build/wall_e_launch -- -j4 -l4
+[0.405s] Invoking command in '/home/mneuhaus/ros2_ws/build/wall_e_launch': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy /usr/bin/cmake --install /home/mneuhaus/ros2_ws/build/wall_e_launch
+[0.444s] -- Install configuration: ""
+[0.445s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/package_run_dependencies/wall_e_launch
+[0.446s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/parent_prefix_path/wall_e_launch
+[0.446s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.sh
+[0.447s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.dsv
+[0.448s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.sh
+[0.448s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.dsv
+[0.449s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.bash
+[0.449s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.sh
+[0.450s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.zsh
+[0.450s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.dsv
+[0.451s] -- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.dsv
+[0.452s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/packages/wall_e_launch
+[0.452s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig.cmake
+[0.453s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig-version.cmake
+[0.454s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.xml
+[0.454s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch
+[0.455s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/all_nodes.launch.py
+[0.455s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__
+[0.456s] -- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__/all_nodes.launch.cpython-312.pyc
+[0.463s] Invoked command in '/home/mneuhaus/ros2_ws/build/wall_e_launch' returned '0': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy /usr/bin/cmake --install /home/mneuhaus/ros2_ws/build/wall_e_launch

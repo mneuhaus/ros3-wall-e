@@ -1,0 +1,22 @@
+gmake[1]: Entering directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+gmake[1]: Leaving directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+-- Install configuration: ""
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/package_run_dependencies/wall_e_launch
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/parent_prefix_path/wall_e_launch
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.sh
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.sh
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.dsv
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.bash
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.sh
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.zsh
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.dsv
+-- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.dsv
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/packages/wall_e_launch
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig.cmake
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig-version.cmake
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.xml
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch
+-- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/all_nodes.launch.py
+-- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__
+-- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__/all_nodes.launch.cpython-312.pyc

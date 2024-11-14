@@ -1,0 +1,2 @@
+[console_scripts]
+motor_controller_node = motor_controller.motor_controller_node:main

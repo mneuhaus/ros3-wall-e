@@ -1,0 +1,106 @@
+[0.000000] (-) TimerEvent: {}
+[0.001730] (motor_controller) JobQueued: {'identifier': 'motor_controller', 'dependencies': OrderedDict()}
+[0.002358] (motor_controller) JobStarted: {'identifier': 'motor_controller'}
+[0.099367] (-) TimerEvent: {}
+[0.200180] (-) TimerEvent: {}
+[0.300945] (-) TimerEvent: {}
+[0.401664] (-) TimerEvent: {}
+[0.502359] (-) TimerEvent: {}
+[0.602987] (-) TimerEvent: {}
+[0.703645] (-) TimerEvent: {}
+[0.804255] (-) TimerEvent: {}
+[0.904908] (-) TimerEvent: {}
+[1.005653] (-) TimerEvent: {}
+[1.106527] (-) TimerEvent: {}
+[1.207361] (-) TimerEvent: {}
+[1.307993] (-) TimerEvent: {}
+[1.408727] (-) TimerEvent: {}
+[1.509396] (-) TimerEvent: {}
+[1.610021] (-) TimerEvent: {}
+[1.710758] (-) TimerEvent: {}
+[1.811387] (-) TimerEvent: {}
+[1.911982] (-) TimerEvent: {}
+[2.012654] (-) TimerEvent: {}
+[2.113409] (-) TimerEvent: {}
+[2.214200] (-) TimerEvent: {}
+[2.315026] (-) TimerEvent: {}
+[2.416004] (-) TimerEvent: {}
+[2.516936] (-) TimerEvent: {}
+[2.617821] (-) TimerEvent: {}
+[2.718703] (-) TimerEvent: {}
+[2.819652] (-) TimerEvent: {}
+[2.920675] (-) TimerEvent: {}
+[3.021412] (-) TimerEvent: {}
+[3.122125] (-) TimerEvent: {}
+[3.222988] (-) TimerEvent: {}
+[3.323965] (-) TimerEvent: {}
+[3.424761] (-) TimerEvent: {}
+[3.525400] (-) TimerEvent: {}
+[3.626112] (-) TimerEvent: {}
+[3.726897] (-) TimerEvent: {}
+[3.827697] (-) TimerEvent: {}
+[3.928366] (-) TimerEvent: {}
+[4.029036] (-) TimerEvent: {}
+[4.129855] (-) TimerEvent: {}
+[4.230563] (-) TimerEvent: {}
+[4.331168] (-) TimerEvent: {}
+[4.431839] (-) TimerEvent: {}
+[4.532496] (-) TimerEvent: {}
+[4.633115] (-) TimerEvent: {}
+[4.733767] (-) TimerEvent: {}
+[4.834571] (-) TimerEvent: {}
+[4.935874] (-) TimerEvent: {}
+[5.036717] (-) TimerEvent: {}
+[5.137688] (-) TimerEvent: {}
+[5.192619] (motor_controller) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/motor_controller', 'build', '--build-base', '/home/mneuhaus/ros2_ws/build/motor_controller/build', 'install', '--record', '/home/mneuhaus/ros2_ws/build/motor_controller/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/mneuhaus/ros2_ws/src/motor_controller', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'SSH_CLIENT': '10.0.5.141 64103 22', 'USER': 'mneuhaus', 'XDG_SESSION_TYPE': 'tty', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'SHLVL': '1', 'OLDPWD': '/home/mneuhaus', 'HOME': '/home/mneuhaus', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'LC_CTYPE': 'de_DE.UTF-8', 'MAKEFLAGS': '', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'MAKE_TERMERR': '/dev/pts/0', 'ROS_DISTRO': 'jazzy', 'COLCON_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install', 'LOGNAME': 'mneuhaus', '_': '/usr/bin/make', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'MAKELEVEL': '1', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'MAKE_TERMOUT': '/dev/pts/0', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'LC_ALL': 'en_US.UTF-8', 'PWD': '/home/mneuhaus/ros2_ws/build/motor_controller', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'SSH_CONNECTION': '10.0.5.141 64103 10.0.6.192 22', 'PYTHONPATH': '/home/mneuhaus/ros2_ws/build/motor_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'MFLAGS': '', 'COLCON': '1'}, 'shell': False}
+[5.237847] (-) TimerEvent: {}
+[5.338563] (-) TimerEvent: {}
+[5.439227] (-) TimerEvent: {}
+[5.539939] (-) TimerEvent: {}
+[5.640608] (-) TimerEvent: {}
+[5.741254] (-) TimerEvent: {}
+[5.841889] (-) TimerEvent: {}
+[5.942546] (-) TimerEvent: {}
+[6.043216] (-) TimerEvent: {}
+[6.143946] (-) TimerEvent: {}
+[6.244653] (-) TimerEvent: {}
+[6.345251] (-) TimerEvent: {}
+[6.400331] (motor_controller) StdoutLine: {'line': b'running egg_info\n'}
+[6.445397] (-) TimerEvent: {}
+[6.484488] (motor_controller) StdoutLine: {'line': b'writing ../../build/motor_controller/motor_controller.egg-info/PKG-INFO\n'}
+[6.486089] (motor_controller) StdoutLine: {'line': b'writing dependency_links to ../../build/motor_controller/motor_controller.egg-info/dependency_links.txt\n'}
+[6.489745] (motor_controller) StdoutLine: {'line': b'writing entry points to ../../build/motor_controller/motor_controller.egg-info/entry_points.txt\n'}
+[6.491402] (motor_controller) StdoutLine: {'line': b'writing requirements to ../../build/motor_controller/motor_controller.egg-info/requires.txt\n'}
+[6.494059] (motor_controller) StdoutLine: {'line': b'writing top-level names to ../../build/motor_controller/motor_controller.egg-info/top_level.txt\n'}
+[6.545557] (-) TimerEvent: {}
+[6.646192] (-) TimerEvent: {}
+[6.666926] (motor_controller) StdoutLine: {'line': b"reading manifest file '../../build/motor_controller/motor_controller.egg-info/SOURCES.txt'\n"}
+[6.683340] (motor_controller) StdoutLine: {'line': b"writing manifest file '../../build/motor_controller/motor_controller.egg-info/SOURCES.txt'\n"}
+[6.686069] (motor_controller) StdoutLine: {'line': b'running build\n'}
+[6.687668] (motor_controller) StdoutLine: {'line': b'running build_py\n'}
+[6.688486] (motor_controller) StdoutLine: {'line': b'copying motor_controller/motor_controller_node.py -> /home/mneuhaus/ros2_ws/build/motor_controller/build/lib/motor_controller\n'}
+[6.689255] (motor_controller) StdoutLine: {'line': b'running install\n'}
+[6.716074] (motor_controller) StdoutLine: {'line': b'running install_lib\n'}
+[6.746381] (-) TimerEvent: {}
+[6.798923] (motor_controller) StdoutLine: {'line': b'copying /home/mneuhaus/ros2_ws/build/motor_controller/build/lib/motor_controller/motor_controller_node.py -> /home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller\n'}
+[6.802309] (motor_controller) StdoutLine: {'line': b'byte-compiling /home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller/motor_controller_node.py to motor_controller_node.cpython-312.pyc\n'}
+[6.807488] (motor_controller) StdoutLine: {'line': b'running install_data\n'}
+[6.808316] (motor_controller) StdoutLine: {'line': b'running install_egg_info\n'}
+[6.846531] (-) TimerEvent: {}
+[6.896707] (motor_controller) StdoutLine: {'line': b"removing '/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller-0.0.0-py3.12.egg-info' (and everything under it)\n"}
+[6.898880] (motor_controller) StdoutLine: {'line': b'Copying ../../build/motor_controller/motor_controller.egg-info to /home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller-0.0.0-py3.12.egg-info\n'}
+[6.916698] (motor_controller) StdoutLine: {'line': b'running install_scripts\n'}
+[6.946690] (-) TimerEvent: {}
+[7.047418] (-) TimerEvent: {}
+[7.148046] (-) TimerEvent: {}
+[7.248724] (-) TimerEvent: {}
+[7.349377] (-) TimerEvent: {}
+[7.449995] (-) TimerEvent: {}
+[7.533757] (motor_controller) StdoutLine: {'line': b'Installing motor_controller_node script to /home/mneuhaus/ros2_ws/install/motor_controller/lib/motor_controller\n'}
+[7.535542] (motor_controller) StdoutLine: {'line': b"writing list of installed files to '/home/mneuhaus/ros2_ws/build/motor_controller/install.log'\n"}
+[7.550329] (-) TimerEvent: {}
+[7.651338] (-) TimerEvent: {}
+[7.680424] (motor_controller) CommandEnded: {'returncode': 0}
+[7.751419] (-) TimerEvent: {}
+[7.828542] (motor_controller) JobEnded: {'identifier': 'motor_controller', 'rc': 0}
+[7.832963] (-) EventReactorShutdown: {}

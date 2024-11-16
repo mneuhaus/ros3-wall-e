@@ -878,12 +878,14 @@ libzxing3:arm64					install
 linux-base					install
 linux-firmware					install
 linux-firmware-raspi				install
-linux-image-6.8.0-1010-raspi			install
+linux-image-6.8.0-1010-raspi			deinstall
 linux-image-6.8.0-1013-raspi			install
+linux-image-6.8.0-1014-raspi			install
 linux-image-raspi				install
 linux-libc-dev:arm64				install
-linux-modules-6.8.0-1010-raspi			install
+linux-modules-6.8.0-1010-raspi			deinstall
 linux-modules-6.8.0-1013-raspi			install
+linux-modules-6.8.0-1014-raspi			install
 locales						install
 login						install
 logrotate					install
@@ -952,6 +954,7 @@ perl						install
 perl-base					install
 perl-modules-5.38				install
 pinentry-curses					install
+pipx						install
 pkg-config:arm64				install
 pkgconf:arm64					install
 pkgconf-bin					install
@@ -1091,7 +1094,9 @@ python3-packaging				install
 python3-patiencediff				install
 python3-pexpect					install
 python3-pil:arm64				install
+python3-pip-whl					install
 python3-pkg-resources				install
+python3-platformdirs				install
 python3-pluggy					install
 python3-problem-report				install
 python3-psutil					install
@@ -1118,6 +1123,7 @@ python3-s3transfer				install
 python3-serial					install
 python3-service-identity			install
 python3-setuptools				install
+python3-setuptools-whl				install
 python3-six					install
 python3-snowballstemmer				install
 python3-software-properties			install
@@ -1129,8 +1135,10 @@ python3-tz					install
 python3-tzlocal					install
 python3-update-manager				install
 python3-urllib3					install
+python3-userpath				install
 python3-vcstool					install
 python3-vcstools				install
+python3-venv					install
 python3-wadllib					install
 python3-webencodings				install
 python3-wrapt					install
@@ -1140,6 +1148,7 @@ python3-zope.interface				install
 python3.12					install
 python3.12-dev					install
 python3.12-minimal				install
+python3.12-venv					install
 readline-common					install
 ros-build-essential				install
 ros-dev-tools					install

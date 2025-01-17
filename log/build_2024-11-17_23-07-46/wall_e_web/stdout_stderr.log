@@ -1,0 +1,22 @@
+running egg_info
+writing ../../build/wall_e_web/wall_e_web.egg-info/PKG-INFO
+writing dependency_links to ../../build/wall_e_web/wall_e_web.egg-info/dependency_links.txt
+writing entry points to ../../build/wall_e_web/wall_e_web.egg-info/entry_points.txt
+writing requirements to ../../build/wall_e_web/wall_e_web.egg-info/requires.txt
+writing top-level names to ../../build/wall_e_web/wall_e_web.egg-info/top_level.txt
+reading manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+writing manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+running build
+running build_py
+copying wall_e_web/serve_web.py -> /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib/wall_e_web
+running install
+running install_lib
+copying /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib/wall_e_web/serve_web.py -> /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web
+byte-compiling /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py to serve_web.cpython-312.pyc
+running install_data
+running install_egg_info
+removing '/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web-0.0.0-py3.12.egg-info' (and everything under it)
+Copying ../../build/wall_e_web/wall_e_web.egg-info to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web-0.0.0-py3.12.egg-info
+running install_scripts
+Installing serve_web script to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/wall_e_web
+writing list of installed files to '/home/mneuhaus/ros2_ws/build/wall_e_web/install.log'

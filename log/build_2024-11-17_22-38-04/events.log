@@ -1,0 +1,272 @@
+[0.000000] (-) TimerEvent: {}
+[0.000730] (motor_controller) JobQueued: {'identifier': 'motor_controller', 'dependencies': OrderedDict()}
+[0.001266] (wall_e_launch) JobQueued: {'identifier': 'wall_e_launch', 'dependencies': OrderedDict({'motor_controller': '/home/mneuhaus/ros2_ws/install/motor_controller'})}
+[0.002099] (motor_controller) JobStarted: {'identifier': 'motor_controller'}
+[0.099021] (-) TimerEvent: {}
+[0.199656] (-) TimerEvent: {}
+[0.300262] (-) TimerEvent: {}
+[0.400886] (-) TimerEvent: {}
+[0.501425] (-) TimerEvent: {}
+[0.601971] (-) TimerEvent: {}
+[0.702600] (-) TimerEvent: {}
+[0.803262] (-) TimerEvent: {}
+[0.906305] (-) TimerEvent: {}
+[1.007117] (-) TimerEvent: {}
+[1.107884] (-) TimerEvent: {}
+[1.208429] (-) TimerEvent: {}
+[1.309001] (-) TimerEvent: {}
+[1.409640] (-) TimerEvent: {}
+[1.510203] (-) TimerEvent: {}
+[1.610815] (-) TimerEvent: {}
+[1.711409] (-) TimerEvent: {}
+[1.812009] (-) TimerEvent: {}
+[1.912687] (-) TimerEvent: {}
+[2.013347] (-) TimerEvent: {}
+[2.113980] (-) TimerEvent: {}
+[2.214693] (-) TimerEvent: {}
+[2.315255] (-) TimerEvent: {}
+[2.415859] (-) TimerEvent: {}
+[2.516405] (-) TimerEvent: {}
+[2.617081] (-) TimerEvent: {}
+[2.717737] (-) TimerEvent: {}
+[2.818278] (-) TimerEvent: {}
+[2.918853] (-) TimerEvent: {}
+[3.019412] (-) TimerEvent: {}
+[3.119954] (-) TimerEvent: {}
+[3.220580] (-) TimerEvent: {}
+[3.321380] (-) TimerEvent: {}
+[3.422281] (-) TimerEvent: {}
+[3.465392] (motor_controller) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/motor_controller', 'build', '--build-base', '/home/mneuhaus/ros2_ws/build/motor_controller/build', 'install', '--record', '/home/mneuhaus/ros2_ws/build/motor_controller/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/mneuhaus/ros2_ws/src/motor_controller', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'SSH_CLIENT': '10.0.5.141 56907 22', 'USER': 'mneuhaus', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'OLDPWD': '/home/mneuhaus', 'HOME': '/home/mneuhaus', 'SSH_TTY': '/dev/pts/0', 'LC_CTYPE': 'de_DE.UTF-8', 'MAKEFLAGS': '', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'MAKE_TERMERR': '/dev/pts/0', 'LOGNAME': 'mneuhaus', '_': '/usr/bin/make', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '2', 'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'MAKELEVEL': '1', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'SHELL': '/bin/bash', 'MAKE_TERMOUT': '/dev/pts/0', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_ALL': 'en_US.UTF-8', 'PWD': '/home/mneuhaus/ros2_ws/build/motor_controller', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'SSH_CONNECTION': '10.0.5.141 56907 10.0.6.194 22', 'MFLAGS': '', 'COLCON': '1', 'PYTHONPATH': '/home/mneuhaus/ros2_ws/build/motor_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:'}, 'shell': False}
+[3.522451] (-) TimerEvent: {}
+[3.623083] (-) TimerEvent: {}
+[3.723718] (-) TimerEvent: {}
+[3.824349] (-) TimerEvent: {}
+[3.925002] (-) TimerEvent: {}
+[4.025855] (-) TimerEvent: {}
+[4.126405] (-) TimerEvent: {}
+[4.226961] (-) TimerEvent: {}
+[4.327565] (-) TimerEvent: {}
+[4.396145] (motor_controller) StdoutLine: {'line': b'running egg_info\n'}
+[4.427720] (-) TimerEvent: {}
+[4.447029] (motor_controller) StdoutLine: {'line': b'writing ../../build/motor_controller/motor_controller.egg-info/PKG-INFO\n'}
+[4.448268] (motor_controller) StdoutLine: {'line': b'writing dependency_links to ../../build/motor_controller/motor_controller.egg-info/dependency_links.txt\n'}
+[4.450585] (motor_controller) StdoutLine: {'line': b'writing entry points to ../../build/motor_controller/motor_controller.egg-info/entry_points.txt\n'}
+[4.452109] (motor_controller) StdoutLine: {'line': b'writing requirements to ../../build/motor_controller/motor_controller.egg-info/requires.txt\n'}
+[4.453729] (motor_controller) StdoutLine: {'line': b'writing top-level names to ../../build/motor_controller/motor_controller.egg-info/top_level.txt\n'}
+[4.527893] (-) TimerEvent: {}
+[4.562930] (motor_controller) StdoutLine: {'line': b"reading manifest file '../../build/motor_controller/motor_controller.egg-info/SOURCES.txt'\n"}
+[4.566890] (motor_controller) StdoutLine: {'line': b"writing manifest file '../../build/motor_controller/motor_controller.egg-info/SOURCES.txt'\n"}
+[4.567688] (motor_controller) StdoutLine: {'line': b'running build\n'}
+[4.568165] (motor_controller) StdoutLine: {'line': b'running build_py\n'}
+[4.569671] (motor_controller) StdoutLine: {'line': b'running install\n'}
+[4.596628] (motor_controller) StdoutLine: {'line': b'running install_lib\n'}
+[4.628038] (-) TimerEvent: {}
+[4.651608] (motor_controller) StdoutLine: {'line': b'running install_data\n'}
+[4.652346] (motor_controller) StdoutLine: {'line': b'running install_egg_info\n'}
+[4.709683] (motor_controller) StdoutLine: {'line': b"removing '/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller-0.0.0-py3.12.egg-info' (and everything under it)\n"}
+[4.711691] (motor_controller) StdoutLine: {'line': b'Copying ../../build/motor_controller/motor_controller.egg-info to /home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages/motor_controller-0.0.0-py3.12.egg-info\n'}
+[4.717607] (motor_controller) StdoutLine: {'line': b'running install_scripts\n'}
+[4.728181] (-) TimerEvent: {}
+[4.828817] (-) TimerEvent: {}
+[4.929391] (-) TimerEvent: {}
+[5.029969] (-) TimerEvent: {}
+[5.130551] (-) TimerEvent: {}
+[5.147121] (motor_controller) StdoutLine: {'line': b'Installing motor_controller_node script to /home/mneuhaus/ros2_ws/install/motor_controller/lib/motor_controller\n'}
+[5.148811] (motor_controller) StdoutLine: {'line': b"writing list of installed files to '/home/mneuhaus/ros2_ws/build/motor_controller/install.log'\n"}
+[5.230813] (-) TimerEvent: {}
+[5.294873] (motor_controller) CommandEnded: {'returncode': 0}
+[5.331236] (-) TimerEvent: {}
+[5.363486] (motor_controller) JobEnded: {'identifier': 'motor_controller', 'rc': 0}
+[5.368535] (wall_e_launch) JobStarted: {'identifier': 'wall_e_launch'}
+[5.387830] (wall_e_launch) JobProgress: {'identifier': 'wall_e_launch', 'progress': 'cmake'}
+[5.391242] (wall_e_launch) JobProgress: {'identifier': 'wall_e_launch', 'progress': 'build'}
+[5.394532] (wall_e_launch) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/mneuhaus/ros2_ws/build/wall_e_launch', '--', '-j4', '-l4'], 'cwd': '/home/mneuhaus/ros2_ws/build/wall_e_launch', 'env': OrderedDict({'LESSOPEN': '| /usr/bin/lesspipe %s', 'SSH_CLIENT': '10.0.5.141 56907 22', 'USER': 'mneuhaus', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'OLDPWD': '/home/mneuhaus', 'HOME': '/home/mneuhaus', 'SSH_TTY': '/dev/pts/0', 'LC_CTYPE': 'de_DE.UTF-8', 'MAKEFLAGS': '', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'MAKE_TERMERR': '/dev/pts/0', 'LOGNAME': 'mneuhaus', '_': '/usr/bin/make', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '2', 'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'MAKELEVEL': '1', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install/motor_controller', 'SHELL': '/bin/bash', 'MAKE_TERMOUT': '/dev/pts/0', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_ALL': 'en_US.UTF-8', 'PWD': '/home/mneuhaus/ros2_ws/build/wall_e_launch', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'SSH_CONNECTION': '10.0.5.141 56907 10.0.6.194 22', 'PYTHONPATH': '/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages', 'MFLAGS': '', 'COLCON': '1'}), 'shell': False}
+[5.431494] (-) TimerEvent: {}
+[5.532432] (-) TimerEvent: {}
+[5.633418] (-) TimerEvent: {}
+[5.659973] (wall_e_launch) StdoutLine: {'line': b"gmake[1]: Entering directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'\n"}
+[5.733612] (-) TimerEvent: {}
+[5.807757] (wall_e_launch) StdoutLine: {'line': b'-- Found ament_cmake: 2.5.2 (/opt/ros/jazzy/share/ament_cmake/cmake)\n'}
+[5.833802] (-) TimerEvent: {}
+[5.934620] (-) TimerEvent: {}
+[6.035701] (-) TimerEvent: {}
+[6.136762] (-) TimerEvent: {}
+[6.237841] (-) TimerEvent: {}
+[6.338528] (-) TimerEvent: {}
+[6.439109] (-) TimerEvent: {}
+[6.539766] (-) TimerEvent: {}
+[6.640431] (-) TimerEvent: {}
+[6.741119] (-) TimerEvent: {}
+[6.841760] (-) TimerEvent: {}
+[6.942410] (-) TimerEvent: {}
+[7.043055] (-) TimerEvent: {}
+[7.143867] (-) TimerEvent: {}
+[7.244597] (-) TimerEvent: {}
+[7.345410] (-) TimerEvent: {}
+[7.446133] (-) TimerEvent: {}
+[7.546825] (-) TimerEvent: {}
+[7.647526] (-) TimerEvent: {}
+[7.748521] (-) TimerEvent: {}
+[7.849464] (-) TimerEvent: {}
+[7.950277] (-) TimerEvent: {}
+[8.051258] (-) TimerEvent: {}
+[8.152153] (-) TimerEvent: {}
+[8.253091] (-) TimerEvent: {}
+[8.353908] (-) TimerEvent: {}
+[8.454813] (-) TimerEvent: {}
+[8.555726] (-) TimerEvent: {}
+[8.656609] (-) TimerEvent: {}
+[8.757482] (-) TimerEvent: {}
+[8.858416] (-) TimerEvent: {}
+[8.959233] (-) TimerEvent: {}
+[9.060115] (-) TimerEvent: {}
+[9.161118] (-) TimerEvent: {}
+[9.262111] (-) TimerEvent: {}
+[9.363015] (-) TimerEvent: {}
+[9.464037] (-) TimerEvent: {}
+[9.565088] (-) TimerEvent: {}
+[9.665988] (-) TimerEvent: {}
+[9.766710] (-) TimerEvent: {}
+[9.867430] (-) TimerEvent: {}
+[9.968092] (-) TimerEvent: {}
+[10.068808] (-) TimerEvent: {}
+[10.169553] (-) TimerEvent: {}
+[10.270236] (-) TimerEvent: {}
+[10.371035] (-) TimerEvent: {}
+[10.471723] (-) TimerEvent: {}
+[10.572387] (-) TimerEvent: {}
+[10.673026] (-) TimerEvent: {}
+[10.773994] (-) TimerEvent: {}
+[10.875608] (-) TimerEvent: {}
+[10.976941] (-) TimerEvent: {}
+[11.078377] (-) TimerEvent: {}
+[11.179578] (-) TimerEvent: {}
+[11.281261] (-) TimerEvent: {}
+[11.383198] (-) TimerEvent: {}
+[11.484648] (-) TimerEvent: {}
+[11.586002] (-) TimerEvent: {}
+[11.687486] (-) TimerEvent: {}
+[11.789150] (-) TimerEvent: {}
+[11.890960] (-) TimerEvent: {}
+[11.992623] (-) TimerEvent: {}
+[12.094062] (-) TimerEvent: {}
+[12.195590] (-) TimerEvent: {}
+[12.296858] (-) TimerEvent: {}
+[12.398679] (-) TimerEvent: {}
+[12.500574] (-) TimerEvent: {}
+[12.601992] (-) TimerEvent: {}
+[12.703493] (-) TimerEvent: {}
+[12.804907] (-) TimerEvent: {}
+[12.906677] (-) TimerEvent: {}
+[13.008508] (-) TimerEvent: {}
+[13.110476] (-) TimerEvent: {}
+[13.211807] (-) TimerEvent: {}
+[13.313232] (-) TimerEvent: {}
+[13.414807] (-) TimerEvent: {}
+[13.516503] (-) TimerEvent: {}
+[13.618105] (-) TimerEvent: {}
+[13.720042] (-) TimerEvent: {}
+[13.821531] (-) TimerEvent: {}
+[13.922815] (-) TimerEvent: {}
+[14.024279] (-) TimerEvent: {}
+[14.126001] (-) TimerEvent: {}
+[14.227856] (-) TimerEvent: {}
+[14.329719] (-) TimerEvent: {}
+[14.431465] (-) TimerEvent: {}
+[14.532820] (-) TimerEvent: {}
+[14.634041] (-) TimerEvent: {}
+[14.735066] (-) TimerEvent: {}
+[14.836606] (-) TimerEvent: {}
+[14.938022] (-) TimerEvent: {}
+[15.039201] (-) TimerEvent: {}
+[15.139845] (-) TimerEvent: {}
+[15.240596] (-) TimerEvent: {}
+[15.341379] (-) TimerEvent: {}
+[15.442005] (-) TimerEvent: {}
+[15.542898] (-) TimerEvent: {}
+[15.644631] (-) TimerEvent: {}
+[15.745912] (-) TimerEvent: {}
+[15.846990] (-) TimerEvent: {}
+[15.948416] (-) TimerEvent: {}
+[16.049234] (-) TimerEvent: {}
+[16.150582] (-) TimerEvent: {}
+[16.251802] (-) TimerEvent: {}
+[16.352743] (-) TimerEvent: {}
+[16.453974] (-) TimerEvent: {}
+[16.555651] (-) TimerEvent: {}
+[16.656981] (-) TimerEvent: {}
+[16.757958] (-) TimerEvent: {}
+[16.859641] (-) TimerEvent: {}
+[16.960373] (-) TimerEvent: {}
+[17.061726] (-) TimerEvent: {}
+[17.162746] (-) TimerEvent: {}
+[17.264655] (-) TimerEvent: {}
+[17.366215] (-) TimerEvent: {}
+[17.467915] (-) TimerEvent: {}
+[17.568748] (-) TimerEvent: {}
+[17.669955] (-) TimerEvent: {}
+[17.770995] (-) TimerEvent: {}
+[17.872564] (-) TimerEvent: {}
+[17.973876] (-) TimerEvent: {}
+[18.075406] (-) TimerEvent: {}
+[18.176758] (-) TimerEvent: {}
+[18.278005] (-) TimerEvent: {}
+[18.379015] (-) TimerEvent: {}
+[18.480219] (-) TimerEvent: {}
+[18.581231] (-) TimerEvent: {}
+[18.683121] (-) TimerEvent: {}
+[18.784662] (-) TimerEvent: {}
+[18.885929] (-) TimerEvent: {}
+[18.986841] (-) TimerEvent: {}
+[19.088500] (-) TimerEvent: {}
+[19.190191] (-) TimerEvent: {}
+[19.291690] (-) TimerEvent: {}
+[19.393152] (-) TimerEvent: {}
+[19.493838] (-) TimerEvent: {}
+[19.594482] (-) TimerEvent: {}
+[19.695098] (-) TimerEvent: {}
+[19.796625] (-) TimerEvent: {}
+[19.897480] (-) TimerEvent: {}
+[19.998131] (-) TimerEvent: {}
+[20.099051] (-) TimerEvent: {}
+[20.200214] (-) TimerEvent: {}
+[20.300868] (-) TimerEvent: {}
+[20.401555] (-) TimerEvent: {}
+[20.502647] (-) TimerEvent: {}
+[20.604588] (-) TimerEvent: {}
+[20.706445] (-) TimerEvent: {}
+[20.807803] (-) TimerEvent: {}
+[20.908452] (-) TimerEvent: {}
+[21.009121] (-) TimerEvent: {}
+[21.110108] (-) TimerEvent: {}
+[21.211836] (-) TimerEvent: {}
+[21.313062] (-) TimerEvent: {}
+[21.414072] (-) TimerEvent: {}
+[21.515676] (-) TimerEvent: {}
+[21.616600] (-) TimerEvent: {}
+[21.702589] (wall_e_launch) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[21.703470] (wall_e_launch) StderrLine: {'line': b'  File "/opt/ros/jazzy/share/ament_cmake_core/cmake/package_templates/templates_2_cmake.py", line 21, in <module>\n'}
+[21.704015] (wall_e_launch) StderrLine: {'line': b'    from ament_package.templates import get_environment_hook_template_path\n'}
+[21.704474] (wall_e_launch) StderrLine: {'line': b"ModuleNotFoundError: No module named 'ament_package'\n"}
+[21.716774] (-) TimerEvent: {}
+[21.817623] (-) TimerEvent: {}
+[21.842164] (wall_e_launch) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/jazzy/share/ament_cmake_core/cmake/ament_cmake_package_templates-extras.cmake:41 (message):\n'}
+[21.842793] (wall_e_launch) StderrLine: {'line': b'  execute_process(/usr/bin/python3\n'}
+[21.843201] (wall_e_launch) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake_core/cmake/package_templates/templates_2_cmake.py\n'}
+[21.843701] (wall_e_launch) StderrLine: {'line': b'  /home/mneuhaus/ros2_ws/build/wall_e_launch/ament_cmake_package_templates/templates.cmake)\n'}
+[21.844081] (wall_e_launch) StderrLine: {'line': b'  returned error code 1\n'}
+[21.844470] (wall_e_launch) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[21.844837] (wall_e_launch) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake_core/cmake/ament_cmake_coreConfig.cmake:41 (include)\n'}
+[21.845192] (wall_e_launch) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake/cmake/ament_cmake_export_dependencies-extras.cmake:15 (find_package)\n'}
+[21.845618] (wall_e_launch) StderrLine: {'line': b'  /opt/ros/jazzy/share/ament_cmake/cmake/ament_cmakeConfig.cmake:41 (include)\n'}
+[21.845985] (wall_e_launch) StderrLine: {'line': b'  CMakeLists.txt:9 (find_package)\n'}
+[21.846348] (wall_e_launch) StderrLine: {'line': b'\n'}
+[21.846725] (wall_e_launch) StderrLine: {'line': b'\x1b[0m\n'}
+[21.847192] (wall_e_launch) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[21.869253] (wall_e_launch) StderrLine: {'line': b'gmake[1]: *** [Makefile:226: cmake_check_build_system] Error 1\n'}
+[21.870020] (wall_e_launch) StdoutLine: {'line': b"gmake[1]: Leaving directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'\n"}
+[21.878090] (wall_e_launch) CommandEnded: {'returncode': 2}
+[21.917819] (-) TimerEvent: {}
+[22.018835] (-) TimerEvent: {}
+[22.034859] (wall_e_launch) JobEnded: {'identifier': 'wall_e_launch', 'rc': 2}
+[22.038678] (-) EventReactorShutdown: {}

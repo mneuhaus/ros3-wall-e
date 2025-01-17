@@ -5,6 +5,9 @@ System: Ubuntu 24.04.x
 
 https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html
 
+source /opt/ros/jazzy/setup.bash
+source ~/ros2_ws/install/setup.bash
+
 ### config.txt changes
 
 ```File: /boot/firmware/config.txt```
@@ -97,3 +100,17 @@ console=serial0,115200
         ```
 
         * Move the sticks and press buttons to ensure inputs are registered.
+
+
+### Serial testing
+
+8. **Test Access to the Serial Port:**
+
+    * Try accessing the serial port directly:
+
+        ```bash
+        sudo apt install minicom
+        minicom -D /dev/ttyAMA0
+        ```
+
+    * If the port opens without errors, it's accessible.

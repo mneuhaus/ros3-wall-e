@@ -1,0 +1,40 @@
+[3.729s] Invoking command in '/home/mneuhaus/ros2_ws/src/servo_2040': PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/mneuhaus/ros2_ws/build/servo_2040/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/servo_2040 build --build-base /home/mneuhaus/ros2_ws/build/servo_2040/build install --record /home/mneuhaus/ros2_ws/build/servo_2040/install.log --single-version-externally-managed install_data
+[4.849s] running egg_info
+[4.931s] writing ../../build/servo_2040/servo_2040.egg-info/PKG-INFO
+[4.932s] writing dependency_links to ../../build/servo_2040/servo_2040.egg-info/dependency_links.txt
+[4.933s] writing entry points to ../../build/servo_2040/servo_2040.egg-info/entry_points.txt
+[4.934s] writing requirements to ../../build/servo_2040/servo_2040.egg-info/requires.txt
+[4.935s] writing top-level names to ../../build/servo_2040/servo_2040.egg-info/top_level.txt
+[5.102s] reading manifest file '../../build/servo_2040/servo_2040.egg-info/SOURCES.txt'
+[5.106s] writing manifest file '../../build/servo_2040/servo_2040.egg-info/SOURCES.txt'
+[5.107s] running build
+[5.107s] running build_py
+[5.108s] copying servo_2040/serial_listener.py -> /home/mneuhaus/ros2_ws/build/servo_2040/build/lib/servo_2040
+[5.110s] running install
+[5.137s] running install_lib
+[5.221s] copying /home/mneuhaus/ros2_ws/build/servo_2040/build/lib/servo_2040/serial_listener.py -> /home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040
+[5.224s] byte-compiling /home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/serial_listener.py to serial_listener.cpython-312.pyc
+[5.228s] running install_data
+[5.229s] running install_egg_info
+[5.317s] removing '/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040-0.0.0-py3.12.egg-info' (and everything under it)
+[5.319s] Copying ../../build/servo_2040/servo_2040.egg-info to /home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040-0.0.0-py3.12.egg-info
+[5.325s] running install_scripts
+[5.932s] Installing serial_listener script to /home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040
+[5.934s] writing list of installed files to '/home/mneuhaus/ros2_ws/build/servo_2040/install.log'
+[5.935s] Running custom post-build step: Uploading firmware...
+[6.058s] Uploading /home/mneuhaus/ros2_ws/src/servo_2040/scripts/../firmware/main.py to /dev/ttyACM0...
+[6.059s] Traceback (most recent call last):
+[6.060s]   File "/home/mneuhaus/ros2_ws/src/servo_2040/scripts/upload_firmware.py", line 34, in <module>
+[6.061s]     main()
+[6.061s]   File "/home/mneuhaus/ros2_ws/src/servo_2040/scripts/upload_firmware.py", line 18, in main
+[6.061s]     subprocess.run(
+[6.062s]   File "/usr/lib/python3.12/subprocess.py", line 548, in run
+[6.062s]     with Popen(*popenargs, **kwargs) as process:
+[6.064s]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[6.065s]   File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+[6.066s]     self._execute_child(args, executable, preexec_fn, close_fds,
+[6.066s]   File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+[6.067s]     raise child_exception_type(errno_num, err_msg, err_filename)
+[6.068s] FileNotFoundError: [Errno 2] No such file or directory: 'ampy'
+[6.086s] Firmware upload failed: Command '['python3', '/home/mneuhaus/ros2_ws/src/servo_2040/scripts/upload_firmware.py']' returned non-zero exit status 1.
+[6.231s] Invoked command in '/home/mneuhaus/ros2_ws/src/servo_2040' returned '1': PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/mneuhaus/ros2_ws/build/servo_2040/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/servo_2040 build --build-base /home/mneuhaus/ros2_ws/build/servo_2040/build install --record /home/mneuhaus/ros2_ws/build/servo_2040/install.log --single-version-externally-managed install_data

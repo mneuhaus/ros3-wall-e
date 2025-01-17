@@ -34,6 +34,15 @@ clean:
 	@echo "Cleaning the workspace..."
 	rm -rf build/ install/ log/
 
+# Variables
+SERIAL_PORT = /dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00    # Update with your serial port
+BAUDRATE = 115200             # Default baud rate for MicroPython
+PYTHON_FILE = firmware/main.py         # Python script to upload
+
+# Flash command using pyboard.py
+flash: $(PYTHON_FILE)
+	ampy --port /dev/ttyUSB0 put firmware/main.py
+
 # Help message
 help:
 	@echo "Makefile Commands:"

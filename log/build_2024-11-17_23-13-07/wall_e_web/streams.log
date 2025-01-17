@@ -1,0 +1,21 @@
+[6.881s] Invoking command in '/home/mneuhaus/ros2_ws/src/wall_e_web': PYTHONPATH=/home/mneuhaus/ros2_ws/build/wall_e_web/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/wall_e_web build --build-base /home/mneuhaus/ros2_ws/build/wall_e_web/build install --record /home/mneuhaus/ros2_ws/build/wall_e_web/install.log --single-version-externally-managed install_data
+[8.243s] running egg_info
+[8.337s] writing ../../build/wall_e_web/wall_e_web.egg-info/PKG-INFO
+[8.338s] writing dependency_links to ../../build/wall_e_web/wall_e_web.egg-info/dependency_links.txt
+[8.340s] writing entry points to ../../build/wall_e_web/wall_e_web.egg-info/entry_points.txt
+[8.341s] writing requirements to ../../build/wall_e_web/wall_e_web.egg-info/requires.txt
+[8.342s] writing top-level names to ../../build/wall_e_web/wall_e_web.egg-info/top_level.txt
+[8.552s] reading manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+[8.556s] writing manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+[8.557s] running build
+[8.557s] running build_py
+[8.559s] running install
+[8.589s] running install_lib
+[8.689s] running install_data
+[8.690s] running install_egg_info
+[8.792s] removing '/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web-0.0.0-py3.12.egg-info' (and everything under it)
+[8.794s] Copying ../../build/wall_e_web/wall_e_web.egg-info to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web-0.0.0-py3.12.egg-info
+[8.800s] running install_scripts
+[9.489s] Installing serve_web script to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/wall_e_web
+[9.491s] writing list of installed files to '/home/mneuhaus/ros2_ws/build/wall_e_web/install.log'
+[9.706s] Invoked command in '/home/mneuhaus/ros2_ws/src/wall_e_web' returned '0': PYTHONPATH=/home/mneuhaus/ros2_ws/build/wall_e_web/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/wall_e_web build --build-base /home/mneuhaus/ros2_ws/build/wall_e_web/build install --record /home/mneuhaus/ros2_ws/build/wall_e_web/install.log --single-version-externally-managed install_data

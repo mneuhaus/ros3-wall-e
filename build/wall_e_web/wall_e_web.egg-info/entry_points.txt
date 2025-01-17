@@ -1,0 +1,2 @@
+[console_scripts]
+serve_web = wall_e_web.serve_web:main

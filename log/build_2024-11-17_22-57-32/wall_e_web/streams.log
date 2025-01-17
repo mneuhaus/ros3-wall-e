@@ -1,0 +1,38 @@
+[4.900s] Invoking command in '/home/mneuhaus/ros2_ws/src/wall_e_web': PYTHONPATH=/home/mneuhaus/ros2_ws/build/wall_e_web/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/wall_e_web build --build-base /home/mneuhaus/ros2_ws/build/wall_e_web/build install --record /home/mneuhaus/ros2_ws/build/wall_e_web/install.log --single-version-externally-managed install_data
+[6.215s] running egg_info
+[6.216s] creating ../../build/wall_e_web/wall_e_web.egg-info
+[6.306s] writing ../../build/wall_e_web/wall_e_web.egg-info/PKG-INFO
+[6.307s] writing dependency_links to ../../build/wall_e_web/wall_e_web.egg-info/dependency_links.txt
+[6.308s] writing entry points to ../../build/wall_e_web/wall_e_web.egg-info/entry_points.txt
+[6.309s] writing requirements to ../../build/wall_e_web/wall_e_web.egg-info/requires.txt
+[6.310s] writing top-level names to ../../build/wall_e_web/wall_e_web.egg-info/top_level.txt
+[6.311s] writing manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+[6.497s] reading manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+[6.500s] writing manifest file '../../build/wall_e_web/wall_e_web.egg-info/SOURCES.txt'
+[6.501s] running build
+[6.502s] running build_py
+[6.502s] creating /home/mneuhaus/ros2_ws/build/wall_e_web/build
+[6.503s] creating /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib
+[6.504s] creating /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib/wall_e_web
+[6.504s] copying wall_e_web/__init__.py -> /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib/wall_e_web
+[6.505s] running install
+[6.535s] running install_lib
+[6.627s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web
+[6.628s] copying /home/mneuhaus/ros2_ws/build/wall_e_web/build/lib/wall_e_web/__init__.py -> /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web
+[6.630s] byte-compiling /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/__init__.py to __init__.cpython-312.pyc
+[6.632s] running install_data
+[6.633s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/share/ament_index
+[6.634s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/share/ament_index/resource_index
+[6.634s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/share/ament_index/resource_index/packages
+[6.635s] copying resource/wall_e_web -> /home/mneuhaus/ros2_ws/install/wall_e_web/share/ament_index/resource_index/packages
+[6.636s] copying package.xml -> /home/mneuhaus/ros2_ws/install/wall_e_web/share/wall_e_web
+[6.636s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/share/wall_e_web/web
+[6.637s] copying web/index.html -> /home/mneuhaus/ros2_ws/install/wall_e_web/share/wall_e_web/web
+[6.638s] creating /home/mneuhaus/ros2_ws/install/wall_e_web/share/wall_e_web/launch
+[6.638s] copying launch/rosbridge_launch.py -> /home/mneuhaus/ros2_ws/install/wall_e_web/share/wall_e_web/launch
+[6.639s] running install_egg_info
+[6.738s] Copying ../../build/wall_e_web/wall_e_web.egg-info to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web-0.0.0-py3.12.egg-info
+[6.745s] running install_scripts
+[7.493s] Installing serve_web script to /home/mneuhaus/ros2_ws/install/wall_e_web/lib/wall_e_web
+[7.495s] writing list of installed files to '/home/mneuhaus/ros2_ws/build/wall_e_web/install.log'
+[7.680s] Invoked command in '/home/mneuhaus/ros2_ws/src/wall_e_web' returned '0': PYTHONPATH=/home/mneuhaus/ros2_ws/build/wall_e_web/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/wall_e_web build --build-base /home/mneuhaus/ros2_ws/build/wall_e_web/build install --record /home/mneuhaus/ros2_ws/build/wall_e_web/install.log --single-version-externally-managed install_data

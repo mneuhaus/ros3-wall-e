@@ -1,0 +1,77 @@
+[0.000000] (-) TimerEvent: {}
+[0.001673] (-) JobUnselected: {'identifier': 'motor_controller'}
+[0.001819] (-) JobUnselected: {'identifier': 'wall_e_launch'}
+[0.001922] (-) JobUnselected: {'identifier': 'wall_e_web'}
+[0.002005] (servo_2040) JobQueued: {'identifier': 'servo_2040', 'dependencies': OrderedDict()}
+[0.002091] (servo_2040) JobStarted: {'identifier': 'servo_2040'}
+[0.099138] (-) TimerEvent: {}
+[0.199761] (-) TimerEvent: {}
+[0.300332] (-) TimerEvent: {}
+[0.400961] (-) TimerEvent: {}
+[0.501554] (-) TimerEvent: {}
+[0.602155] (-) TimerEvent: {}
+[0.702756] (-) TimerEvent: {}
+[0.803296] (-) TimerEvent: {}
+[0.903928] (-) TimerEvent: {}
+[1.004576] (-) TimerEvent: {}
+[1.105279] (-) TimerEvent: {}
+[1.205895] (-) TimerEvent: {}
+[1.306509] (-) TimerEvent: {}
+[1.407060] (-) TimerEvent: {}
+[1.507664] (-) TimerEvent: {}
+[1.608227] (-) TimerEvent: {}
+[1.708824] (-) TimerEvent: {}
+[1.809352] (-) TimerEvent: {}
+[1.909982] (-) TimerEvent: {}
+[2.010561] (-) TimerEvent: {}
+[2.111117] (-) TimerEvent: {}
+[2.211713] (-) TimerEvent: {}
+[2.312263] (-) TimerEvent: {}
+[2.412852] (-) TimerEvent: {}
+[2.513386] (-) TimerEvent: {}
+[2.613980] (-) TimerEvent: {}
+[2.714549] (-) TimerEvent: {}
+[2.815091] (-) TimerEvent: {}
+[2.915737] (-) TimerEvent: {}
+[3.016277] (-) TimerEvent: {}
+[3.116866] (-) TimerEvent: {}
+[3.217484] (-) TimerEvent: {}
+[3.318063] (-) TimerEvent: {}
+[3.418664] (-) TimerEvent: {}
+[3.519199] (-) TimerEvent: {}
+[3.619922] (-) TimerEvent: {}
+[3.720918] (-) TimerEvent: {}
+[3.753487] (servo_2040) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/servo_2040', 'build', '--build-base', '/home/mneuhaus/ros2_ws/build/servo_2040/build', 'install', '--record', '/home/mneuhaus/ros2_ws/build/servo_2040/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/mneuhaus/ros2_ws/src/servo_2040', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mneuhaus', 'SSH_CLIENT': '10.0.5.141 52407 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'HOME': '/home/mneuhaus', 'OLDPWD': '/home/mneuhaus/ros2_ws', 'SSH_TTY': '/dev/pts/0', 'ROS_PYTHON_VERSION': '3', 'PS1': '\\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$', 'LC_CTYPE': 'de_DE.UTF-8', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'mneuhaus', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install/servo_2040:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/wall_e_launch:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/mneuhaus/ros2_ws/build/servo_2040', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '10.0.5.141 52407 10.0.6.194 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mneuhaus/ros2_ws/build/servo_2040/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/home/mneuhaus/ros2_ws/install/wall_e_launch'}, 'shell': False}
+[3.821073] (-) TimerEvent: {}
+[3.921768] (-) TimerEvent: {}
+[4.022391] (-) TimerEvent: {}
+[4.123060] (-) TimerEvent: {}
+[4.223673] (-) TimerEvent: {}
+[4.324234] (-) TimerEvent: {}
+[4.424827] (-) TimerEvent: {}
+[4.525362] (-) TimerEvent: {}
+[4.625978] (-) TimerEvent: {}
+[4.726508] (-) TimerEvent: {}
+[4.794831] (servo_2040) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[4.795815] (servo_2040) StderrLine: {'line': b'  File "/home/mneuhaus/ros2_ws/src/servo_2040/setup.py", line 16, in <module>\n'}
+[4.796510] (servo_2040) StderrLine: {'line': b'    setup(\n'}
+[4.797104] (servo_2040) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/setuptools/__init__.py", line 107, in setup\n'}
+[4.797695] (servo_2040) StderrLine: {'line': b'    return distutils.core.setup(**attrs)\n'}
+[4.798144] (servo_2040) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[4.799197] (servo_2040) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/setuptools/_distutils/core.py", line 172, in setup\n'}
+[4.800086] (servo_2040) StderrLine: {'line': b'    ok = dist.parse_command_line()\n'}
+[4.800954] (servo_2040) StderrLine: {'line': b'         ^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[4.801897] (servo_2040) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/setuptools/_distutils/dist.py", line 475, in parse_command_line\n'}
+[4.802835] (servo_2040) StderrLine: {'line': b'    args = self._parse_command_opts(parser, args)\n'}
+[4.803691] (servo_2040) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[4.804748] (servo_2040) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/setuptools/dist.py", line 1133, in _parse_command_opts\n'}
+[4.805623] (servo_2040) StderrLine: {'line': b'    nargs = _Distribution._parse_command_opts(self, parser, args)\n'}
+[4.806351] (servo_2040) StderrLine: {'line': b'            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[4.807187] (servo_2040) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/setuptools/_distutils/dist.py", line 540, in _parse_command_opts\n'}
+[4.808465] (servo_2040) StderrLine: {'line': b'    if not issubclass(cmd_class, Command):\n'}
+[4.809286] (servo_2040) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[4.810125] (servo_2040) StderrLine: {'line': b'TypeError: issubclass() arg 1 must be a class\n'}
+[4.826780] (-) TimerEvent: {}
+[4.905425] (servo_2040) CommandEnded: {'returncode': 1}
+[4.906511] (servo_2040) JobEnded: {'identifier': 'servo_2040', 'rc': 1}
+[4.917469] (-) EventReactorShutdown: {}

@@ -1,0 +1,26 @@
+[0.045s] Invoking command in '/home/mneuhaus/ros2_ws/build/wall_e_launch': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy PYTHONPATH=/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/cmake --build /home/mneuhaus/ros2_ws/build/wall_e_launch -- -j4 -l4
+[0.094s] gmake[1]: Entering directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+[0.232s] gmake[1]: Leaving directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
+[0.239s] Invoked command in '/home/mneuhaus/ros2_ws/build/wall_e_launch' returned '0': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy PYTHONPATH=/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/cmake --build /home/mneuhaus/ros2_ws/build/wall_e_launch -- -j4 -l4
+[0.420s] Invoking command in '/home/mneuhaus/ros2_ws/build/wall_e_launch': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy PYTHONPATH=/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/cmake --install /home/mneuhaus/ros2_ws/build/wall_e_launch
+[0.461s] -- Install configuration: ""
+[0.461s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/package_run_dependencies/wall_e_launch
+[0.462s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/parent_prefix_path/wall_e_launch
+[0.463s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.sh
+[0.463s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/ament_prefix_path.dsv
+[0.464s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.sh
+[0.464s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/environment/path.dsv
+[0.465s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.bash
+[0.465s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.sh
+[0.466s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.zsh
+[0.466s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/local_setup.dsv
+[0.467s] -- Installing: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.dsv
+[0.467s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/ament_index/resource_index/packages/wall_e_launch
+[0.468s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig.cmake
+[0.468s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/cmake/wall_e_launchConfig-version.cmake
+[0.469s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/package.xml
+[0.470s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch
+[0.470s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/all_nodes.launch.py
+[0.471s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__
+[0.471s] -- Up-to-date: /home/mneuhaus/ros2_ws/install/wall_e_launch/share/wall_e_launch/launch/__pycache__/all_nodes.launch.cpython-312.pyc
+[0.477s] Invoked command in '/home/mneuhaus/ros2_ws/build/wall_e_launch' returned '0': AMENT_PREFIX_PATH=/home/mneuhaus/ros2_ws/install/motor_controller:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/wall_e_launch:/opt/ros/jazzy CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/mneuhaus/ros2_ws/install/wall_e_web:/home/mneuhaus/ros2_ws/install/motor_controller:/opt/ros/jazzy PYTHONPATH=/home/mneuhaus/ros2_ws/install/motor_controller/lib/python3.12/site-packages:/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/cmake --install /home/mneuhaus/ros2_ws/build/wall_e_launch

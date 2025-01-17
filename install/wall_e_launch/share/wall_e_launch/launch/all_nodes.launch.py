@@ -36,13 +36,13 @@ def generate_launch_description():
         ),
         
         # Start the motor controller node
-        Node(
-            package='motor_controller',
-            executable='motor_controller_node',
-            name='motor_controller_node',
-            output='screen',
-            parameters=[
-                {'port': '/dev/ttyAMA2'},  # Adjust this if using a different serial port
-            ]
-        ),
+        # Node(
+        #     package='motor_controller',
+        #     executable='motor_controller_node',
+        #     name='motor_controller_node',
+        #     output='screen',
+        #     parameters=[
+        #         {'port': '/dev/ttyAMA2'},  # Adjust this if using a different serial port
+        #     ]
+        # ),
     ])

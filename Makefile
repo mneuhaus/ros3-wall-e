@@ -39,16 +39,12 @@ FIRMWARE_DIR = src/servo_2040/firmware
 PYTHON_FILE = $(FIRMWARE_DIR)/main.py
 UF2_FILE = $(FIRMWARE_DIR)/main.uf2
 
-# Flash command using picotool
-flash: $(UF2_FILE)
+# Flash command using picotool and rshell
+flash:
 	@echo "Put your Servo 2040 into BOOTSEL mode (hold BOOTSEL while pressing reset)..."
 	@sleep 2
-	picotool load $(UF2_FILE)
-	picotool reboot
-
-$(UF2_FILE): $(PYTHON_FILE)
-	python3 -m mpremote mip install rp2-pico-w
-	python3 -m mpremote cp $(PYTHON_FILE) :main.py
+	rshell cp $(PYTHON_FILE) /pyboard/main.py
+	@echo "File copied successfully. Please reset your board."
 
 # Help message
 help:

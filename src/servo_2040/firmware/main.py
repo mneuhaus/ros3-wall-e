@@ -67,14 +67,14 @@ try:
                     if 'servos' in command:
                         for name, degrees in command['servos'].items():
                             if name in servos:
-                            # Clamp degrees to servo's max range
-                            degrees = min(degrees, servos[name]['max'])
-                            # Update servo position
-                            servos[name]['servo'].value(degrees)
-                            
-                            # Update corresponding LED with rainbow color
-                            # Map servo names to LED indices (skipping LED 0 which shows power)
-                            led_map = {
+                                # Clamp degrees to servo's max range
+                                degrees = min(degrees, servos[name]['max'])
+                                # Update servo position
+                                servos[name]['servo'].value(degrees)
+                                
+                                # Update corresponding LED with rainbow color
+                                # Map servo names to LED indices (skipping LED 0 which shows power)
+                                led_map = {
                                 'eyebrow_left': 1,
                                 'eyebrow_right': 2,
                                 'head_left': 3,

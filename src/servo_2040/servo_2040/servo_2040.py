@@ -147,7 +147,8 @@ class Servo2040Node(Node):
         try:
             if self.serial.in_waiting > 0:
                 data = self.serial.readline().decode('utf-8').strip()
-                self.get_logger().debug(f"Received: {data}")
+                if data:  # Only log if there's actual data
+                    self.get_logger().info(f"Firmware: {data}")
         except serial.SerialException as e:
             self.get_logger().error(f"Serial error: {e}. Reconnecting...")
             self.serial = None

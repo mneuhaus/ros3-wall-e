@@ -35,14 +35,20 @@ clean:
 	rm -rf build/ install/ log/
 
 # Variables
-PYTHON_FILE = src/servo_2040/firmware/main.py         # Python script to upload
+FIRMWARE_DIR = src/servo_2040/firmware
+PYTHON_FILE = $(FIRMWARE_DIR)/main.py
+UF2_FILE = $(FIRMWARE_DIR)/main.uf2
 
 # Flash command using picotool
-flash:
+flash: $(UF2_FILE)
 	@echo "Put your Servo 2040 into BOOTSEL mode (hold BOOTSEL while pressing reset)..."
 	@sleep 2
-	picotool load -x $(PYTHON_FILE)
+	picotool load $(UF2_FILE)
 	picotool reboot
+
+$(UF2_FILE): $(PYTHON_FILE)
+	python3 -m mpremote mip install rp2-pico-w
+	python3 -m mpremote cp $(PYTHON_FILE) :main.py
 
 # Help message
 help:

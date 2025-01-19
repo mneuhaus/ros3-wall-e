@@ -22,6 +22,7 @@ def generate_launch_description():
             executable='joy_node',
             name='joy_node',
             output='screen',
+            parameters=[{'device_id': 0}],  # Explicitly set device ID
         ),
         
         # Start the teleop_twist_joy node with configuration

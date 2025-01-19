@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32MultiArray
+from sensor_msgs.msg import Joy
 import serial
 import time
 import json
@@ -16,13 +16,38 @@ class SerialListener(Node):
         self.baudrate = self.get_parameter('baudrate').value
         self.serial = None
 
-        # Create subscription for servo commands
-        self.subscription = self.create_subscription(
-            Float32MultiArray,
-            'servo_commands',
-            self.servo_command_callback,
+        # Default servo positions (middle positions)
+        self.servo_positions = [45.0, 45.0, 20.0, 20.0, 45.0, 90.0, 90.0, 90.0, 90.0]
+        
+        # Subscribe to joy messages
+        self.joy_subscription = self.create_subscription(
+            Joy,
+            'joy',
+            self.joy_callback,
             10
         )
+        
+        # Button mappings
+        self.button_map = {
+            0: {'servo': 0, 'direction': 1},   # A button - eyebrow left up
+            1: {'servo': 0, 'direction': -1},  # B button - eyebrow left down
+        }
+        
+        # Movement increment in degrees
+        self.movement_increment = 5.0
+        
+        # Servo limits
+        self.servo_limits = [
+            (0, 90),   # eyebrow_left
+            (0, 90),   # eyebrow_right
+            (0, 40),   # head_left
+            (0, 40),   # head_right
+            (0, 90),   # neck_tilt
+            (0, 180),  # neck_raise
+            (0, 180),  # neck_pan
+            (0, 180),  # arm_left
+            (0, 180),  # arm_right
+        ]
 
         # Initial attempt to connect
         self.connect_serial()
@@ -53,35 +78,51 @@ class SerialListener(Node):
                 self.get_logger().error(f"Failed to connect to {self.serial_port}: {e}")
                 time.sleep(1)  # Wait 1 second before retrying
 
-    def servo_command_callback(self, msg):
-        """Handle incoming servo commands."""
-        if len(msg.data) != 9:
-            self.get_logger().error("Expected 9 servo values")
-            return
+    def joy_callback(self, msg):
+        """Handle incoming joy messages."""
+        position_changed = False
         
-        try:
-            # Create command dictionary
-            command = {
-                'servos': {
-                    'eyebrow_left': msg.data[0],
-                    'eyebrow_right': msg.data[1],
-                    'head_left': msg.data[2],
-                    'head_right': msg.data[3],
-                    'neck_tilt': msg.data[4],
-                    'neck_raise': msg.data[5],
-                    'neck_pan': msg.data[6],
-                    'arm_left': msg.data[7],
-                    'arm_right': msg.data[8]
+        # Check each mapped button
+        for button_idx, mapping in self.button_map.items():
+            if button_idx < len(msg.buttons) and msg.buttons[button_idx]:
+                servo_idx = mapping['servo']
+                direction = mapping['direction']
+                
+                # Calculate new position
+                new_position = self.servo_positions[servo_idx] + (direction * self.movement_increment)
+                
+                # Apply limits
+                min_val, max_val = self.servo_limits[servo_idx]
+                new_position = max(min_val, min(max_val, new_position))
+                
+                # Update position if changed
+                if new_position != self.servo_positions[servo_idx]:
+                    self.servo_positions[servo_idx] = new_position
+                    position_changed = True
+        
+        # Send command if positions changed
+        if position_changed:
+            try:
+                command = {
+                    'servos': {
+                        'eyebrow_left': self.servo_positions[0],
+                        'eyebrow_right': self.servo_positions[1],
+                        'head_left': self.servo_positions[2],
+                        'head_right': self.servo_positions[3],
+                        'neck_tilt': self.servo_positions[4],
+                        'neck_raise': self.servo_positions[5],
+                        'neck_pan': self.servo_positions[6],
+                        'arm_left': self.servo_positions[7],
+                        'arm_right': self.servo_positions[8]
+                    }
                 }
-            }
-            
-            # Send command over serial
-            if self.serial:
-                command_str = json.dumps(command) + '\n'
-                self.serial.write(command_str.encode())
-                self.get_logger().debug(f"Sent: {command_str.strip()}")
-        except Exception as e:
-            self.get_logger().error(f"Error sending command: {e}")
+                
+                if self.serial:
+                    command_str = json.dumps(command) + '\n'
+                    self.serial.write(command_str.encode())
+                    self.get_logger().debug(f"Sent: {command_str.strip()}")
+            except Exception as e:
+                self.get_logger().error(f"Error sending command: {e}")
 
     def read_serial_data(self):
         """Reads data from the serial port for debugging/feedback."""

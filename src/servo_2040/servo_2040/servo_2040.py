@@ -4,6 +4,7 @@ from sensor_msgs.msg import Joy
 import serial
 import time
 import json
+import threading
 
 
 class Servo2040Node(Node):
@@ -52,8 +53,9 @@ class Servo2040Node(Node):
         # Initial attempt to connect
         self.connect_serial()
 
-        # Timer for polling serial data (for debugging/feedback)
-        self.timer = self.create_timer(0.1, self.read_serial_data)
+        # Start serial reader thread
+        self.reader_thread = threading.Thread(target=self.read_serial_data, daemon=True)
+        self.reader_thread.start()
 
         # Servo ranges
         self.servo_ranges = {
@@ -139,19 +141,21 @@ class Servo2040Node(Node):
                 self.get_logger().error(f"Error sending command: {e}")
 
     def read_serial_data(self):
-        """Reads data from the serial port for debugging/feedback."""
-        if self.serial is None:
-            self.connect_serial()
-            return
+        """Continuously reads data from the serial port in a separate thread."""
+        while rclpy.ok():
+            if self.serial is None:
+                self.connect_serial()
+                continue
 
-        try:
-            if self.serial.in_waiting > 0:
+            try:
                 data = self.serial.readline().decode('utf-8').strip()
                 if data:  # Only log if there's actual data
                     self.get_logger().info(f"Firmware: {data}")
-        except serial.SerialException as e:
-            self.get_logger().error(f"Serial error: {e}. Reconnecting...")
-            self.serial = None
+            except serial.SerialException as e:
+                self.get_logger().error(f"Serial error: {e}. Reconnecting...")
+                self.serial = None
+            except Exception as e:
+                self.get_logger().error(f"Error reading serial: {e}")
 
 
 def main(args=None):

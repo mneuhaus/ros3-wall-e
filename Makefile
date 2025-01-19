@@ -35,10 +35,10 @@ clean:
 	rm -rf build/ install/ log/
 
 # Variables
-PYTHON_FILE = firmware/main.py         # Python script to upload
+PYTHON_FILE = src/servo_2040/firmware/main.py         # Python script to upload
 
 # Flash command using picotool
-flash: $(PYTHON_FILE)
+flash:
 	@echo "Put your Servo 2040 into BOOTSEL mode (hold BOOTSEL while pressing reset)..."
 	@sleep 2
 	picotool load -x $(PYTHON_FILE)

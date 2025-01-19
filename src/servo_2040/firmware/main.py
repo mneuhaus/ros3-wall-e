@@ -30,6 +30,7 @@ for servo_info in servos.values():
 
 try:
     while True:
+        print('woot')
         try:
             # Read command from serial
             if input_data := input():

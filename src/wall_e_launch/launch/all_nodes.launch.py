@@ -56,7 +56,7 @@ def generate_launch_description():
             name='servo_2040',
             output='screen',
             parameters=[
-                {'serial_port': '/dev/ttyACM0'},
+                {'device': '/dev/ttyACM0'},
                 {'baudrate': 115200}
             ],
             arguments=['--ros-args', '--log-level', 'info']

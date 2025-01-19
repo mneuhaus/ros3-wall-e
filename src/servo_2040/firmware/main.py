@@ -1,7 +1,7 @@
 import time
 from plasma import WS2812
 from servo import servo2040
-from pimoroni import Servo
+from pimoroni_servo2040 import Servo
 
 # Create and start the LED bar
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)

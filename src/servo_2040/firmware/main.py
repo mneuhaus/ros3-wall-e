@@ -5,8 +5,8 @@ import math
 from plasma import WS2812
 from servo import Servo, servo2040
 
-# Set up UART for debug output
-uart = machine.UART(0, baudrate=115200)
+# Set up UART for debug output with larger TX/RX buffers
+uart = machine.UART(0, baudrate=115200, tx_buffer_size=2048, rx_buffer_size=2048)
 
 # Create and start the LED bar
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)

@@ -78,7 +78,7 @@ class Servo2040Node(Node):
                     port=self.serial_port,
                     baudrate=self.baudrate,
                     timeout=1,
-                    write_timeout=1
+                    write_timeout=None  # Blocking writes
                 )
                 self.get_logger().info(f"Connected to {self.serial_port} at {self.baudrate} baud")
                 # Give the device time to initialize

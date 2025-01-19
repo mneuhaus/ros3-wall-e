@@ -81,6 +81,10 @@ class Servo2040Node(Node):
                 self.get_logger().info(f"Connected to {self.serial_port} at {self.baudrate} baud")
                 # Give the device time to initialize
                 time.sleep(2.0)
+                # Send a test message
+                test_command = json.dumps({'test': 'connection'}) + '\n'
+                self.serial.write(test_command.encode())
+                self.get_logger().info("Sent test message after connection")
             except serial.SerialException as e:
                 self.get_logger().error(f"Failed to connect to {self.serial_port}: {e}")
                 time.sleep(1)  # Wait 1 second before retrying
@@ -127,8 +131,15 @@ class Servo2040Node(Node):
                 
                 if self.serial:
                     command_str = json.dumps(command) + '\n'
-                    self.serial.write(command_str.encode())
-                    self.get_logger().info(f"Sending servo commands: {command_str.strip()}")
+                    self.get_logger().info(f"Attempting to send: {command_str.strip()}")
+                    try:
+                        bytes_written = self.serial.write(command_str.encode())
+                        self.get_logger().info(f"Wrote {bytes_written} bytes")
+                        self.serial.flush()  # Ensure the data is sent
+                    except serial.SerialTimeoutException:
+                        self.get_logger().error("Write timeout occurred!")
+                    except serial.SerialException as e:
+                        self.get_logger().error(f"Serial error during write: {e}")
             except Exception as e:
                 self.get_logger().error(f"Error sending command: {e}")
 

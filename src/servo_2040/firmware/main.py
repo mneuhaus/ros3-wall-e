@@ -37,10 +37,13 @@ try:
         try:
             # Read command from serial
             if input_data := input():
+                print(f"Received data: {input_data}")
                 command = json.loads(input_data)
+                print(f"Parsed command: {command}")
                 
                 # Process servo commands
                 if 'servos' in command:
+                    print(f"Processing servo commands: {command['servos']}")
                     for name, degrees in command['servos'].items():
                         if name in servos:
                             value = degrees_to_value(degrees, servos[name]['max'])

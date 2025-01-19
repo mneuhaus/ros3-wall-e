@@ -1,9 +1,8 @@
-# wall_e_control.launch.py
-
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
 import os
 
 config_file = os.path.join(
@@ -47,13 +46,15 @@ def generate_launch_description():
         #         {'port': '/dev/ttyAMA2'},  # Adjust this if using a different serial port
         #     ]
         # ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(
-                    get_package_share_directory('servo_2040'),
-                    'launch',
-                    'all_launch.py'
-                )
-            )
+        # Start the servo_2040 node
+        Node(
+            package='servo_2040',
+            executable='servo_2040',
+            name='servo_2040_node',
+            output='screen',
+            parameters=[
+                {'serial_port': '/dev/ttyACM0'},
+                {'baudrate': 115200}
+            ]
         ),
     ])

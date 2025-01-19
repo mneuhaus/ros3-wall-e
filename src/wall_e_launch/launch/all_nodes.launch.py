@@ -23,6 +23,7 @@ def generate_launch_description():
             name='joy_node',
             output='screen',
             parameters=[{'device_id': 0}],  # Explicitly set device ID
+            arguments=['--ros-args', '--log-level', 'info'],
         ),
         
         # Start the teleop_twist_joy node with configuration
@@ -32,6 +33,7 @@ def generate_launch_description():
             name='teleop_node',
             output='screen',
             parameters=[config_file],
+            arguments=['--ros-args', '--log-level', 'info'],
             remappings=[
                 ('/cmd_vel', '/cmd_vel')  # Ensures that the command is published on /cmd_vel
             ]
@@ -56,6 +58,7 @@ def generate_launch_description():
             parameters=[
                 {'serial_port': '/dev/ttyACM0'},
                 {'baudrate': 115200}
-            ]
+            ],
+            arguments=['--ros-args', '--log-level', 'info']
         ),
     ])

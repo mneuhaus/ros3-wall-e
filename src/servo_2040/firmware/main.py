@@ -1,8 +1,11 @@
 import time
 import json
-import sys
+import machine
 from plasma import WS2812
 from servo import Servo, servo2040
+
+# Set up UART for debug output
+uart = machine.UART(0, baudrate=115200)
 
 # Create and start the LED bar
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
@@ -31,8 +34,7 @@ for servo_info in servos.values():
 
 try:
     while True:
-        sys.stdout.write('woot\n')
-        sys.stdout.flush()
+        uart.write('woot\n')
         try:
             # Read command from serial
             if input_data := input():
@@ -46,8 +48,7 @@ try:
                             servos[name]['servo'].value(degrees)
                             
         except Exception as e:
-            sys.stdout.write(f"Error: {str(e)}\n")
-            sys.stdout.flush()
+            uart.write(f"Error: {str(e)}\n")
             
         time.sleep(0.01)  # Small delay to prevent busy-waiting
 
@@ -55,5 +56,4 @@ except KeyboardInterrupt:
     # Disable all servos on Ctrl+C
     for servo_info in servos.values():
         servo_info['servo'].disable()
-    sys.stdout.write("Program stopped.\n")
-    sys.stdout.flush()
+    uart.write("Program stopped.\n")

@@ -27,10 +27,10 @@ class Servo2040Node(Node):
             10
         )
         
-        # Button mappings
+        # Button mappings for testing - move all servos
         self.button_map = {
-            0: {'servo': 0, 'direction': 1},   # A button - eyebrow left up
-            1: {'servo': 0, 'direction': -1},  # B button - eyebrow left down
+            0: {'direction': 1},   # A button - all servos up/right
+            1: {'direction': -1},  # B button - all servos down/left
         }
         
         # Movement increment in degrees
@@ -105,21 +105,22 @@ class Servo2040Node(Node):
         # Check each mapped button
         for button_idx, mapping in self.button_map.items():
             if button_idx < len(msg.buttons) and msg.buttons[button_idx]:
-                servo_idx = mapping['servo']
                 direction = mapping['direction']
                 
-                # Calculate new position
-                new_position = self.servo_positions[servo_idx] + (direction * self.movement_increment)
-                
-                # Apply limits
-                min_val, max_val = self.servo_limits[servo_idx]
-                new_position = max(min_val, min(max_val, new_position))
-                
-                # Update position if changed
-                if new_position != self.servo_positions[servo_idx]:
-                    self.get_logger().info(f"Moving servo {servo_idx} from {self.servo_positions[servo_idx]} to {new_position} degrees")
-                    self.servo_positions[servo_idx] = new_position
-                    position_changed = True
+                # Update all servo positions
+                for servo_idx in range(len(self.servo_positions)):
+                    # Calculate new position
+                    new_position = self.servo_positions[servo_idx] + (direction * self.movement_increment)
+                    
+                    # Apply limits
+                    min_val, max_val = self.servo_limits[servo_idx]
+                    new_position = max(min_val, min(max_val, new_position))
+                    
+                    # Update position if changed
+                    if new_position != self.servo_positions[servo_idx]:
+                        self.get_logger().info(f"Moving servo {servo_idx} from {self.servo_positions[servo_idx]} to {new_position} degrees")
+                        self.servo_positions[servo_idx] = new_position
+                        position_changed = True
         
         # Send command if positions changed
         if position_changed:

@@ -80,6 +80,8 @@ class Servo2040Node(Node):
 
     def joy_callback(self, msg):
         """Handle incoming joy messages."""
+        self.get_logger().info("Received joy message")
+        self.get_logger().debug(f"Buttons: {msg.buttons}")
         position_changed = False
         
         # Check each mapped button

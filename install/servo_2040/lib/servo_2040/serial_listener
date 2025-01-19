@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# EASY-INSTALL-ENTRY-SCRIPT: 'servo-2040==0.0.0','console_scripts','servo_2040'
+# EASY-INSTALL-ENTRY-SCRIPT: 'servo-2040==0.0.0','console_scripts','serial_listener'
 import re
 import sys
 

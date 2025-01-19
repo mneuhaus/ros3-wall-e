@@ -32,8 +32,29 @@ for servo_info in servos.values():
     servo_info['servo'].enable()
     servo_info['servo'].to_mid()
 
+# Test movement pattern
+test_position = 0
+movement_direction = 1
+
 try:
     while True:
+        # Move all servos in a simple pattern
+        test_position += (movement_direction * 2)  # 2 degrees per step
+        if test_position >= 90:
+            movement_direction = -1
+            test_position = 90
+        elif test_position <= 0:
+            movement_direction = 1
+            test_position = 0
+            
+        # Apply test movement to all servos
+        for name, servo_info in servos.items():
+            max_degrees = servo_info['max']
+            value = degrees_to_value(min(test_position, max_degrees), max_degrees)
+            servo_info['servo'].value(value)
+        
+        time.sleep(0.02)  # 50Hz update rate
+        
         try:
             # Read command from serial
             if input_data := input():

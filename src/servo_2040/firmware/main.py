@@ -60,18 +60,17 @@ for servo_info in servos.values():
 
 try:
     while True:
-        try:
-            # Read command from serial
-            if uart.any():  # Check if there's data available
-                try:
-                    input_data = uart.readline()
-                    if input_data:
-                        uart.write(b"Received data: ")
-                        uart.write(input_data)  # Echo back what we received
-                        input_str = input_data.decode('utf-8').strip()
-                        command = json.loads(input_str)
-                        if 'servos' in command:
-                            uart.write(b"Processing servo command\n")
+        # Read command from serial
+        if uart.any():  # Check if there's data available
+            try:
+                input_data = uart.readline()
+                if input_data:
+                    uart.write(b"Received data: ")
+                    uart.write(input_data)  # Echo back what we received
+                    input_str = input_data.decode('utf-8').strip()
+                    command = json.loads(input_str)
+                    if 'servos' in command:
+                        uart.write(b"Processing servo command\n")
                         for name, degrees in command['servos'].items():
                             if name in servos:
                                 # Clamp degrees to servo's max range
@@ -82,23 +81,24 @@ try:
                                 # Update corresponding LED with rainbow color
                                 # Map servo names to LED indices (skipping LED 0 which shows power)
                                 led_map = {
-                                'eyebrow_left': 1,
-                                'eyebrow_right': 2,
-                                'head_left': 3,
-                                'head_right': 4,
-                                'neck_tilt': 5,
-                                'neck_raise': 6,
-                                'neck_pan': 7,
-                                'arm_left': 8,
-                                'arm_right': 9
-                            }
-                            if name in led_map:
-                                r, g, b = degree_to_rgb(degrees, servos[name]['max'])
-                                led_bar.set_rgb(led_map[name], r, g, b)
-                            
-        except Exception as e:
-            uart.write(f"Error: {str(e)}\n")
-            
+                                    'eyebrow_left': 1,
+                                    'eyebrow_right': 2,
+                                    'head_left': 3,
+                                    'head_right': 4,
+                                    'neck_tilt': 5,
+                                    'neck_raise': 6,
+                                    'neck_pan': 7,
+                                    'arm_left': 8,
+                                    'arm_right': 9
+                                }
+                                if name in led_map:
+                                    r, g, b = degree_to_rgb(degrees, servos[name]['max'])
+                                    led_bar.set_rgb(led_map[name], r, g, b)
+            except Exception as e:
+                uart.write(b"Error: ")
+                uart.write(str(e).encode())
+                uart.write(b"\n")
+        
         time.sleep(0.01)  # Small delay to prevent busy-waiting
 
 except KeyboardInterrupt:

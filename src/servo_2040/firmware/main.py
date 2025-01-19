@@ -23,18 +23,10 @@ servos = {
     'arm_right': {'servo': Servo(servo2040.SERVO_9), 'max': 180}       # 0-180 degrees
 }
 
-# Function to convert degrees to servo value (0.0 to 1.0)
-def degrees_to_value(degrees, max_degrees):
-    return max(0.0, min(1.0, degrees / max_degrees))
-
 # Enable all servos and center them
 for servo_info in servos.values():
     servo_info['servo'].enable()
     servo_info['servo'].to_mid()
-
-# Test movement pattern
-test_position = 0
-movement_direction = 1
 
 try:
     while True:
@@ -55,8 +47,10 @@ try:
                     print(json.dumps({'status': 'ok', 'message': 'Servo commands processed'}))
                     for name, degrees in command['servos'].items():
                         if name in servos:
-                            value = min(degrees, servos[name]['max'])
-                            servos[name]['servo'].value(value)
+                            # Clamp degrees to servo's max range
+                            degrees = min(degrees, servos[name]['max'])
+                            # Servo.value() already expects degrees
+                            servos[name]['servo'].value(degrees)
                             
         except Exception as e:
             print(f"Error: {str(e)}")

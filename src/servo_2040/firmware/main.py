@@ -58,12 +58,13 @@ for servo_info in servos.values():
 
 try:
     while True:
-        uart.write('woot\n')
         try:
             # Read command from serial
-            if input_data := input():
-                command = json.loads(input_data)
-                if 'servos' in command:
+            if uart.any():  # Check if there's data available
+                input_data = uart.readline().decode('utf-8').strip()
+                if input_data:
+                    command = json.loads(input_data)
+                    if 'servos' in command:
                     for name, degrees in command['servos'].items():
                         if name in servos:
                             # Clamp degrees to servo's max range

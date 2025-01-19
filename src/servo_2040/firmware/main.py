@@ -7,8 +7,8 @@ from servo import Servo, servo2040
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
 led_bar.start()
 
-# Set first LED to green to indicate power
-led_bar.set_rgb(0, 0, 255, 0)
+# Set first LED to green to indicate power (30% brightness)
+led_bar.set_rgb(0, 0, int(255 * 0.3), 0)
 
 # Create a servo on pin 0
 s = Servo(servo2040.SERVO_1)

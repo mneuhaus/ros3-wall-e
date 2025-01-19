@@ -56,7 +56,7 @@ def generate_launch_description():
             name='servo_2040',
             output='screen',
             parameters=[
-                {'device': '/dev/ttyACM0'},
+                {'device': '/dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00'},
                 {'baudrate': 115200}
             ],
             arguments=['--ros-args', '--log-level', 'info']

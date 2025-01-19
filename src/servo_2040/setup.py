@@ -40,7 +40,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'serial_listener = servo_2040.serial_listener:main',
+            'servo_2040 = servo_2040.servo_2040:main',
         ],
     },
     cmdclass={

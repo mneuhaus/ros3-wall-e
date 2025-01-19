@@ -5,10 +5,12 @@ import math
 from plasma import WS2812
 from servo import Servo, servo2040
 
-# Set up UART for debug output with larger TX/RX buffers
-uart = machine.UART(0, baudrate=115200, tx_buffer_size=2048, rx_buffer_size=2048)
+# Set up UART for debug output
+uart = machine.UART(0, baudrate=115200)
+uart.init(baudrate=115200, bits=8, parity=None, stop=1, tx=machine.Pin(0), rx=machine.Pin(1))
 
 # Create and start the LED bar
+uart.write(b"Starting up...\n")
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
 led_bar.start()
 
@@ -61,10 +63,15 @@ try:
         try:
             # Read command from serial
             if uart.any():  # Check if there's data available
-                input_data = uart.readline().decode('utf-8').strip()
-                if input_data:
-                    command = json.loads(input_data)
-                    if 'servos' in command:
+                try:
+                    input_data = uart.readline()
+                    if input_data:
+                        uart.write(b"Received data: ")
+                        uart.write(input_data)  # Echo back what we received
+                        input_str = input_data.decode('utf-8').strip()
+                        command = json.loads(input_str)
+                        if 'servos' in command:
+                            uart.write(b"Processing servo command\n")
                         for name, degrees in command['servos'].items():
                             if name in servos:
                                 # Clamp degrees to servo's max range

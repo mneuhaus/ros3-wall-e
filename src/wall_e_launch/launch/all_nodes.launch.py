@@ -51,7 +51,7 @@ def generate_launch_description():
         Node(
             package='servo_2040',
             executable='servo_2040',
-            name='servo_2040_node',
+            name='servo_2040',
             output='screen',
             parameters=[
                 {'serial_port': '/dev/ttyACM0'},

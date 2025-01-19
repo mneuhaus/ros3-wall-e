@@ -1,0 +1,277 @@
+
+# 2025-01-17 22:25:53.186272
++ni
+
+# 2025-01-17 22:27:26.004023
++take a look at what i've done so far and tell me what you see
+
+# 2025-01-17 22:28:05.035837
++what would you refactor in this ros2 project?
+
+# 2025-01-17 22:29:24.969948
++lets start with #1
+
+# 2025-01-17 22:30:12.776493
++/run colcon build --packages-select servo_2040
+
+# 2025-01-17 22:30:12.776725
++/run colcon build --packages-select servo_2040
+
+# 2025-01-17 22:30:30.813759
++great now #2
+
+# 2025-01-17 22:31:15.990356
++/run colcon build --packages-select servo_2040 motor_controller
+
+# 2025-01-17 22:31:15.990786
++/run colcon build --packages-select servo_2040 motor_controller
+
+# 2025-01-17 22:32:49.781050
++any more ideas?
+
+# 2025-01-17 22:34:41.855601
++great, now please go through the whole project and do some cleanup, DRY, KISS and apply best practices from ROS2
+
+# 2025-01-17 22:35:45.813995
++/run colcon build --packages-select servo_2040 motor_controller wall_e_web
+
+# 2025-01-17 22:35:45.814193
++/run colcon build --packages-select servo_2040 motor_controller wall_e_web
+
+# 2025-01-17 22:36:18.447688
++great, how i can launch this?
+
+# 2025-01-17 22:38:21.875244
++no
+
+# 2025-01-17 22:39:12.386399
++great, now could you please update the Readme.md to describe the project, outline the tech stack, capabilities, etc.?
+
+# 2025-01-17 22:45:59.758792
++i kinda hate, that all that servo_2040, motor_controller, etc. code is spread all over, these modules will only be used on this robot, couldn't we merge them all into a single wall_e module?
+
+# 2025-01-17 22:48:29.998401
++/run rm -rf src/motor_controller src/servo_2040
+
+# 2025-01-17 22:48:29.998608
++/run rm -rf src/motor_controller src/servo_2040
+
+# 2025-01-17 22:48:30.230200
++/run colcon build --packages-select wall_e
+
+# 2025-01-17 22:48:30.230607
++/run colcon build --packages-select wall_e
+
+# 2025-01-17 22:49:57.661911
++which node is for the servo_2040 ?
+
+# 2025-01-17 22:52:20.662778
++/run rm src/wall_e/wall_e/serial_listener.py
+
+# 2025-01-17 22:52:20.663100
++/run rm src/wall_e/wall_e/serial_listener.py
+
+# 2025-01-17 22:52:24.885271
++/run mkdir -p src/wall_e/resource
+
+# 2025-01-17 22:52:24.885529
++/run mkdir -p src/wall_e/resource
+
+# 2025-01-17 22:52:25.112456
++/run touch src/wall_e/resource/wall_e
+
+# 2025-01-17 22:52:25.112779
++/run touch src/wall_e/resource/wall_e
+
+# 2025-01-17 23:18:00.954340
++ok, great what about wall_e_launch and wall_e_web, could we integrate them into wall_e too?
+
+# 2025-01-17 23:20:04.854995
++/run rm -rf src/wall_e_launch src/wall_e_web
+
+# 2025-01-17 23:20:04.855256
++/run rm -rf src/wall_e_launch src/wall_e_web
+
+# 2025-01-17 23:20:05.086609
++/run mkdir -p src/wall_e/launch src/wall_e/web
+
+# 2025-01-17 23:20:05.087105
++/run mkdir -p src/wall_e/launch src/wall_e/web
+
+# 2025-01-17 23:20:05.318301
++/run colcon build --packages-select wall_e
+
+# 2025-01-17 23:20:05.318783
++/run colcon build --packages-select wall_e
+
+# 2025-01-17 23:20:30.161232
++/run ros2 launch wall_e web.launch.py
+
+# 2025-01-17 23:20:30.161449
++/run ros2 launch wall_e web.launch.py
+
+# 2025-01-17 23:20:37.847033
++n
+
+# 2025-01-17 23:33:27.393884
++very good, now what about src/teleop_twist_joy/config/teleop_twist_joy.yaml does it need to be in it's own module?
+
+# 2025-01-17 23:37:54.850639
++great, now lets create a new node to output sound files for wall-e
+
+# 2025-01-17 23:41:57.023117
++ok, great now i want to use the openrouter api (probably sonnet as model, but should be configurable) to integrate an llm that will act as the "soul" of wall-e, by which i mean it'll receive text input and then respond with topics to control the existing ros2 nodes
+
+# 2025-01-17 23:42:52.629933
++/run mkdir -p src/wall_e/config
+
+# 2025-01-17 23:42:52.630172
++/run mkdir -p src/wall_e/config
+
+# 2025-01-17 23:43:30.330698
++great, but i think the system prompt needs to be way more specific, detailing what it needs to return, that it should behave like wall-e in the movie, etc.
+
+# 2025-01-17 23:52:00.265509
++that sounds pretty good, i think we should extend the servo controller at this point, lets define all planned servo motions: 
+
+# 2025-01-17 23:59:13.627394
++that looks pretty good, but i actually meant the hardware, so we have these servos: left_hand(open/close), left_wrist(0-180deg), left_shoulder(0-180), left_arm(0-180deg), same for the right arm, belly_door(0-180), neck_raise(0-90), neck_tilt(0-90), neck_pan(0-180), head_left_raise(0-40), eyebrow_left(0-90), head_right_raise(0-40), eyebrow_right(0-90)
+
+# 2025-01-18 00:01:14.553579
++shit, aside from the left_hand, left_wrist, left_shoulder and the same on the right are actually simple motors and not servos, we need a seperate controller for those i guess
+
+# 2025-01-18 00:02:49.488028
++since
+
+# 2025-01-18 00:02:50.822175
++/run colcon build --packages-select wall_e
+
+# 2025-01-18 00:02:50.822368
++/run colcon build --packages-select wall_e
+
+# 2025-01-18 00:02:58.181708
++/run source install/setup.bash
+
+# 2025-01-18 00:02:58.182154
++/run source install/setup.bash
+
+# 2025-01-18 00:04:52.254989
++since the motors of the arm don't have an encoder we can't set some specific degree for them, we can only acuate the motor in clockwise or counter clockwise direction for a specific amount of time, the motors itself are "loosly" coupled and will simply skip if there is too much resistance, so we can't count on a specific position for any of those motors
+
+# 2025-01-18 00:06:03.973202
++/run colcon build --packages-select wall_e
+
+# 2025-01-18 00:06:03.973430
++/run colcon build --packages-select wall_e
+
+# 2025-01-18 00:07:38.205945
++could we extract the `SERVO_POSITIONS` and `MOTOR_SEQUENCES` into a seperate controller, since it could make sence to have combined sequences that involve motors and servos
+
+# 2025-01-18 00:09:53.225883
++well the sequence controller should not be concerned with the actual pins, those should be in the motor, arm and servo controller
+
+# 2025-01-18 00:13:01.575604
++great, i guess it's time to update the Readme.md please include a section for the pins that need to be connected and also info for configuring openrouter
+
+# 2025-01-18 00:14:13.870073
++i actualy switched to an usb-connection from rpi to 2040
+
+# 2025-01-18 00:16:05.982721
++you can remove the part about the servial connection to 2040
+
+# 2025-01-18 00:16:58.075509
++/undo
+
+# 2025-01-19 00:06:10.063931
++please update the make
+
+# 2025-01-19 00:06:24.475989
++please update the Makefile to flash trough usb instead of serial port
+
+# 2025-01-19 00:06:51.445134
++/run make flash
+
+# 2025-01-19 00:06:51.445360
++/run make flash
+
+# 2025-01-19 00:07:04.853360
++make flash
+
+# 2025-01-19 00:07:48.538095
++no
+
+# 2025-01-19 00:07:52.525578
++/ru
+
+# 2025-01-19 00:07:56.493595
++/run make flash
+
+# 2025-01-19 00:08:02.348034
++What's wrong? Fix
+
+# 2025-01-19 00:08:21.909062
++/run ls -l /dev/ttyUSB* /dev/ttyACM*
+
+# 2025-01-19 00:08:21.909290
++/run ls -l /dev/ttyUSB* /dev/ttyACM*
+
+# 2025-01-19 00:08:26.844718
++/run sudo chmod a+rw /dev/ttyUSB0
+
+# 2025-01-19 00:08:26.844944
++/run sudo chmod a+rw /dev/ttyUSB0
+
+# 2025-01-19 00:08:29.985577
++/run sudo usermod -a -G dialout $USER
+
+# 2025-01-19 00:08:29.985770
++/run sudo usermod -a -G dialout $USER
+
+# 2025-01-19 00:08:31.128762
++/run make flash
+
+# 2025-01-19 00:08:31.128957
++/run make flash
+
+# 2025-01-19 00:08:39.762387
++/run lsusb
+
+# 2025-01-19 00:10:42.873151
++please use picotool to flash the rp2040
+
+# 2025-01-19 00:11:10.015991
++/run sudo apt install picotool
+
+# 2025-01-19 00:11:10.016210
++/run sudo apt install picotool
+
+# 2025-01-19 00:11:25.396698
++n
+
+# 2025-01-19 00:11:52.311316
++/run sudo apt -y install build-essential pkg-config libusb-1.0-0-dev cmake
++
+
+# 2025-01-19 10:02:04.845073
++lets update the servo_2040 firmware to light up one of the integrated neopixels in green when powered to show it's actually running the firmware
+
+# 2025-01-19 10:05:03.544865
++wait, we screwed up when merging the modules a while back, there was a seperate folder for the firmware in the servo_2040 module that contained that main.py and a CustomInstallCommand and a script to actually upload
+
+# 2025-01-19 10:05:37.491607
++here is the main.py: 
+
+# 2025-01-19 10:05:42.114449
++import time
+
+# 2025-01-19 10:05:45.516463
++from pimoroni import Button
+
+# 2025-01-19 10:05:50.247102
++from plasma import WS2812
+
+# 2025-01-19 10:05:54.533777
++from servo import servo2040
+
+# 2025-01-19 10:05:55.372164
++from machine import Pin, PWM, UART, Timer

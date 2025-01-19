@@ -1,5 +1,6 @@
 import time
 import json
+import sys
 from plasma import WS2812
 from servo import Servo, servo2040
 
@@ -30,7 +31,8 @@ for servo_info in servos.values():
 
 try:
     while True:
-        print('woot')
+        sys.stdout.write('woot\n')
+        sys.stdout.flush()
         try:
             # Read command from serial
             if input_data := input():
@@ -44,7 +46,8 @@ try:
                             servos[name]['servo'].value(degrees)
                             
         except Exception as e:
-            print(f"Error: {str(e)}")
+            sys.stdout.write(f"Error: {str(e)}\n")
+            sys.stdout.flush()
             
         time.sleep(0.01)  # Small delay to prevent busy-waiting
 
@@ -52,4 +55,5 @@ except KeyboardInterrupt:
     # Disable all servos on Ctrl+C
     for servo_info in servos.values():
         servo_info['servo'].disable()
-    print("Program stopped.")
+    sys.stdout.write("Program stopped.\n")
+    sys.stdout.flush()

@@ -1,16 +1,52 @@
 import time
+import math
 from pimoroni import Button
 from plasma import WS2812
 from servo import servo2040
 from machine import Pin, PWM, UART, Timer
-import time
 
 # Create and start the LED bar
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
 led_bar.start()
 
-# Set first LED to green
-led_bar.set_rgb(0, 0, 255, 0)  # RGB values for green (0,255,0)
+# Variables for rainbow effect
+HUE_START = 0
+HUE_END = 360
+hue_offset = 0
+
+def hsv_to_rgb(h, s, v):
+    """Convert HSV color values to RGB."""
+    h = float(h)
+    s = float(s)
+    v = float(v)
+    h60 = h / 60.0
+    h60f = math.floor(h60)
+    hi = int(h60f) % 6
+    f = h60 - h60f
+    p = v * (1 - s)
+    q = v * (1 - f * s)
+    t = v * (1 - (1 - f) * s)
+    
+    if hi == 0: r, g, b = v, t, p
+    elif hi == 1: r, g, b = q, v, p
+    elif hi == 2: r, g, b = p, v, t
+    elif hi == 3: r, g, b = p, q, v
+    elif hi == 4: r, g, b = t, p, v
+    else: r, g, b = v, p, q
+    
+    return int(r * 255), int(g * 255), int(b * 255)
+
+def update_rainbow():
+    """Update the LED bar with rainbow colors."""
+    global hue_offset
+    for i in range(servo2040.NUM_LEDS):
+        # Calculate hue for this LED
+        hue = (HUE_START + (i * 360 / servo2040.NUM_LEDS) + hue_offset) % 360
+        r, g, b = hsv_to_rgb(hue, 1.0, 0.5)  # Full saturation, half brightness
+        led_bar.set_rgb(i, r, g, b)
+    
+    # Update the offset for next time
+    hue_offset = (hue_offset + 5) % 360  # Speed of color cycling
 
 # Initialize UART on UART0 (GP0 and GP1)
 uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
@@ -82,7 +118,8 @@ try:
                     set_motor(pwm_right, dir_right, right_speed)
                 except Exception as e:
                     print("Error parsing command:", e)
-        time.sleep(0.01)  # Small delay to prevent high CPU usage
+        update_rainbow()  # Update the rainbow effect
+        time.sleep(0.02)  # Small delay to prevent high CPU usage
 except KeyboardInterrupt:
     # Clean up on Ctrl+C
     pwm_left.deinit()

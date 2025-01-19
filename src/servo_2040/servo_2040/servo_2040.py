@@ -9,10 +9,10 @@ import json
 class Servo2040Node(Node):
     def __init__(self):
         super().__init__('servo_2040')
-        self.declare_parameter('device', '/dev/ttyACM0')
+        self.declare_parameter('serial_port', '/dev/ttyACM0')
         self.declare_parameter('baudrate', 115200)
 
-        self.device = self.get_parameter('device').value
+        self.serial_port = self.get_parameter('serial_port').value
         self.baudrate = self.get_parameter('baudrate').value
         self.serial = None
 
@@ -73,12 +73,12 @@ class Servo2040Node(Node):
         while self.serial is None:
             try:
                 self.serial = serial.Serial(
-                    port=self.device,
+                    port=self.serial_port,
                     baudrate=self.baudrate,
                     timeout=1,
                     write_timeout=1
                 )
-                self.get_logger().info(f"Connected to {self.device} at {self.baudrate} baud")
+                self.get_logger().info(f"Connected to {self.serial_port} at {self.baudrate} baud")
                 # Give the device time to initialize
                 time.sleep(2.0)
             except serial.SerialException as e:

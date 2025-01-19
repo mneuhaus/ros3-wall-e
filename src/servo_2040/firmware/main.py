@@ -41,9 +41,14 @@ try:
                 command = json.loads(input_data)
                 print(f"Parsed command: {command}")
                 
+                # Handle test connection command
+                if 'test' in command and command['test'] == 'connection':
+                    print(json.dumps({'status': 'connected', 'message': 'Servo2040 ready'}))
                 # Process servo commands
-                if 'servos' in command:
+                elif 'servos' in command:
                     print(f"Processing servo commands: {command['servos']}")
+                    # Send confirmation after processing
+                    print(json.dumps({'status': 'ok', 'message': 'Servo commands processed'}))
                     for name, degrees in command['servos'].items():
                         if name in servos:
                             value = degrees_to_value(degrees, servos[name]['max'])

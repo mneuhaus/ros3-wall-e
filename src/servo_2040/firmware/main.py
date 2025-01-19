@@ -33,18 +33,8 @@ try:
         try:
             # Read command from serial
             if input_data := input():
-                print(f"Received data: {input_data}")
                 command = json.loads(input_data)
-                print(f"Parsed command: {command}")
-                
-                # Handle test connection command
-                if 'test' in command and command['test'] == 'connection':
-                    print(json.dumps({'status': 'connected', 'message': 'Servo2040 ready'}))
-                # Process servo commands
-                elif 'servos' in command:
-                    print(f"Processing servo commands: {command['servos']}")
-                    # Send confirmation after processing
-                    print(json.dumps({'status': 'ok', 'message': 'Servo commands processed'}))
+                if 'servos' in command:
                     for name, degrees in command['servos'].items():
                         if name in servos:
                             # Clamp degrees to servo's max range

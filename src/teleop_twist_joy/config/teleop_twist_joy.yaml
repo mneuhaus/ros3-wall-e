@@ -20,3 +20,8 @@ teleop_node:
     require_enable_button: true
     enable_button: 5  # Left shoulder button
     enable_turbo_button: 7  # Right shoulder button
+
+    # Servo control buttons
+    servo_buttons:
+      eyebrow_left_up: 0    # A button
+      eyebrow_left_down: 1  # B button

@@ -4,3 +4,4 @@ backup
 install
 .aider.tags.cache*
 build
+.aider*

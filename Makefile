@@ -41,9 +41,8 @@ UF2_FILE = $(FIRMWARE_DIR)/main.uf2
 
 # Flash command using picotool and rshell
 flash:
-	@echo "Put your Servo 2040 into BOOTSEL mode (hold BOOTSEL while pressing reset)..."
-	@sleep 2
 	rshell cp $(PYTHON_FILE) /pyboard/main.py
+	rshell "repl ~ import machine ~ machine.soft_reset() ~"
 	@echo "File copied successfully. Please reset your board."
 
 # Help message

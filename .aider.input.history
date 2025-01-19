@@ -275,3 +275,48 @@
 
 # 2025-01-19 10:05:55.372164
 +from machine import Pin, PWM, UART, Timer
+
+# 2025-01-19 10:16:05.889575
++lets update the servo_2040 firmware to light up one neopixel in green when powered up
+
+# 2025-01-19 10:18:29.503658
++great, now please update the Makefile and upload_firmware to use picotool for flashing
+
+# 2025-01-19 10:19:21.814873
++n
+
+# 2025-01-19 10:19:32.652788
++/run make flash
+
+# 2025-01-19 10:19:55.170080
++What's wrong? Fix
+
+# 2025-01-19 10:20:09.510523
++/run make flash
+
+# 2025-01-19 10:20:09.510787
++/run make flash
+
+# 2025-01-19 10:20:21.291591
++please fix
+
+# 2025-01-19 10:21:00.701357
++/run pip3 install mpremote
+
+# 2025-01-19 10:21:00.701591
++/run pip3 install mpremote
+
+# 2025-01-19 10:21:14.617014
++please fix
+
+# 2025-01-19 10:21:38.179995
++/run sudo apt install python3-rshell
+
+# 2025-01-19 10:21:38.180194
++/run sudo apt install python3-rshell
+
+# 2025-01-19 10:22:43.609180
++/run make flash
+
+# 2025-01-19 10:22:52.818458
++What's wrong? Fix

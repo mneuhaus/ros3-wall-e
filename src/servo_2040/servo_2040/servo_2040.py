@@ -99,6 +99,7 @@ class Servo2040Node(Node):
                 
                 # Update position if changed
                 if new_position != self.servo_positions[servo_idx]:
+                    self.get_logger().info(f"Moving servo {servo_idx} from {self.servo_positions[servo_idx]} to {new_position} degrees")
                     self.servo_positions[servo_idx] = new_position
                     position_changed = True
         
@@ -122,7 +123,7 @@ class Servo2040Node(Node):
                 if self.serial:
                     command_str = json.dumps(command) + '\n'
                     self.serial.write(command_str.encode())
-                    self.get_logger().debug(f"Sent: {command_str.strip()}")
+                    self.get_logger().info(f"Sending servo commands: {command_str.strip()}")
             except Exception as e:
                 self.get_logger().error(f"Error sending command: {e}")
 

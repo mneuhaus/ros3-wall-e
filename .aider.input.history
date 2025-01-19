@@ -320,3 +320,256 @@
 
 # 2025-01-19 10:22:52.818458
 +What's wrong? Fix
+
+# 2025-01-19 10:29:30.106327
++just for fun, can you do a rainbow wave on those neopixels?
+
+# 2025-01-19 10:30:07.383147
++/run make build
+
+# 2025-01-19 10:30:35.680788
++What's wrong? Fix
+
+# 2025-01-19 10:31:03.123702
++/run pip3 install ament_package
+
+# 2025-01-19 10:31:03.123946
++/run pip3 install ament_package
+
+# 2025-01-19 10:31:08.551097
++n
+
+# 2025-01-19 10:31:10.696526
++please fix
+
+# 2025-01-19 10:31:17.823856
++/run sudo apt-get install python3-ament-package
+
+# 2025-01-19 10:31:17.824157
++/run sudo apt-get install python3-ament-package
+
+# 2025-01-19 10:31:22.429014
++n
+
+# 2025-01-19 10:31:26.511887
++please fix
+
+# 2025-01-19 10:31:45.210093
++/run sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# 2025-01-19 10:31:45.210325
++/run sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+# 2025-01-19 10:31:45.676795
++/run echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list
+
+# 2025-01-19 10:31:45.677292
++/run echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list
+
+# 2025-01-19 10:31:45.952145
++/run sudo apt update
+
+# 2025-01-19 10:31:45.952429
++/run sudo apt update
+
+# 2025-01-19 10:31:53.079386
++/run sudo apt install python3-ament-package
+
+# 2025-01-19 10:31:53.079680
++/run sudo apt install python3-ament-package
+
+# 2025-01-19 10:31:59.073632
++n
+
+# 2025-01-19 10:32:09.963680
++do we actually need amend?
+
+# 2025-01-19 10:32:44.494298
++/run make build
+
+# 2025-01-19 10:32:44.494536
++/run make build
+
+# 2025-01-19 10:34:23.985443
++no
+
+# 2025-01-19 16:23:58.919808
++ok, great now let's test the servo ports by simply looping the servo 1 from 0-180
+
+# 2025-01-19 16:25:04.540106
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:25:04.540337
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:25:18.068931
++please dfix
+
+# 2025-01-19 16:25:34.033984
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:25:34.034190
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:26:22.083677
++here's an example from pimoroni on how to use the servo: https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/examples/servo2040/single_servo.py
+
+# 2025-01-19 16:30:14.199927
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:30:14.200151
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:31:05.029917
++ok, great but we should keep at least one green neopixel to show the board is powered up and working
+
+# 2025-01-19 16:31:21.059388
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:31:21.059660
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:31:41.085169
++is it possible to reduce the brightness to 30%
+
+# 2025-01-19 16:31:52.448332
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:31:52.448550
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:32:27.759775
++way better, thanks!
+
+# 2025-01-19 16:34:29.050231
++now let's remove the test code for the servo and instead implement these servos: eyebrow_left_raise(0-90), eyebrow_right_raise(0-90), head_left_raise(0-40deg), head_right_raise(0-40), neck_tilt(0-90), neck_raise(0-180), neck_pan(0-180), arm_left_raise(0-180), arm_right_raise(0-180)
+
+# 2025-01-19 16:35:11.058696
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:35:11.058932
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:35:34.876418
++great, now we need to implement the logic to control these servos through ros2
+
+# 2025-01-19 16:36:37.298329
++ok, now let's update the node to control those servos
+
+# 2025-01-19 16:38:40.208197
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:38:40.208426
++/run python3 src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-19 16:38:49.700795
++/run ros2 run servo_2040 serial_listener
+
+# 2025-01-19 16:38:49.701012
++/run ros2 run servo_2040 serial_listener
+
+# 2025-01-19 17:03:47.323937
++/run ros2 topic pub /servo_commands std_msgs/msg/Float32MultiArray "data: [45.0, 45.0, 20.0, 20.0, 45.0, 90.0, 90.0, 90.0, 90.0]"
+
+# 2025-01-19 17:03:47.324163
++/run ros2 topic pub /servo_commands std_msgs/msg/Float32MultiArray "data: [45.0, 45.0, 20.0, 20.0, 45.0, 90.0, 90.0, 90.0, 90.0]"
+
+# 2025-01-19 17:04:16.179598
++ok, now please update the teleop twist joy to move the servos simply attach a button to a servo for now
+
+# 2025-01-19 17:07:51.900605
++you can find them at src/teleop_twist_joy/config/teleop_twist_joy.yaml
+
+# 2025-01-19 17:09:49.792361
++/undo
+
+# 2025-01-19 17:14:24.710100
++yea, no please remove that joy_servo_controller the teleop does already publish stuff, lets just subscribe to that inside the servo_2040 controller
+
+# 2025-01-19 17:15:13.267044
++/run rm src/servo_2040/servo_2040/joy_servo_controller.py
+
+# 2025-01-19 17:15:13.267262
++/run rm src/servo_2040/servo_2040/joy_servo_controller.py
+
+# 2025-01-19 17:15:24.582745
++n
+
+# 2025-01-19 17:15:41.226896
++great, now another thing thats bugging me, can we rename serial_listener to servo_2040 please?
+
+# 2025-01-19 17:17:10.921241
++/run rm src/servo_2040/servo_2040/serial_listener.py
+
+# 2025-01-19 17:17:10.921449
++/run rm src/servo_2040/servo_2040/serial_listener.py
+
+# 2025-01-19 17:17:11.146676
++/run rm install/servo_2040/lib/servo_2040/serial_listener
+
+# 2025-01-19 17:17:11.147107
++/run rm install/servo_2040/lib/servo_2040/serial_listener
+
+# 2025-01-19 17:20:10.479372
++mneuhaus@wall-e:~/ros2_ws$ make run
++Running the node...
++ros2 launch wall_e_launch all_nodes.launch.py
++[INFO] [launch]: All log files can be found below /home/mneuhaus/.ros/log/2025-01-19-17-19-52-070103-wall-e-7324
++[INFO] [launch]: Default logging verbosity is set to INFO
++[ERROR] [launch]: Caught exception in launch (see debug for traceback): Caught multiple exceptions when trying to load file of format [py]:
++ - NameError: name 'get_package_share_directory' is not defined
++ - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown
++make: *** [Makefile:27: run] Error 1
+
+# 2025-01-19 17:20:53.624195
++n
+
+# 2025-01-19 17:21:35.578354
++mneuhaus@wall-e:~/ros2_ws$ make run
++Running the node...
++ros2 launch wall_e_launch all_nodes.launch.py
++[INFO] [launch]: All log files can be found below /home/mneuhaus/.ros/log/2025-01-19-17-21-21-805968-wall-e-7491
++[INFO] [launch]: Default logging verbosity is set to INFO
++[ERROR] [launch]: Caught exception in launch (see debug for traceback): executable 'servo_2040' not found on the libexec directory '/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040' 
++make: *** [Makefile:27: run] Error 1
+
+# 2025-01-19 17:21:58.769309
++/run mv install/servo_2040/lib/servo_2040/serial_listener install/servo_2040/lib/servo_2040/servo_2040
+
+# 2025-01-19 17:21:58.769572
++/run mv install/servo_2040/lib/servo_2040/serial_listener install/servo_2040/lib/servo_2040/servo_2040
+
+# 2025-01-19 17:22:03.991768
++/run colcon build
+
+# 2025-01-19 17:22:03.991997
++/run colcon build
+
+# 2025-01-19 17:22:20.535812
++/run source install/setup.bash
+
+# 2025-01-19 17:22:20.536087
++/run source install/setup.bash
+
+# 2025-01-19 17:22:21.033278
++/run ros2 launch wall_e_launch all_nodes.launch.py
+
+# 2025-01-19 17:22:21.033745
++/run ros2 launch wall_e_launch all_nodes.launch.py
+
+# 2025-01-19 17:23:25.819264
++[servo_2040-3] Traceback (most recent call last):
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040", line 33, in <module>
++[servo_2040-3]     sys.exit(load_entry_point('servo-2040==0.0.0', 'console_scripts', 'servo_2040')())
++[servo_2040-3]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040", line 25, in importlib_load_entry_point
++[servo_2040-3]     return next(matches).load()
++[servo_2040-3]            ^^^^^^^^^^^^^
++[servo_2040-3] StopIteration
++[ERROR] [servo_2040-3]: process has died [pid 7751, exit code 1, cmd '/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040 --ros-args -r __node:=servo_2040_node --params-file /tmp/launch_params_nnjwe2_j --params-file /tmp/launch_params_962k7qia'].
+
+# 2025-01-19 17:24:04.929291
++n
+
+# 2025-01-19 17:24:37.416250
++we never edit files inside install/* directly, these are "temporary" files put there by the build process, we can only edit stuff that's inside git

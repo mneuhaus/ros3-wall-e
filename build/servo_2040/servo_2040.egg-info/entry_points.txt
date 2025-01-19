@@ -1,2 +1,0 @@
-[console_scripts]
-serial_listener = servo_2040.serial_listener:main

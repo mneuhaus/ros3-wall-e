@@ -17,6 +17,10 @@ def main():
             ['rshell', 'cp', firmware_file, '/pyboard/main.py'],
             check=True
         )
+        subprocess.run(
+            ['rshell', 'repl ~ import machine ~ machine.soft_reset() ~'],
+            check=True
+        )
         print("Firmware uploaded successfully!")
         print("Please reset your board to start running the new firmware.")
     except subprocess.CalledProcessError as e:

@@ -1,3 +1,0 @@
-adafruit-ampy
-pyserial
-setuptools

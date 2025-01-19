@@ -1,4 +1,0 @@
-gmake[1]: Entering directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'
--- Found ament_cmake: 2.5.2 (/opt/ros/jazzy/share/ament_cmake/cmake)
--- Configuring incomplete, errors occurred!
-gmake[1]: Leaving directory '/home/mneuhaus/ros2_ws/build/wall_e_launch'

@@ -65,8 +65,8 @@ try:
                 if input_data:
                     command = json.loads(input_data)
                     if 'servos' in command:
-                    for name, degrees in command['servos'].items():
-                        if name in servos:
+                        for name, degrees in command['servos'].items():
+                            if name in servos:
                             # Clamp degrees to servo's max range
                             degrees = min(degrees, servos[name]['max'])
                             # Update servo position

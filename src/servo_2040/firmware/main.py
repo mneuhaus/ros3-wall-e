@@ -1,37 +1,39 @@
 import time
+import math
 from plasma import WS2812
-from servo import servo2040
-from pimoroni_servo2040 import Servo
+from servo import Servo, servo2040
 
 # Create and start the LED bar
 led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
 led_bar.start()
 
-# Initialize Servo 1
-servo1 = Servo(servo2040.SERVO_1)
-
-def sweep_servo():
-    """Sweep servo from 0 to 180 degrees and back"""
-    while True:
-        # Sweep from 0 to 180
-        for angle in range(0, 181, 2):
-            servo1.value(angle/180)  # Convert angle to value between 0 and 1
-            time.sleep(0.02)
-        
-        # Sweep from 180 to 0
-        for angle in range(180, -1, -2):
-            servo1.value(angle/180)  # Convert angle to value between 0 and 1
-            time.sleep(0.02)
+# Create a servo on pin 0
+s = Servo(servo2040.SERVO_1)
 
 # Main loop
 try:
     # Enable the servo
-    servo1.enable()
+    s.enable()
     
-    # Start the sweep
-    sweep_servo()
-    
+    while True:
+        # Go to min
+        s.to_min()
+        time.sleep(2)
+        
+        # Go to max
+        s.to_max()
+        time.sleep(2)
+        
+        # Go back to mid
+        s.to_mid()
+        time.sleep(2)
+        
+        # Do a sine sweep
+        for i in range(360):
+            s.value(math.sin(math.radians(i)) * 90.0)
+            time.sleep(0.02)
+
 except KeyboardInterrupt:
     # Clean up on Ctrl+C
-    servo1.disable()
+    s.disable()
     print("Program stopped.")

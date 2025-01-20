@@ -573,3 +573,441 @@
 
 # 2025-01-19 17:24:37.416250
 +we never edit files inside install/* directly, these are "temporary" files put there by the build process, we can only edit stuff that's inside git
+
+# 2025-01-19 17:26:12.387149
++/run colcon build --packages-select servo_2040
+
+# 2025-01-19 17:26:12.387380
++/run colcon build --packages-select servo_2040
+
+# 2025-01-19 17:26:24.925836
++/run source install/setup.bash
+
+# 2025-01-19 17:26:24.926282
++/run source install/setup.bash
+
+# 2025-01-19 17:28:06.113392
++ok, so far so good, the gamepad is connected and working but i can't see any topics about button pusches, etc.
+
+# 2025-01-19 17:28:32.602420
++/run ros2 topic list
+
+# 2025-01-19 17:28:32.602693
++/run ros2 topic list
+
+# 2025-01-19 17:28:33.227456
++/run ros2 topic echo /joy
+
+# 2025-01-19 17:28:33.227922
++/run ros2 topic echo /joy
+
+# 2025-01-19 17:41:58.080703
++n
+
+# 2025-01-19 17:44:35.756879
++ok, /joy is giving proper data about the gamped button pushes, etc. but i can't see the servo_2040 to pick them up
+
+# 2025-01-19 17:44:55.574524
++no
+
+# 2025-01-19 22:22:37.368445
++could we add some "debug output" to the servo_2040 node to show that it receives topics from the teleop?
+
+# 2025-01-19 22:22:59.044039
++n
+
+# 2025-01-19 22:23:04.802954
++d
+
+# 2025-01-19 22:24:24.646607
++please add those "in general" when running in normal mode
+
+# 2025-01-19 22:24:39.051235
++d
+
+# 2025-01-19 22:25:23.158517
++there is no output when i run ros2 launch wall_e_launch all_nodes.launch.py
+
+# 2025-01-19 22:25:55.559510
++d
+
+# 2025-01-19 22:27:34.155803
++ok, working now, you can remove the "received joy message" output
+
+# 2025-01-19 22:29:39.721294
++great, so far so good, but the servo connected to port 1 does not move i guess, the connection form the node to the actual servo_2040 needs to be updated form serial to usb?
+
+# 2025-01-19 22:33:24.889988
++this is the proper device: /dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00
+
+# 2025-01-19 22:34:34.681636
++maybe we need to change back to serial_port instead of device?
+
+# 2025-01-19 22:35:12.245321
++also please replace all /dev/ttyACM0 with /dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00
+
+# 2025-01-19 22:37:00.878738
++still not working, how can we debug this?
+
+# 2025-01-19 22:38:01.501230
++n
+
+# 2025-01-19 22:43:10.189574
++lets add some kind of response from main.py firmware back to the node to show that the connection is working
+
+# 2025-01-19 23:02:20.477836
++ok, so the connection is working, so far so good, but pushing the a/b buttons does not move the servo, please update the code to change all servos with those 2 buttons at the same time for testing
+
+# 2025-01-19 23:04:17.698734
++still not working, please try to add a simple looping move to all servos in the main.py firmware
+
+# 2025-01-19 23:04:38.296328
++/run ros2 run servo_2040 upload_firmware
+
+# 2025-01-19 23:04:38.296583
++/run ros2 run servo_2040 upload_firmware
+
+# 2025-01-19 23:18:32.716800
++please remove the test code form the firmware, i noticed you used a degrees_to_value method, that seems to be wrong, the servo method value takes the degree as input
+
+# 2025-01-19 23:19:57.185446
++you can also remove the test connection command and most of the debug statements
+
+# 2025-01-19 23:20:55.655644
++please make sure, that the servo_2040 node outputs everything that the firmware prints out
+
+# 2025-01-19 23:24:42.236472
++hmm, does not really work, i mean we should somehow make sure that all the feedback of the serial port gets output, do we need to have some kind of parallel listener?
+
+# 2025-01-19 23:28:19.936942
++hmm, ok is there some way to "catch" everthing that is printed, so print('foo') in the firmware?
+
+# 2025-01-19 23:28:38.713726
++n
+
+# 2025-01-19 23:31:01.508784
++please change to to an actual serial output
+
+# 2025-01-19 23:31:19.084558
++d
+
+# 2025-01-19 23:33:00.070746
++not sure about all this, let's use the neopixel to represent the position of the servos, so a color of the rainbow mapped to the degree
+
+# 2025-01-19 23:34:57.767007
++something is wrong with that main loop in main.py, please try to find out why, it's not working
+
+# 2025-01-19 23:37:11.425293
++[servo_2040-3] [ERROR] [1737326188.186264250] [servo_2040]: Write timeout occurred!
+
+# 2025-01-19 23:39:07.338920
++still nothing, any other way to fix this in the firmware?
+
+# 2025-01-20 07:05:00.421590
++could we decouple the serial logic and servo actuation inside the main.py by using PIO for the servo control?
+
+# 2025-01-20 07:06:08.719076
++no
+
+# 2025-01-20 07:06:23.455291
++imho all code should stay inside main.py for the firmware for now
+
+# 2025-01-20 07:07:38.942229
++/run rm src/servo_2040/firmware/servo_pio.py
+
+# 2025-01-20 07:07:38.942444
++/run rm src/servo_2040/firmware/servo_pio.py
+
+# 2025-01-20 08:35:41.460532
++lets use the first neopixel to display the powered on status of the servo_2040, but instead of constant green, the color should be selected at random on boot to make it visible when the board has rebooted
+
+# 2025-01-20 08:37:44.430068
++Traceback (most recent call last):
++  File "main.py", line 99, in <module>
++  File "main.py", line 37, in __init__
++ValueError: invalid StateMachine
+
+# 2025-01-20 09:02:52.240930
++lets add a command to the makefile to flash a fresh copy of micropython to the servo_2040 in boot mode
+
+# 2025-01-20 09:58:28.794368
++lsusb
+
+# 2025-01-20 09:59:47.383204
++this boards needs a custom micropython firmware, here is the link: https://github.com/pimoroni/pimoroni-pico/releases/download/v1.23.0-1/pico-v1.23.0-1-pimoroni-micropython.uf2
+
+# 2025-01-20 10:00:49.069305
++n
+
+# 2025-01-20 10:03:50.106666
++please add a makefile command as well
+
+# 2025-01-20 10:04:36.120291
++/run make upload-servo2040
+
+# 2025-01-20 10:04:36.120574
++/run make upload-servo2040
+
+# 2025-01-20 10:05:35.811657
++seems, like the servo_2040 is not automatically mounted in boot mode
+
+# 2025-01-20 10:28:18.825734
++n
+
+# 2025-01-20 10:28:41.225519
++yea no that's not working either, lets use picotool to do a erase, load, reboot
+
+# 2025-01-20 10:29:13.430775
++n
+
+# 2025-01-20 10:30:50.304847
++lets seperate the flashing of the "base" micropython image and the uploading of the main.py
+
+# 2025-01-20 10:32:01.920278
++no
+
+# 2025-01-20 11:02:54.881928
++the servo2040 supports only 2 PIO
+
+# 2025-01-20 11:06:13.458230
++please add a small ~10 degree back/forth movement of the servos when the board starts
+
+# 2025-01-20 11:06:44.994796
++n
+
+# 2025-01-20 11:12:04.146361
++Traceback (most recent call last):
++  File "main.py", line 173, in <module>
++  File "main.py", line 167, in startup_pattern
++NameError: name 'led_map' isn't defined
+
+# 2025-01-20 23:11:56.514727
++aider
+
+# 2025-01-20 23:12:55.692044
++please check the src/servo_2040/firmware/main.py to see if there are any problems
+
+# 2025-01-20 23:16:20.081487
++lets start over with the main.py, 1 neopixel should output a random color at 40% brightness on startup to show it's actually running the code, then please do a short 10deg back and forth with each servo to test the ports, remove everything else for now
+
+# 2025-01-20 23:17:33.008221
++n
+
+# 2025-01-20 23:18:20.007878
++please keep all the code for the servo_2040 firmware in a single main.py, but feel free to create classes, etc for code organisation
+
+# 2025-01-20 23:19:54.528044
++ok, great, one issue the rp2040 has only 2 PIO, please handle all servos with a single PIO
+
+# 2025-01-20 23:20:29.293661
++Traceback (most recent call last):
++  File "main.py", line 8, in <module>
++ImportError: no module named 'rp2.asm_pio'
+
+# 2025-01-20 23:23:28.043910
++why are there 2 `ServoController` in the main.py now?
+
+# 2025-01-20 23:25:54.344912
++as i said, please use one of the two available pios for the servo control
+
+# 2025-01-20 23:31:02.456545
++the servo is not realling moving back and forth, any idea why it's not working?
+
+# 2025-01-20 23:32:17.369595
++Traceback (most recent call last):
++  File "main.py", line 217, in <module>
++  File "main.py", line 117, in __init__
++  File "main.py", line 69, in __init__
++  File "rp2.py", line 301, in asm_pio_encode
++PIOASMError: expecting exactly 1 instruction
+
+# 2025-01-20 23:32:49.841181
++Traceback (most recent call last):
++  File "main.py", line 218, in <module>
++  File "main.py", line 118, in __init__
++  File "main.py", line 70, in __init__
++  File "rp2.py", line 301, in asm_pio_encode
+
+# 2025-01-20 23:36:11.737549
++lets remove the PIO logic for now, i think it's not properly working
+
+# 2025-01-20 23:38:11.939608
++would it make sense to use some kind of library to control those servos, that might even support easing or something like that?
+
+# 2025-01-20 23:39:04.906920
++n
+
+# 2025-01-20 23:39:17.563291
++wait, please take a look at this instead: https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/examples/servo2040/multiple_servos.py
+
+# 2025-01-20 23:40:06.109067
++n
+
+# 2025-01-20 23:42:08.831673
++please update/change the serial communication between main.py and servo_2040.py with the best practice way
+
+# 2025-01-20 23:47:41.481469
++i get this output, but it does not seem to work to move any servo: [servo_2040-3] [INFO] [1737413204.672831552] [servo_2040]: Connected to /dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00 at 115200 baud
++[joy_node-1] [INFO] [1737413210.338609356] [joy_node]: Opened joystick: Pro Controller.  deadzone: 0.050000
++[servo_2040-3] [INFO] [1737413212.700017217] [servo_2040]: Moving servo 0 from 45.0 to 40.0 degrees
++[servo_2040-3] [INFO] [1737413212.703430568] [servo_2040]: Moving servo 1 from 45.0 to 40.0 degrees
++[servo_2040-3] [INFO] [1737413212.707035751] [servo_2040]: Moving servo 2 from 20.0 to 15.0 degrees
++[servo_2040-3] [INFO] [1737413212.710233806] [servo_2040]: Moving servo 3 from 20.0 to 15.0 degrees
++[servo_2040-3] [INFO] [1737413212.712532034] [servo_2040]: Moving servo 4 from 45.0 to 40.0 degrees
++[servo_2040-3] [INFO] [1737413212.715335591] [servo_2040]: Moving servo 5 from 90.0 to 85.0 degrees
++[servo_2040-3] [INFO] [1737413212.717643689] [servo_2040]: Moving servo 6 from 90.0 to 85.0 degrees
++[servo_2040-3] [INFO] [1737413212.720170008] [servo_2040]: Moving servo 7 from 90.0 to 85.0 degrees
++[servo_2040-3] [INFO] [1737413212.722619494] [servo_2040]: Moving servo 8 from 90.0 to 85.0 degrees
++[servo_2040-3] [INFO] [1737413212.750127464] [servo_2040]: Moving servo 0 from 40.0 to 35.0 degrees
++[servo_2040-3] [INFO] [1737413212.755484451] [servo_2040]: Moving servo 1 from 40.0 to 35.0 degrees
++[servo_2040-3] [INFO] [1737413212.760831716] [servo_2040]: Moving servo 2 from 15.0 to 10.0 degrees
++[servo_2040-3] [INFO] [1737413212.766181667] [servo_2040]: Moving servo 3 from 15.0 to 10.0 degrees
++[servo_2040-3] [INFO] [1737413212.771621394] [servo_2040]: Moving servo 4 from 40.0 to 35.0 degrees
++[servo_2040-3] [INFO] [1737413212.776971289] [servo_2040]: Moving servo 5 from 85.0 to 80.0 degrees
++[servo_2040-3] [INFO] [1737413212.782502165] [servo_2040]: Moving servo 6 from 85.0 to 80.0 degrees
++[servo_2040-3] [INFO] [1737413212.787787189] [servo_2040]: Moving servo 7 from 85.0 to 80.0 degrees
++[servo_2040-3] [INFO] [1737413212.793190677] [servo_2040]: Moving servo 8 from 85.0 to 80.0 degrees
++[servo_2040-3] [INFO] [1737413212.802778251] [servo_2040]: Moving servo 0 from 35.0 to 30.0 degrees
++[servo_2040-3] [INFO] [1737413212.808085368] [servo_2040]: Moving servo 1 from 35.0 to 30.0 degrees
++[servo_2040-3] [INFO] [1737413212.813699632] [servo_2040]: Moving servo 2 from 10.0 to 5.0 degrees
++[servo_2040-3] [INFO] [1737413212.819024508] [servo_2040]: Moving servo 3 from 10.0 to 5.0 degrees
++[servo_2040-3] [INFO] [1737413212.824362014] [servo_2040]: Moving servo 4 from 35.0 to 30.0 degrees
++[servo_2040-3] [INFO] [1737413212.829621002] [servo_2040]: Moving servo 5 from 80.0 to 75.0 degrees
++[servo_2040-3] [INFO] [1737413212.834908620] [servo_2040]: Moving servo 6 from 80.0 to 75.0 degrees
++[servo_2040-3] [INFO] [1737413212.840222774] [servo_2040]: Moving servo 7 from 80.0 to 75.0 degrees
++[servo_2040-3] [INFO] [1737413212.845592539] [servo_2040]: Moving servo 8 from 80.0 to 75.0 degrees
++[servo_2040-3] [INFO] [1737413212.855461871] [servo_2040]: Moving servo 0 from 30.0 to 25.0 degrees
++[servo_2040-3] [INFO] [1737413212.860966450] [servo_2040]: Moving servo 1 from 30.0 to 25.0 degrees
++[servo_2040-3] [INFO] [1737413212.866287141] [servo_2040]: Moving servo 2 from 5.0 to 0 degrees
++[servo_2040-3] [INFO] [1737413212.871531129] [servo_2040]: Moving servo 3 from 5.0 to 0 degrees
++[servo_2040-3] [INFO] [1737413212.876916357] [servo_2040]: Moving servo 4 from 30.0 to 25.0 degrees
++[servo_2040-3] [INFO] [1737413212.882408788] [servo_2040]: Moving servo 5 from 75.0 to 70.0 degrees
++[servo_2040-3] [INFO] [1737413212.887666888] [servo_2040]: Moving servo 6 from 75.0 to 70.0 degrees
++[servo_2040-3] [INFO] [1737413212.892963024] [servo_2040]: Moving servo 7 from 75.0 to 70.0 degrees
++[servo_2040-3] [INFO] [1737413212.898296511] [servo_2040]: Moving servo 8 from 75.0 to 70.0 degrees
+
+# 2025-01-20 23:50:02.919033
++i can't seem to flash the main.py to the servo_2040 anymore, is it "too busy" to receive repl/files?
+
+# 2025-01-20 23:50:39.651509
++n
+
+# 2025-01-20 23:51:15.273536
++actually i don't like that, is there any way to accomplish this without a custom buttom, maybe by sending a "termination" command through uart before flashing?
+
+# 2025-01-20 23:52:14.529892
++please update src/servo_2040/scripts/upload_firmware.py
+
+# 2025-01-20 23:52:49.984769
++n
+
+# 2025-01-20 23:53:04.147061
++please use rshell instead and also update the makefile flash command
+
+# 2025-01-20 23:53:53.170828
++yes
+
+# 2025-01-20 23:54:32.490927
++n
+
+# 2025-01-20 23:54:51.657648
++can we use the `upload_main_py` in the makefile to upload main.py?
+
+# 2025-01-20 23:55:15.487696
++n
+
+# 2025-01-20 23:56:10.795702
++lets unifi/cleanup stuff a bit, rename "upload_firmware" to "upload_main"
+
+# 2025-01-20 23:56:57.101295
++yes
+
+# 2025-01-20 23:56:57.118010
++/run mv src/servo_2040/scripts/upload_firmware.py src/servo_2040/scripts/upload_main.py
+
+# 2025-01-20 23:56:57.118236
++/run mv src/servo_2040/scripts/upload_firmware.py src/servo_2040/scripts/upload_main.py
+
+# 2025-01-20 23:57:33.968718
++Uploading code to Servo 2040...
++python3 src/servo_2040/scripts/upload_main.py
++Sending termination command...
++Error during upload: type object 'Protocol' has no attribute 'encode_terminate'
++make: *** [Makefile:53: upload-code] Error 1
+
+# 2025-01-20 23:57:56.489009
++n
+
+# 2025-01-20 23:58:21.534242
++Uploading code to Servo 2040...
++python3 src/servo_2040/scripts/upload_main.py
++Sending termination command...
++Error during upload: type object 'Protocol' has no attribute 'encode_terminate'
++make: *** [Makefile:53: upload-code] Error 1
+
+# 2025-01-20 23:58:46.200362
++yes
+
+# 2025-01-20 23:58:46.217895
++/run make upload-code
+
+# 2025-01-20 23:58:46.218127
++/run make upload-code
+
+# 2025-01-20 23:59:04.184733
++Error during upload: type object 'Protocol' has no attribute 'encode_terminate'
++make: *** [Makefile:53: upload-code] Error 1
+
+# 2025-01-20 23:59:39.191386
++/run make upload-code
+
+# 2025-01-20 23:59:39.191609
++/run make upload-code
+
+# 2025-01-21 00:03:49.872359
++please remove the protocol.py and simply do the encoding inside the upload_main.py, the servo_2040 module does not need to be able to terminate
+
+# 2025-01-21 00:04:19.340375
++/run rm src/servo_2040/servo_2040/protocol.py
+
+# 2025-01-21 00:04:19.340606
++/run rm src/servo_2040/servo_2040/protocol.py
+
+# 2025-01-21 00:04:24.441885
++/run make upload-code
+
+# 2025-01-21 00:04:24.442089
++/run make upload-code
+
+# 2025-01-21 00:06:45.370036
++shouldn't we use ttyACM0?
+
+# 2025-01-21 00:08:11.457380
++Traceback (most recent call last):
++  File "main.py", line 210, in <module>
++  File "main.py", line 172, in run
++  File "main.py", line 113, in startup_pattern
++  File "main.py", line 58, in set_servo
++AttributeError: 'ServoController' object has no attribute 'uart'
+
+# 2025-01-21 00:08:31.513634
++d
+
+# 2025-01-21 00:09:29.436777
++Building the workspace...
++colcon build
++Starting >>> motor_controller
++Starting >>> servo_2040
++Starting >>> wall_e_web
++Finished <<< wall_e_web [19.4s]                                                                        
++Finished <<< motor_controller [19.6s]                                             
++--- stderr: servo_2040
++python3: can't open file '/home/mneuhaus/ros2_ws/src/servo_2040/scripts/upload_firmware.py': [Errno 2] No such file or directory
++---
++Failed   <<< servo_2040 [19.5s, exited with code 1]
++
++Summary: 2 packages finished [21.6s]
++  1 package failed: servo_2040
++  1 package had stderr output: servo_2040
++  1 package not processed
++make: *** [Makefile:18: build] Error 1

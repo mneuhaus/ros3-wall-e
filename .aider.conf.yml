@@ -1,2 +1,2 @@
-model: openrouter/anthropic/claude-3.5-sonnet:beta
+model: openrouter/deepseek/deepseek-r1
 weak-model: openrouter/openai/gpt-4o

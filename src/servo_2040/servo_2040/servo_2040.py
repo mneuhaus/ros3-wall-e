@@ -129,6 +129,7 @@ class Servo2040Node(Node):
                 if self.serial:
                     try:
                         command = Protocol.encode_servo_positions(positions)
+                        self.get_logger().info(f"Sending command: {command}")
                         self.serial.write(command)
                         self.serial.flush()  # Ensure the data is sent
                     except serial.SerialTimeoutException:

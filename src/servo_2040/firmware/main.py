@@ -54,6 +54,7 @@ class ServoController:
             # Convert 0-180 degrees to -90 to +90 which is what the library expects
             value = degrees - 90
             self.servos[index].value(value)
+            self.uart.write(f"Setting servo {index} to {degrees} degrees (value: {value})\n".encode())
     
     def update(self):
         """No need for explicit updates with the Pimoroni library."""
@@ -135,7 +136,7 @@ class RobotController:
 
             if cmd_type == CMD_SERVO_POSITIONS:
                 positions = payload.get('positions', {})
-                self.uart.write(b"Processing servo positions\n")
+                self.uart.write(f"Processing servo positions: {positions}\n".encode())
                 for name, degrees in positions.items():
                     if name in self.servo_config:
                         degrees = min(degrees, self.servo_config[name]['max'])
@@ -171,13 +172,11 @@ class RobotController:
                     try:
                         input_data = self.uart.readline()
                         if input_data:
-                            self.uart.write(b"Received data: ")
+                            self.uart.write(b"Received raw data: ")
                             self.uart.write(input_data)
+                            self.uart.write(b"\n")
                             
-                            try:
-                                input_str = input_data.decode('utf-8').strip()
-                                command = json.loads(input_str)
-                                self.process_command(command)
+                            self.process_command(input_data)
                             except json.JSONDecodeError as e:
                                 self.uart.write(b"JSON decode error: ")
                                 self.uart.write(str(e).encode())

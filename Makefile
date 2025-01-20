@@ -41,11 +41,12 @@ UF2_FILE = $(FIRMWARE_DIR)/main.uf2
 MICROPYTHON_URL = https://datasheets.raspberrypi.com/soft/micropython-firmware-pico-w-130623.uf2
 MICROPYTHON_FILE = $(FIRMWARE_DIR)/micropython.uf2
 
-# Flash command using picotool and rshell
+# Flash command using rshell
 flash:
-	rshell cp $(PYTHON_FILE) /pyboard/main.py
-	rshell "repl ~ import machine ~ machine.soft_reset() ~"
-	@echo "File copied successfully. Please reset your board."
+	@echo "Uploading code using rshell..."
+	rshell -p /dev/ttyAMA2 "cp $(PYTHON_FILE) /pyboard/main.py"
+	rshell -p /dev/ttyAMA2 "repl ~ import machine ~ machine.soft_reset() ~"
+	@echo "File copied and board reset successfully."
 
 # Help message
 # Flash base firmware to Servo 2040

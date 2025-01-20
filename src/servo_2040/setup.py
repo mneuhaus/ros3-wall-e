@@ -13,7 +13,7 @@ class CustomInstallCommand(install):
 
         # Run the custom post-build step to upload firmware
         print("Running custom post-build step: Uploading firmware...")
-        firmware_uploader = os.path.join(os.path.dirname(__file__), 'scripts/upload_firmware.py')
+        firmware_uploader = os.path.join(os.path.dirname(__file__), 'scripts/upload_main.py')
         try:
             subprocess.run(['python3', firmware_uploader], check=True)
         except subprocess.CalledProcessError as e:

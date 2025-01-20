@@ -4,7 +4,7 @@ import sys
 import time
 import serial
 from pathlib import Path
-from servo_2040.protocol import Protocol
+from servo_2040.protocol import Protocol, CommandType
 
 def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
     """Send termination command to the device."""

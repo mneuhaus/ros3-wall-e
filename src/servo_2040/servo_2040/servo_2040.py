@@ -142,20 +142,43 @@ class Servo2040Node(Node):
 
     def read_serial_data(self):
         """Continuously reads data from the serial port in a separate thread."""
+        consecutive_errors = 0
         while rclpy.ok():
             if self.serial is None:
-                self.connect_serial()
+                try:
+                    self.connect_serial()
+                    consecutive_errors = 0  # Reset error count on successful connection
+                except Exception as e:
+                    consecutive_errors += 1
+                    self.get_logger().error(f"Connection attempt failed ({consecutive_errors}): {e}")
+                    if consecutive_errors > 10:
+                        self.get_logger().error("Too many consecutive errors, shutting down...")
+                        return
+                    time.sleep(1)  # Wait before retry
                 continue
 
             try:
-                data = self.serial.readline().decode('utf-8').strip()
-                if data:  # Only log if there's actual data
-                    self.get_logger().info(f"Firmware: {data}")
+                if self.serial.in_waiting:  # Only read if data available
+                    data = self.serial.readline().decode('utf-8').strip()
+                    if data:  # Only log if there's actual data
+                        self.get_logger().info(f"Firmware: {data}")
+                        consecutive_errors = 0  # Reset error count on successful read
+                else:
+                    time.sleep(0.01)  # Small sleep when no data
             except serial.SerialException as e:
-                self.get_logger().error(f"Serial error: {e}. Reconnecting...")
-                self.serial = None
+                consecutive_errors += 1
+                self.get_logger().error(f"Serial error ({consecutive_errors}): {e}")
+                if consecutive_errors > 10:
+                    self.get_logger().error("Too many consecutive errors, reconnecting...")
+                    try:
+                        self.serial.close()
+                    except:
+                        pass
+                    self.serial = None
+                    time.sleep(1)
             except Exception as e:
-                self.get_logger().error(f"Error reading serial: {e}")
+                self.get_logger().error(f"Unexpected error: {e}")
+                time.sleep(0.1)
 
 
 def main(args=None):

@@ -55,8 +55,10 @@ def generate_launch_description():
             executable='servo_2040',
             name='servo_2040',
             output='screen',
+            respawn=True,
+            respawn_delay=1,
             parameters=[
-                {'serial_port': '/dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00'},
+                {'serial_port': '/dev/ttyACM0'},  # Use simpler device name
                 {'baudrate': 115200}
             ],
             arguments=['--ros-args', '--log-level', 'info']

@@ -38,15 +38,15 @@ class LEDController:
 @asm_pio(sideset_init=PIO.OUT_LOW)
 def servo_program():
     """PIO program for generating servo PWM signals."""
-    wrap_target()  # noqa: F821
+    wrap_target()                        # noqa: F821
     pull(noblock)            .side(0)    # Pull from FIFO to OSR if available  # noqa: F821
     mov(x, osr)                          # Copy OSR to X scratch register  # noqa: F821
     mov(y, isr)                          # Initialize Y with period count  # noqa: F821
-    label("loop")                        # noqa: F821
-    jmp(not_x, "skip")                   # Skip if X == 0 (pulse not active)  # noqa: F821
+    label("pulseloop")                   # noqa: F821
+    jmp(x_not_y, "skip")                 # Skip if X != Y (pulse not active)  # noqa: F821
     nop()                    .side(1)    # Set output high  # noqa: F821
     label("skip")                        # noqa: F821
-    jmp(y_dec, "loop")                   # Decrement Y, continue if not zero  # noqa: F821
+    jmp(y_dec, "pulseloop")             # Decrement Y, continue if not zero  # noqa: F821
     wrap()                               # noqa: F821
 
 class ServoController:
@@ -61,9 +61,12 @@ class ServoController:
         self.sm = StateMachine(
             0,  # Use PIO 0
             servo_program,
-            freq=2000000,  # 2MHz
+            freq=10000000,  # 10MHz for better resolution
             sideset_base=Pin(pin_base)
         )
+        # Set up ISR with the total period count (20ms at 10MHz = 200000 cycles)
+        self.sm.put(200000, 1)  # Write to ISR
+        self.sm.exec("pull")    # Pull from OSR to X
         self.sm.active(1)
         
         self.servo_pins = []
@@ -177,37 +180,38 @@ class RobotController:
     def run(self):
         self.startup_pattern()
         
-        # try:
-        #     while True:
-        #         if self.uart.any():
-        #             try:
-        #                 input_data = self.uart.readline()
-        #                 if input_data:
-        #                     self.uart.write(b"Received data: ")
-        #                     self.uart.write(input_data)
+        try:
+            while True:
+                if self.uart.any():
+                    try:
+                        input_data = self.uart.readline()
+                        if input_data:
+                            self.uart.write(b"Received data: ")
+                            self.uart.write(input_data)
                             
-        #                     try:
-        #                         input_str = input_data.decode('utf-8').strip()
-        #                         command = json.loads(input_str)
-        #                         self.process_command(command)
-        #                     except json.JSONDecodeError as e:
-        #                         self.uart.write(b"JSON decode error: ")
-        #                         self.uart.write(str(e).encode())
-        #                         self.uart.write(b"\n")
-        #                     except UnicodeDecodeError as e:
-        #                         self.uart.write(b"Unicode decode error: ")
-        #                         self.uart.write(str(e).encode())
-        #                         self.uart.write(b"\n")
-        #             except Exception as e:
-        #                 self.uart.write(b"Unexpected error: ")
-        #                 self.uart.write(str(e).encode())
-        #                 self.uart.write(b"\n")
+                            try:
+                                input_str = input_data.decode('utf-8').strip()
+                                command = json.loads(input_str)
+                                self.process_command(command)
+                            except json.JSONDecodeError as e:
+                                self.uart.write(b"JSON decode error: ")
+                                self.uart.write(str(e).encode())
+                                self.uart.write(b"\n")
+                            except UnicodeDecodeError as e:
+                                self.uart.write(b"Unicode decode error: ")
+                                self.uart.write(str(e).encode())
+                                self.uart.write(b"\n")
+                    except Exception as e:
+                        self.uart.write(b"Unexpected error: ")
+                        self.uart.write(str(e).encode())
+                        self.uart.write(b"\n")
                 
-        #         self.servo.update()
+                self.servo.update()
+                time.sleep_ms(10)  # Small delay to prevent tight loop
         
-        # except KeyboardInterrupt:
-        #     self.servo.disable_all()
-        #     self.uart.write(b"Program stopped.\n")
+        except KeyboardInterrupt:
+            self.servo.disable_all()
+            self.uart.write(b"Program stopped.\n")
 
 # Create and run the robot controller
 robot = RobotController()

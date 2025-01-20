@@ -2,8 +2,53 @@ import time
 import json
 import machine
 import math
+import array
 from plasma import WS2812
-from servo_pio import ServoController
+from rp2 import PIO, StateMachine, asm_pio
+
+@asm_pio(sideset_init=PIO.OUT_LOW)
+def servo_program():
+    """PIO program for generating servo PWM signals."""
+    pull(noblock) .side(0)    # Pull from FIFO to OSR if available, else keep last value
+    mov(x, osr)              # Copy OSR to X scratch register
+    mov(y, isr)              # Initialize Y with the period count
+    label("loop")
+    jmp(x_not_y, "skip")    # Skip if X != Y (pulse not active)
+    nop()         .side(1)   # Set output high
+    label("skip")
+    jmp(y_dec, "loop")      # Decrement Y, loop if not zero
+    
+class ServoController:
+    def __init__(self, pin_base, num_servos):
+        self.num_servos = num_servos
+        self.state_machines = []
+        self.positions = array.array('H', [1500] * num_servos)  # Default 1500µs
+        
+        # Configure state machines for each servo
+        for i in range(num_servos):
+            sm = StateMachine(
+                i,
+                servo_program,
+                freq=2000000,  # 2MHz
+                sideset_base=Pin(pin_base + i)
+            )
+            sm.active(1)
+            self.state_machines.append(sm)
+    
+    def set_servo(self, index, degrees):
+        """Set servo position in degrees (0-180)."""
+        if 0 <= index < self.num_servos:
+            # Convert degrees to pulse width (500-2500µs)
+            pulse_width = int(500 + (degrees * 2000 / 180))
+            self.positions[index] = pulse_width
+            # Convert to PIO cycles (at 2MHz, 1µs = 2 cycles)
+            cycles = pulse_width * 2
+            self.state_machines[index].put(cycles)
+    
+    def disable_all(self):
+        """Disable all servo outputs."""
+        for sm in self.state_machines:
+            sm.active(0)
 
 # Set up UART for debug output
 uart = machine.UART(0, baudrate=115200)

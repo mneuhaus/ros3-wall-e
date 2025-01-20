@@ -38,16 +38,16 @@ class LEDController:
 @asm_pio(sideset_init=PIO.OUT_LOW)
 def servo_program():
     """PIO program for generating servo PWM signals."""
-    wrap_target()
-    pull(noblock)            .side(0)    # Pull from FIFO to OSR if available
-    mov(x, osr)                          # Copy OSR to X scratch register
-    mov(y, isr)                          # Initialize Y with period count
-    label("loop")
-    jmp(not_x, "skip")                   # Skip if X == 0 (pulse not active)
-    nop()                    .side(1)    # Set output high
-    label("skip")
-    jmp(y_dec, "loop")                   # Decrement Y, continue if not zero
-    wrap()
+    wrap_target()  # noqa: F821
+    pull(noblock)            .side(0)    # Pull from FIFO to OSR if available  # noqa: F821
+    mov(x, osr)                          # Copy OSR to X scratch register  # noqa: F821
+    mov(y, isr)                          # Initialize Y with period count  # noqa: F821
+    label("loop")                        # noqa: F821
+    jmp(not_x, "skip")                   # Skip if X == 0 (pulse not active)  # noqa: F821
+    nop()                    .side(1)    # Set output high  # noqa: F821
+    label("skip")                        # noqa: F821
+    jmp(y_dec, "loop")                   # Decrement Y, continue if not zero  # noqa: F821
+    wrap()                               # noqa: F821
 
 class ServoController:
     def __init__(self, pin_base, num_servos):

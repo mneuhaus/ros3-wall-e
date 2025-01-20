@@ -2,6 +2,9 @@ from plasma import WS2812
 from machine import Pin, UART
 import random
 import time
+import json
+import array
+from rp2 import PIO, StateMachine
 from servo import ServoController
 
 # Set up UART for debug output
@@ -139,10 +142,6 @@ class ServoController:
             sm.active(0)
         for pin in self.servo_pins:
             pin.value(0)
-
-# Set up UART for debug output
-uart = machine.UART(0, baudrate=115200)
-uart.init(baudrate=115200, bits=8, parity=None, stop=1, tx=machine.Pin(0), rx=machine.Pin(1))
 
 # Create and start the LED bar
 uart.write(b"Starting up...\n")

@@ -48,13 +48,10 @@ flash:
 	@echo "File copied successfully. Please reset your board."
 
 # Help message
-# Download and flash MicroPython firmware (requires board in BOOTSEL mode)
-flash-firmware:
-	@echo "Downloading latest MicroPython firmware..."
-	wget -O $(MICROPYTHON_FILE) $(MICROPYTHON_URL)
-	@echo "Flashing MicroPython firmware..."
-	cp $(MICROPYTHON_FILE) /media/$(USER)/RPI-RP2
-	@echo "Firmware flashed successfully. Please reset your board."
+# Upload custom Pimoroni firmware and main.py
+upload-servo2040:
+	@echo "Uploading Servo 2040 firmware..."
+	python3 src/servo_2040/scripts/upload_firmware.py
 
 help:
 	@echo "Makefile Commands:"
@@ -63,6 +60,7 @@ help:
 	@echo "  make rebuild        - Clean and rebuild the workspace"
 	@echo "  make clean          - Clean the workspace"
 	@echo "  make flash-firmware - Flash fresh MicroPython firmware (BOOTSEL mode)"
+	@echo "  make upload-servo2040 - Upload Servo 2040 custom firmware and code"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)

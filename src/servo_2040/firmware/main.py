@@ -95,8 +95,8 @@ b = random.randint(0, 255)
 brightness = 0.3
 led_bar.set_rgb(0, int(r * brightness), int(g * brightness), int(b * brightness))
 
-# Initialize servo controller (starting from pin 0 for servos)
-servo_controller = ServoController(pin_base=0, num_servos=9)
+# Initialize servo controller (starting from pin 19 for servos to avoid conflicts)
+servo_controller = ServoController(pin_base=19, num_servos=9)
 
 # Define servo configurations
 servos = {

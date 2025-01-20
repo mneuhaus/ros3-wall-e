@@ -46,6 +46,7 @@ def servo_program():
     jmp(x_not_y, "skip")                 # Skip if X != Y (pulse not active)  # noqa: F821
     nop()                    .side(1)    # Set output high  # noqa: F821
     label("skip")                        # noqa: F821
+    nop()                               # Ensure one instruction in this label  # noqa: F821
     jmp(y_dec, "pulseloop")             # Decrement Y, continue if not zero  # noqa: F821
     wrap()                               # noqa: F821
 

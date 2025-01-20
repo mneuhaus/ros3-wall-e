@@ -44,7 +44,8 @@ class LEDController:
 
 
 class ServoController:
-    def __init__(self, pin_base, num_servos):
+    def __init__(self, pin_base, num_servos, uart):
+        self.uart = uart
         self.servos = [Servo(servo2040.SERVO_1 + i) for i in range(num_servos)]
         for servo in self.servos:
             servo.enable()
@@ -78,7 +79,7 @@ class RobotController:
         self.leds.set_random_color(0, brightness=0.5)  # Power indicator LED
         
         # Initialize servo controller
-        self.servo = ServoController(pin_base=19, num_servos=9)
+        self.servo = ServoController(pin_base=19, num_servos=9, uart=self.uart)
         
         # Define servo configurations
         self.servo_config = {

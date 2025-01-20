@@ -22,7 +22,7 @@ def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
         return False
 
 def upload_main_py(main_py_path, port='/dev/ttyAMA2'):
-    """Upload the main.py file using rshell."""
+    """Upload the main.py file to the Servo 2040 using rshell."""
     max_attempts = 3
     for attempt in range(max_attempts):
         try:

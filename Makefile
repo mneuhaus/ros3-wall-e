@@ -56,7 +56,7 @@ flash-servo2040:
 # Upload code to Servo 2040
 upload-code:
 	@echo "Uploading code to Servo 2040..."
-	python3 src/servo_2040/scripts/upload_firmware.py
+	python3 src/servo_2040/scripts/upload_main.py
 
 help:
 	@echo "Makefile Commands:"

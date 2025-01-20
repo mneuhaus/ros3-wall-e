@@ -1,6 +1,6 @@
 from plasma import WS2812
 from machine import Pin, UART
-from servolib import ServoGroup
+from servo import Servo, servo2040
 import random
 import time
 import json
@@ -37,20 +37,25 @@ class LEDController:
 
 class ServoController:
     def __init__(self, pin_base, num_servos):
-        self.servo_group = ServoGroup(pin_base, num_servos)
-        self.servo_group.set_movement_time(500)  # Set default movement time to 500ms
+        self.servos = [Servo(servo2040.SERVO_1 + i) for i in range(num_servos)]
+        for servo in self.servos:
+            servo.enable()
     
     def set_servo(self, index, degrees):
         """Set servo position in degrees (0-180)."""
-        self.servo_group.move_to({index: degrees})
+        if 0 <= index < len(self.servos):
+            # Convert 0-180 degrees to -90 to +90 which is what the library expects
+            value = degrees - 90
+            self.servos[index].value(value)
     
     def update(self):
-        """Update servo movements."""
-        self.servo_group.update()
+        """No need for explicit updates with the Pimoroni library."""
+        pass
     
     def disable_all(self):
         """Disable all servo outputs."""
-        self.servo_group.disable_all()
+        for servo in self.servos:
+            servo.disable()
 
 class RobotController:
     def __init__(self):

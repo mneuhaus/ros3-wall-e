@@ -176,7 +176,8 @@ class RobotController:
                             self.uart.write(input_data)
                             self.uart.write(b"\n")
                             
-                            self.process_command(input_data)
+                            try:
+                                self.process_command(input_data)
                             except json.JSONDecodeError as e:
                                 self.uart.write(b"JSON decode error: ")
                                 self.uart.write(str(e).encode())

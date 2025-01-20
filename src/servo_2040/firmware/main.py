@@ -199,10 +199,10 @@ try:
                         input_str = input_data.decode('utf-8').strip()
                         command = json.loads(input_str)
                         if 'servos' in command:
-                        uart.write(b"Processing servo command\n")
-                        for name, degrees in command['servos'].items():
-                            if name in servos:
-                                # Clamp degrees to servo's max range
+                            uart.write(b"Processing servo command\n")
+                            for name, degrees in command['servos'].items():
+                                if name in servos:
+                                    # Clamp degrees to servo's max range
                                 degrees = min(degrees, servos[name]['max'])
                                 # Update servo position
                                 servo_controller.set_servo(servos[name]['index'], degrees)

@@ -7,7 +7,7 @@ from plasma import WS2812
 from rp2 import PIO, StateMachine, asm_pio
 from machine import Pin
 
-@asm_pio(sideset_init=PIO.OUT_LOW)
+@asm_pio(sideset_init=PIO.OUT_LOW)  # noqa: F821
 def servo_program():
     """PIO program for generating servo PWM signals."""
     wrap_target()

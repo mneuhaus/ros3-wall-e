@@ -3,20 +3,19 @@ import subprocess
 import sys
 import time
 import serial
+import json
 from pathlib import Path
-import sys
-import os
-
-# Add the parent directory to the Python path to find the protocol module
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from servo_2040.protocol import Protocol, CommandType
 
 def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
     """Send termination command to the device."""
     try:
         with serial.Serial(port, baudrate, timeout=1) as ser:
             print("Sending termination command...")
-            ser.write(Protocol.encode_terminate())
+            command = {
+                "type": "terminate",
+                "payload": {}
+            }
+            ser.write((json.dumps(command) + "\n").encode('utf-8'))
             time.sleep(0.5)  # Give device time to process
             response = ser.readline()
             if response:

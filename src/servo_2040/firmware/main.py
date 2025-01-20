@@ -156,6 +156,10 @@ class RobotController:
                 }
                 self.uart.write(json.dumps(status).encode() + b'\n')
             
+            elif cmd_type == CMD_TERMINATE:
+                self.uart.write(b"Terminating program for firmware update...\n")
+                return  # Exit the process_command method
+            
         except (json.JSONDecodeError, KeyError, ValueError) as e:
             error_msg = {
                 'type': CMD_ERROR,
@@ -191,23 +195,15 @@ class RobotController:
                         self.uart.write(str(e).encode())
                         self.uart.write(b"\n")
                 
-                self.servo.update()
+                if not self.servo.update():  # If process_command returned False, exit
+                    self.uart.write(b"Program terminated.\n")
+                    break
                 time.sleep_ms(10)  # Small delay to prevent tight loop
         
         except KeyboardInterrupt:
             self.servo.disable_all()
             self.uart.write(b"Program stopped.\n")
 
-# Check for safe mode button press during startup
-safe_mode_button = Pin(servo2040.USER_SW, Pin.IN, Pin.PULL_UP)
-time.sleep_ms(100)  # Brief delay to stabilize
-
-if not safe_mode_button.value():  # Button is pressed (active low)
-    print("Safe mode activated - waiting for file upload...")
-    # Just idle in safe mode
-    while True:
-        time.sleep_ms(100)
-else:
-    # Normal operation
-    robot = RobotController()
-    robot.run()
+# Normal operation
+robot = RobotController()
+robot.run()

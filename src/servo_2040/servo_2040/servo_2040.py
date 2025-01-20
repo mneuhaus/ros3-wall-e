@@ -12,6 +12,7 @@ class Servo2040Node(Node):
         super().__init__('servo_2040')
         self.declare_parameter('serial_port', '/dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00')
         self.declare_parameter('baudrate', 115200)
+        self.declare_parameter('terminate_before_upload', True)
 
         self.serial_port = self.get_parameter('serial_port').value
         self.baudrate = self.get_parameter('baudrate').value

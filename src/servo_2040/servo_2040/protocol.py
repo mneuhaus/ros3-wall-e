@@ -8,6 +8,7 @@ class CommandType(Enum):
     STATUS_REQUEST = "status_request"
     ERROR = "error"
     STATUS = "status"
+    TERMINATE = "terminate"
 
 class Protocol:
     @staticmethod
@@ -48,3 +49,8 @@ class Protocol:
     def encode_error(message: str) -> bytes:
         """Helper to encode error message."""
         return Protocol.encode_command(CommandType.ERROR, {"message": message})
+    
+    @staticmethod
+    def encode_terminate() -> bytes:
+        """Helper to encode termination command."""
+        return Protocol.encode_command(CommandType.TERMINATE, {})

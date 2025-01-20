@@ -203,9 +203,9 @@ try:
                             for name, degrees in command['servos'].items():
                                 if name in servos:
                                     # Clamp degrees to servo's max range
-                                degrees = min(degrees, servos[name]['max'])
-                                # Update servo position
-                                servo_controller.set_servo(servos[name]['index'], degrees)
+                                    degrees = min(degrees, servos[name]['max'])
+                                    # Update servo position
+                                    servo_controller.set_servo(servos[name]['index'], degrees)
                                 
                                 # Update corresponding LED with rainbow color
                                 if name in led_map:

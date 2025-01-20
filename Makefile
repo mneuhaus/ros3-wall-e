@@ -48,9 +48,14 @@ flash:
 	@echo "File copied successfully. Please reset your board."
 
 # Help message
-# Upload custom Pimoroni firmware and main.py
-upload-servo2040:
-	@echo "Uploading Servo 2040 firmware..."
+# Flash base firmware to Servo 2040
+flash-servo2040:
+	@echo "Flashing Servo 2040 base firmware..."
+	python3 src/servo_2040/scripts/flash_firmware.py
+
+# Upload code to Servo 2040
+upload-code:
+	@echo "Uploading code to Servo 2040..."
 	python3 src/servo_2040/scripts/upload_firmware.py
 
 help:
@@ -60,7 +65,8 @@ help:
 	@echo "  make rebuild        - Clean and rebuild the workspace"
 	@echo "  make clean          - Clean the workspace"
 	@echo "  make flash-firmware - Flash fresh MicroPython firmware (BOOTSEL mode)"
-	@echo "  make upload-servo2040 - Upload Servo 2040 custom firmware and code"
+	@echo "  make flash-servo2040 - Flash Servo 2040 base firmware (BOOTSEL mode)"
+	@echo "  make upload-code    - Upload main.py code to Servo 2040"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)

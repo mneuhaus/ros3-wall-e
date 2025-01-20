@@ -2,6 +2,24 @@ import os
 import subprocess
 import sys
 import time
+import serial
+from pathlib import Path
+from servo_2040.protocol import Protocol
+
+def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
+    """Send termination command to the device."""
+    try:
+        with serial.Serial(port, baudrate, timeout=1) as ser:
+            print("Sending termination command...")
+            ser.write(Protocol.encode_terminate())
+            time.sleep(0.5)  # Give device time to process
+            response = ser.readline()
+            if response:
+                print(f"Device response: {response.decode('utf-8').strip()}")
+            return True
+    except serial.SerialException as e:
+        print(f"Failed to send termination command: {e}")
+        return False
 
 def upload_main_py(main_py_path):
     """Upload the main.py file using rshell."""
@@ -27,6 +45,11 @@ def main():
     main_py_path = os.path.join(script_dir, '../firmware/main.py')
 
     try:
+        # First try to terminate gracefully
+        if not send_terminate_command():
+            print("Warning: Could not send termination command. Proceeding with upload anyway...")
+            time.sleep(1)  # Brief pause before proceeding
+        
         print("\nUploading main.py to device...")
         if not upload_main_py(main_py_path):
             sys.exit(1)

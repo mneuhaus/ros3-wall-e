@@ -11,6 +11,7 @@ CMD_SERVO_POSITIONS = const("servo_positions")
 CMD_STATUS_REQUEST = const("status_request")
 CMD_ERROR = const("error")
 CMD_STATUS = const("status")
+CMD_TERMINATE = const("terminate")
 
 class LEDController:
     def __init__(self, num_leds, led_pin):

@@ -1,14 +1,63 @@
-import time
-import json
-import machine
-import math
-import array
-import random
 from plasma import WS2812
-from rp2 import PIO, StateMachine, asm_pio
-from machine import Pin
+from machine import Pin, UART
+import random
+import time
+from servo import ServoController
 
-@asm_pio(sideset_init=PIO.OUT_LOW)  # noqa: F821
+# Set up UART for debug output
+uart = UART(0, baudrate=115200)
+uart.init(baudrate=115200, bits=8, parity=None, stop=1, tx=Pin(0), rx=Pin(1))
+
+# Initialize single neopixel for power indicator
+NUM_LEDS = 1
+LED_DATA = 18
+led = WS2812(NUM_LEDS, 1, 0, LED_DATA)
+led.start()
+
+# Set random color at 40% brightness
+brightness = 0.4
+r = random.randint(0, 255)
+g = random.randint(0, 255)
+b = random.randint(0, 255)
+led.set_rgb(0, int(r * brightness), int(g * brightness), int(b * brightness))
+
+# Initialize servo controller
+servo_controller = ServoController(pin_base=19, num_servos=9)
+
+# Define servo configurations
+servos = {
+    'eyebrow_left': {'index': 0, 'max': 90},    # 0-90 degrees
+    'eyebrow_right': {'index': 1, 'max': 90},   # 0-90 degrees
+    'head_left': {'index': 2, 'max': 40},       # 0-40 degrees
+    'head_right': {'index': 3, 'max': 40},      # 0-40 degrees
+    'neck_tilt': {'index': 4, 'max': 90},       # 0-90 degrees
+    'neck_raise': {'index': 5, 'max': 180},     # 0-180 degrees
+    'neck_pan': {'index': 6, 'max': 180},       # 0-180 degrees
+    'arm_left': {'index': 7, 'max': 180},       # 0-180 degrees
+    'arm_right': {'index': 8, 'max': 180}       # 0-180 degrees
+}
+
+# Test each servo with a 10 degree movement
+uart.write(b"Starting servo test pattern...\n")
+for name, config in servos.items():
+    uart.write(f"Testing {name}\n".encode())
+    center = config['max'] / 2
+    
+    # Move to center
+    servo_controller.set_servo(config['index'], center)
+    servo_controller.update()
+    time.sleep(0.5)
+    
+    # Move +/- 5 degrees from center
+    for pos in [center + 5, center - 5, center]:
+        servo_controller.set_servo(config['index'], pos)
+        servo_controller.update()
+        time.sleep(0.2)
+
+uart.write(b"Test pattern complete.\n")
+
+# Disable all servos
+servo_controller.disable_all()
 def servo_program():
     """PIO program for generating servo PWM signals."""
     wrap_target()  # noqa: F821

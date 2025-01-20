@@ -105,8 +105,7 @@ class ServoController:
             self.positions[index] = pulse_width
     
     def disable_all(self):
-        for sm in self.state_machines:
-            sm.active(0)
+        self.sm.active(0)
         for pin in self.servo_pins:
             pin.value(0)
 
@@ -299,20 +298,14 @@ class ServoController:
         self.update_interval = 10  # ms between group switches - faster updates for smoother motion
         self.last_update = time.ticks_ms()
         
-        # Split servos into two groups
-        self.group_size = (num_servos + 1) // 2
-        
-        # Configure two state machines
-        self.state_machines = []
-        for i in range(2):  # Only use 2 PIOs
-            sm = StateMachine(
-                i,
-                servo_program,
-                freq=2000000,  # 2MHz
-                sideset_base=Pin(pin_base + i)
-            )
-            sm.active(1)
-            self.state_machines.append(sm)
+        # Use a single state machine for all servos
+        self.sm = StateMachine(
+            0,  # Use PIO 0
+            servo_program,
+            freq=2000000,  # 2MHz
+            sideset_base=Pin(pin_base)
+        )
+        self.sm.active(1)
         
         # Initialize all servo pins as outputs (they'll be multiplexed)
         self.servo_pins = []
@@ -325,24 +318,17 @@ class ServoController:
         """Update servo outputs, switching between groups."""
         current_time = time.ticks_ms()
         if time.ticks_diff(current_time, self.last_update) >= self.update_interval:
-            # Disable current group
-            start_idx = self.current_group * self.group_size
-            end_idx = min(start_idx + self.group_size, self.num_servos)
-            for i in range(start_idx, end_idx):
-                self.servo_pins[i].value(0)
-            
-            # Switch to next group
-            self.current_group = (self.current_group + 1) % 2
-            
-            # Enable and update new group
-            start_idx = self.current_group * self.group_size
-            end_idx = min(start_idx + self.group_size, self.num_servos)
-            for i in range(start_idx, end_idx):
-                sm_idx = i % 2  # Use PIO 0 or 1
-                # Convert pulse width to PIO cycles
+            # Update all servos sequentially
+            for i in range(self.num_servos):
+                # Disable all other servos
+                for j in range(self.num_servos):
+                    self.servo_pins[j].value(0)
+                
+                # Enable current servo and update its position
                 cycles = self.positions[i] * 2
-                self.state_machines[sm_idx].put(cycles)
+                self.sm.put(cycles)
                 self.servo_pins[i].value(1)
+                time.sleep_ms(2)  # Short delay for pulse to complete
             
             self.last_update = current_time
     

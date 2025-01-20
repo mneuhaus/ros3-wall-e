@@ -4,6 +4,11 @@ import sys
 import time
 import serial
 from pathlib import Path
+import sys
+import os
+
+# Add the parent directory to the Python path to find the protocol module
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from servo_2040.protocol import Protocol, CommandType
 
 def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):

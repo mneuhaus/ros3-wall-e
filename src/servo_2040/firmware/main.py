@@ -1,5 +1,6 @@
 from plasma import WS2812
-from machine import Pin, UART, PWM
+from machine import Pin, UART
+from servolib import ServoGroup
 import random
 import time
 import json
@@ -36,33 +37,20 @@ class LEDController:
 
 class ServoController:
     def __init__(self, pin_base, num_servos):
-        self.num_servos = num_servos
-        self.servos = []
-        
-        # Initialize PWM for each servo
-        for i in range(num_servos):
-            pwm = PWM(Pin(pin_base + i))
-            pwm.freq(50)  # 50Hz for standard servos
-            pwm.duty_u16(4915)  # Center position (1.5ms pulse)
-            self.servos.append(pwm)
+        self.servo_group = ServoGroup(pin_base, num_servos)
+        self.servo_group.set_movement_time(500)  # Set default movement time to 500ms
     
     def set_servo(self, index, degrees):
         """Set servo position in degrees (0-180)."""
-        if 0 <= index < self.num_servos:
-            # Convert degrees to duty cycle (0.5ms to 2.5ms pulse)
-            # At 50Hz, period is 20ms (65535 units)
-            # 0.5ms = 1638 units, 2.5ms = 8192 units
-            duty = int(1638 + (degrees * (8192 - 1638) / 180))
-            self.servos[index].duty_u16(duty)
+        self.servo_group.move_to({index: degrees})
     
     def update(self):
-        """No need for explicit updates with PWM."""
-        pass
+        """Update servo movements."""
+        self.servo_group.update()
     
     def disable_all(self):
         """Disable all servo outputs."""
-        for pwm in self.servos:
-            pwm.duty_u16(0)
+        self.servo_group.disable_all()
 
 class RobotController:
     def __init__(self):

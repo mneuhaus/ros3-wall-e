@@ -198,6 +198,16 @@ class RobotController:
             self.servo.disable_all()
             self.uart.write(b"Program stopped.\n")
 
-# Create and run the robot controller
-robot = RobotController()
-robot.run()
+# Check for safe mode button press during startup
+safe_mode_button = Pin(servo2040.USER_SW, Pin.IN, Pin.PULL_UP)
+time.sleep_ms(100)  # Brief delay to stabilize
+
+if not safe_mode_button.value():  # Button is pressed (active low)
+    print("Safe mode activated - waiting for file upload...")
+    # Just idle in safe mode
+    while True:
+        time.sleep_ms(100)
+else:
+    # Normal operation
+    robot = RobotController()
+    robot.run()

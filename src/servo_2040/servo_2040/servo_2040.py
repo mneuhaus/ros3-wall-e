@@ -10,7 +10,7 @@ from .protocol import Protocol, CommandType
 class Servo2040Node(Node):
     def __init__(self):
         super().__init__('servo_2040')
-        self.declare_parameter('serial_port', '/dev/serial/by-id/usb-MicroPython_Board_in_FS_mode_e6617c93e3617129-if00')
+        self.declare_parameter('serial_port', '/dev/ttyACM0')
         self.declare_parameter('baudrate', 115200)
         self.declare_parameter('terminate_before_upload', True)
 

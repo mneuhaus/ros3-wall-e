@@ -6,7 +6,7 @@ import serial
 import json
 from pathlib import Path
 
-def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
+def send_terminate_command(port='/dev/ttyACM0', baudrate=115200):
     """Send termination command to the device."""
     try:
         with serial.Serial(port, baudrate, timeout=1) as ser:
@@ -25,7 +25,7 @@ def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
         print(f"Failed to send termination command: {e}")
         return False
 
-def upload_main_py(main_py_path, port='/dev/ttyAMA2'):
+def upload_main_py(main_py_path, port='/dev/ttyACM0'):
     """Upload the main.py file to the Servo 2040 using rshell."""
     max_attempts = 3
     for attempt in range(max_attempts):

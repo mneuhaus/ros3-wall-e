@@ -3,8 +3,8 @@ from rclpy.node import Node
 from sensor_msgs.msg import Joy
 import serial
 import time
-import json
 import threading
+from .protocol import Protocol, CommandType
 
 
 class Servo2040Node(Node):
@@ -114,24 +114,22 @@ class Servo2040Node(Node):
         # Send command if positions changed
         if position_changed:
             try:
-                command = {
-                    'servos': {
-                        'eyebrow_left': self.servo_positions[0],
-                        'eyebrow_right': self.servo_positions[1],
-                        'head_left': self.servo_positions[2],
-                        'head_right': self.servo_positions[3],
-                        'neck_tilt': self.servo_positions[4],
-                        'neck_raise': self.servo_positions[5],
-                        'neck_pan': self.servo_positions[6],
-                        'arm_left': self.servo_positions[7],
-                        'arm_right': self.servo_positions[8]
-                    }
+                positions = {
+                    'eyebrow_left': self.servo_positions[0],
+                    'eyebrow_right': self.servo_positions[1],
+                    'head_left': self.servo_positions[2],
+                    'head_right': self.servo_positions[3],
+                    'neck_tilt': self.servo_positions[4],
+                    'neck_raise': self.servo_positions[5],
+                    'neck_pan': self.servo_positions[6],
+                    'arm_left': self.servo_positions[7],
+                    'arm_right': self.servo_positions[8]
                 }
                 
                 if self.serial:
-                    command_str = json.dumps(command) + '\n'
                     try:
-                        self.serial.write(command_str.encode())
+                        command = Protocol.encode_servo_positions(positions)
+                        self.serial.write(command)
                         self.serial.flush()  # Ensure the data is sent
                     except serial.SerialTimeoutException:
                         self.get_logger().error("Write timeout occurred!")

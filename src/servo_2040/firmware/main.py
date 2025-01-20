@@ -4,6 +4,13 @@ from servo import Servo, servo2040
 import random
 import time
 import json
+from micropython import const
+
+# Command types
+CMD_SERVO_POSITIONS = const("servo_positions")
+CMD_STATUS_REQUEST = const("status_request")
+CMD_ERROR = const("error")
+CMD_STATUS = const("status")
 
 class LEDController:
     def __init__(self, num_leds, led_pin):
@@ -120,17 +127,40 @@ class RobotController:
         
         self.uart.write(b"Startup pattern complete.\n")
     
-    def process_command(self, command):
-        if 'servos' in command:
-            self.uart.write(b"Processing servo command\n")
-            for name, degrees in command['servos'].items():
-                if name in self.servo_config:
-                    degrees = min(degrees, self.servo_config[name]['max'])
-                    self.servo.set_servo(self.servo_config[name]['index'], degrees)
-                    
-                    if name in self.led_map:
-                        r, g, b = self.leds.degree_to_rgb(degrees, self.servo_config[name]['max'])
-                        self.leds.set_rgb(self.led_map[name], r, g, b)
+    def process_command(self, data):
+        try:
+            command = json.loads(data.decode('utf-8').strip())
+            cmd_type = command.get('type')
+            payload = command.get('payload', {})
+
+            if cmd_type == CMD_SERVO_POSITIONS:
+                positions = payload.get('positions', {})
+                self.uart.write(b"Processing servo positions\n")
+                for name, degrees in positions.items():
+                    if name in self.servo_config:
+                        degrees = min(degrees, self.servo_config[name]['max'])
+                        self.servo.set_servo(self.servo_config[name]['index'], degrees)
+                        
+                        if name in self.led_map:
+                            r, g, b = self.leds.degree_to_rgb(degrees, self.servo_config[name]['max'])
+                            self.leds.set_rgb(self.led_map[name], r, g, b)
+            
+            elif cmd_type == CMD_STATUS_REQUEST:
+                # Send back current status
+                status = {
+                    'type': CMD_STATUS,
+                    'payload': {
+                        'servos': {name: self.servo_config[name]['max'] for name in self.servo_config}
+                    }
+                }
+                self.uart.write(json.dumps(status).encode() + b'\n')
+            
+        except (json.JSONDecodeError, KeyError, ValueError) as e:
+            error_msg = {
+                'type': CMD_ERROR,
+                'payload': {'message': str(e)}
+            }
+            self.uart.write(json.dumps(error_msg).encode() + b'\n')
     
     def run(self):
         self.startup_pattern()

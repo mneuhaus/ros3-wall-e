@@ -148,6 +148,19 @@ servos = {
     'arm_right': {'index': 8, 'max': 180}       # 0-180 degrees
 }
 
+# Map servo names to LED indices (skipping LED 0 which shows power)
+led_map = {
+    'eyebrow_left': 1,
+    'eyebrow_right': 2,
+    'head_left': 3,
+    'head_right': 4,
+    'neck_tilt': 5,
+    'neck_raise': 6,
+    'neck_pan': 7,
+    'arm_left': 8,
+    'arm_right': 9
+}
+
 # Center all servos and do a small movement pattern
 for name, config in servos.items():
     center = config['max'] / 2
@@ -194,18 +207,6 @@ try:
                                 servo_controller.set_servo(servos[name]['index'], degrees)
                                 
                                 # Update corresponding LED with rainbow color
-                                # Map servo names to LED indices (skipping LED 0 which shows power)
-                                led_map = {
-                                    'eyebrow_left': 1,
-                                    'eyebrow_right': 2,
-                                    'head_left': 3,
-                                    'head_right': 4,
-                                    'neck_tilt': 5,
-                                    'neck_raise': 6,
-                                    'neck_pan': 7,
-                                    'arm_left': 8,
-                                    'arm_right': 9
-                                }
                                 if name in led_map:
                                     r, g, b = degree_to_rgb(degrees, servos[name]['max'])
                                     led_bar.set_rgb(led_map[name], r, g, b)

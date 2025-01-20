@@ -4,7 +4,8 @@ import random
 import time
 import json
 import array
-from rp2 import PIO, StateMachine
+from rp2 import PIO, StateMachine, asm_pio
+from rp2.asm_pio import *  # This imports wrap_target, pull, mov, etc.
 
 class LEDController:
     def __init__(self, num_leds, led_pin):

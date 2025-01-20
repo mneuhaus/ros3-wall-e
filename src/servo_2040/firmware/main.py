@@ -56,11 +56,12 @@ class ServoController:
             # Convert 0-180 degrees to -90 to +90 which is what the library expects
             value = degrees - 90
             self.servos[index].value(value)
+            self.servos[index].enable()  # Make sure servo is enabled
             self.uart.write(f"Setting servo {index} to {degrees} degrees (value: {value})\n".encode())
     
     def update(self):
-        """No need for explicit updates with the Pimoroni library."""
-        pass
+        """Return True to keep running."""
+        return True
     
     def disable_all(self):
         """Disable all servo outputs."""

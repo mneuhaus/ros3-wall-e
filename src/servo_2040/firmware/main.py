@@ -3,7 +3,7 @@ import json
 import machine
 import math
 from plasma import WS2812
-from servo import Servo, servo2040
+from servo_pio import ServoController
 
 # Set up UART for debug output
 uart = machine.UART(0, baudrate=115200)
@@ -11,7 +11,9 @@ uart.init(baudrate=115200, bits=8, parity=None, stop=1, tx=machine.Pin(0), rx=ma
 
 # Create and start the LED bar
 uart.write(b"Starting up...\n")
-led_bar = WS2812(servo2040.NUM_LEDS, 1, 0, servo2040.LED_DATA)
+NUM_LEDS = 10
+LED_DATA = 18
+led_bar = WS2812(NUM_LEDS, 1, 0, LED_DATA)
 led_bar.start()
 
 def degree_to_rgb(degree, max_degree):
@@ -40,23 +42,25 @@ def degree_to_rgb(degree, max_degree):
 # Set first LED to green to indicate power (30% brightness)
 led_bar.set_rgb(0, 0, int(255 * 0.3), 0)
 
-# Define all servos with their ranges
+# Initialize servo controller (starting from pin 0 for servos)
+servo_controller = ServoController(pin_base=0, num_servos=9)
+
+# Define servo configurations
 servos = {
-    'eyebrow_left': {'servo': Servo(servo2040.SERVO_1), 'max': 90},    # 0-90 degrees
-    'eyebrow_right': {'servo': Servo(servo2040.SERVO_2), 'max': 90},   # 0-90 degrees
-    'head_left': {'servo': Servo(servo2040.SERVO_3), 'max': 40},       # 0-40 degrees
-    'head_right': {'servo': Servo(servo2040.SERVO_4), 'max': 40},      # 0-40 degrees
-    'neck_tilt': {'servo': Servo(servo2040.SERVO_5), 'max': 90},       # 0-90 degrees
-    'neck_raise': {'servo': Servo(servo2040.SERVO_6), 'max': 180},     # 0-180 degrees
-    'neck_pan': {'servo': Servo(servo2040.SERVO_7), 'max': 180},       # 0-180 degrees
-    'arm_left': {'servo': Servo(servo2040.SERVO_8), 'max': 180},       # 0-180 degrees
-    'arm_right': {'servo': Servo(servo2040.SERVO_9), 'max': 180}       # 0-180 degrees
+    'eyebrow_left': {'index': 0, 'max': 90},    # 0-90 degrees
+    'eyebrow_right': {'index': 1, 'max': 90},   # 0-90 degrees
+    'head_left': {'index': 2, 'max': 40},       # 0-40 degrees
+    'head_right': {'index': 3, 'max': 40},      # 0-40 degrees
+    'neck_tilt': {'index': 4, 'max': 90},       # 0-90 degrees
+    'neck_raise': {'index': 5, 'max': 180},     # 0-180 degrees
+    'neck_pan': {'index': 6, 'max': 180},       # 0-180 degrees
+    'arm_left': {'index': 7, 'max': 180},       # 0-180 degrees
+    'arm_right': {'index': 8, 'max': 180}       # 0-180 degrees
 }
 
-# Enable all servos and center them
-for servo_info in servos.values():
-    servo_info['servo'].enable()
-    servo_info['servo'].to_mid()
+# Center all servos
+for name, config in servos.items():
+    servo_controller.set_servo(config['index'], config['max'] / 2)
 
 try:
     while True:
@@ -76,7 +80,7 @@ try:
                                 # Clamp degrees to servo's max range
                                 degrees = min(degrees, servos[name]['max'])
                                 # Update servo position
-                                servos[name]['servo'].value(degrees)
+                                servo_controller.set_servo(servos[name]['index'], degrees)
                                 
                                 # Update corresponding LED with rainbow color
                                 # Map servo names to LED indices (skipping LED 0 which shows power)
@@ -103,6 +107,5 @@ try:
 
 except KeyboardInterrupt:
     # Disable all servos on Ctrl+C
-    for servo_info in servos.values():
-        servo_info['servo'].disable()
-    uart.write("Program stopped.\n")
+    servo_controller.disable_all()
+    uart.write(b"Program stopped.\n")

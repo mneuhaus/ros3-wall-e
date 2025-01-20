@@ -41,11 +41,10 @@ UF2_FILE = $(FIRMWARE_DIR)/main.uf2
 MICROPYTHON_URL = https://datasheets.raspberrypi.com/soft/micropython-firmware-pico-w-130623.uf2
 MICROPYTHON_FILE = $(FIRMWARE_DIR)/micropython.uf2
 
-# Flash command using rshell
+# Flash command using Python upload script
 flash:
-	@echo "Uploading code using rshell..."
-	rshell -p /dev/ttyAMA2 "cp $(PYTHON_FILE) /pyboard/main.py"
-	rshell -p /dev/ttyAMA2 "repl ~ import machine ~ machine.soft_reset() ~"
+	@echo "Uploading code using Python script..."
+	python3 -c "from servo_2040.scripts.upload_firmware import upload_main_py; upload_main_py('$(PYTHON_FILE)', '/dev/ttyAMA2')"
 	@echo "File copied and board reset successfully."
 
 # Help message

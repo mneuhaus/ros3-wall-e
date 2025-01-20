@@ -21,14 +21,14 @@ def send_terminate_command(port='/dev/ttyAMA2', baudrate=115200):
         print(f"Failed to send termination command: {e}")
         return False
 
-def upload_main_py(main_py_path):
+def upload_main_py(main_py_path, port='/dev/ttyAMA2'):
     """Upload the main.py file using rshell."""
     max_attempts = 3
     for attempt in range(max_attempts):
         try:
             print(f"Attempting to upload {main_py_path} (attempt {attempt + 1}/{max_attempts})...")
-            subprocess.run(['rshell', 'cp', main_py_path, '/pyboard/main.py'], check=True)
-            subprocess.run(['rshell', 'repl ~ import machine ~ machine.soft_reset() ~'], check=True)
+            subprocess.run(['rshell', '-p', port, 'cp', main_py_path, '/pyboard/main.py'], check=True)
+            subprocess.run(['rshell', '-p', port, 'repl ~ import machine ~ machine.soft_reset() ~'], check=True)
             print("main.py uploaded successfully!")
             return True
         except subprocess.CalledProcessError as e:

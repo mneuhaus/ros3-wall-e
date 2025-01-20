@@ -27,7 +27,7 @@ class ServoController:
         self.num_servos = num_servos
         self.positions = array.array('H', [1500] * num_servos)  # Default 1500µs
         self.current_group = 0
-        self.update_interval = 20  # ms between group switches
+        self.update_interval = 10  # ms between group switches - faster updates for smoother motion
         self.last_update = time.ticks_ms()
         
         # Split servos into two groups
@@ -195,9 +195,10 @@ try:
                 if input_data:
                     uart.write(b"Received data: ")
                     uart.write(input_data)  # Echo back what we received
-                    input_str = input_data.decode('utf-8').strip()
-                    command = json.loads(input_str)
-                    if 'servos' in command:
+                    try:
+                        input_str = input_data.decode('utf-8').strip()
+                        command = json.loads(input_str)
+                        if 'servos' in command:
                         uart.write(b"Processing servo command\n")
                         for name, degrees in command['servos'].items():
                             if name in servos:
@@ -210,14 +211,22 @@ try:
                                 if name in led_map:
                                     r, g, b = degree_to_rgb(degrees, servos[name]['max'])
                                     led_bar.set_rgb(led_map[name], r, g, b)
+                    except json.JSONDecodeError as e:
+                        uart.write(b"JSON decode error: ")
+                        uart.write(str(e).encode())
+                        uart.write(b"\n")
+                    except UnicodeDecodeError as e:
+                        uart.write(b"Unicode decode error: ")
+                        uart.write(str(e).encode())
+                        uart.write(b"\n")
             except Exception as e:
-                uart.write(b"Error: ")
+                uart.write(b"Unexpected error: ")
                 uart.write(str(e).encode())
                 uart.write(b"\n")
         
         # Update servo multiplexing
         servo_controller.update()
-        time.sleep(0.001)  # Smaller delay for more frequent updates
+        # No explicit sleep needed - the servo update and UART handling provide natural timing
 
 except KeyboardInterrupt:
     # Disable all servos on Ctrl+C

@@ -3,6 +3,7 @@ import json
 import machine
 import math
 import array
+import random
 from plasma import WS2812
 from rp2 import PIO, StateMachine, asm_pio
 from machine import Pin
@@ -87,8 +88,12 @@ def degree_to_rgb(degree, max_degree):
     else:
         return (c, 0, x)
 
-# Set first LED to green to indicate power (30% brightness)
-led_bar.set_rgb(0, 0, int(255 * 0.3), 0)
+# Set first LED to random color to indicate power (30% brightness)
+r = random.randint(0, 255)
+g = random.randint(0, 255)
+b = random.randint(0, 255)
+brightness = 0.3
+led_bar.set_rgb(0, int(r * brightness), int(g * brightness), int(b * brightness))
 
 # Initialize servo controller (starting from pin 0 for servos)
 servo_controller = ServoController(pin_base=0, num_servos=9)

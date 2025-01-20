@@ -25,11 +25,17 @@ def servo_program():
 class ServoController:
     def __init__(self, pin_base, num_servos):
         self.num_servos = num_servos
-        self.state_machines = []
         self.positions = array.array('H', [1500] * num_servos)  # Default 1500µs
+        self.current_group = 0
+        self.update_interval = 20  # ms between group switches
+        self.last_update = time.ticks_ms()
         
-        # Configure state machines for each servo
-        for i in range(num_servos):
+        # Split servos into two groups
+        self.group_size = (num_servos + 1) // 2
+        
+        # Configure two state machines
+        self.state_machines = []
+        for i in range(2):  # Only use 2 PIOs
             sm = StateMachine(
                 i,
                 servo_program,
@@ -38,6 +44,38 @@ class ServoController:
             )
             sm.active(1)
             self.state_machines.append(sm)
+        
+        # Initialize all servo pins as outputs (they'll be multiplexed)
+        self.servo_pins = []
+        for i in range(num_servos):
+            pin = Pin(pin_base + i, Pin.OUT)
+            pin.value(0)  # Start disabled
+            self.servo_pins.append(pin)
+    
+    def update(self):
+        """Update servo outputs, switching between groups."""
+        current_time = time.ticks_ms()
+        if time.ticks_diff(current_time, self.last_update) >= self.update_interval:
+            # Disable current group
+            start_idx = self.current_group * self.group_size
+            end_idx = min(start_idx + self.group_size, self.num_servos)
+            for i in range(start_idx, end_idx):
+                self.servo_pins[i].value(0)
+            
+            # Switch to next group
+            self.current_group = (self.current_group + 1) % 2
+            
+            # Enable and update new group
+            start_idx = self.current_group * self.group_size
+            end_idx = min(start_idx + self.group_size, self.num_servos)
+            for i in range(start_idx, end_idx):
+                sm_idx = i % 2  # Use PIO 0 or 1
+                # Convert pulse width to PIO cycles
+                cycles = self.positions[i] * 2
+                self.state_machines[sm_idx].put(cycles)
+                self.servo_pins[i].value(1)
+            
+            self.last_update = current_time
     
     def set_servo(self, index, degrees):
         """Set servo position in degrees (0-180)."""
@@ -45,14 +83,13 @@ class ServoController:
             # Convert degrees to pulse width (500-2500µs)
             pulse_width = int(500 + (degrees * 2000 / 180))
             self.positions[index] = pulse_width
-            # Convert to PIO cycles (at 2MHz, 1µs = 2 cycles)
-            cycles = pulse_width * 2
-            self.state_machines[index].put(cycles)
     
     def disable_all(self):
         """Disable all servo outputs."""
         for sm in self.state_machines:
             sm.active(0)
+        for pin in self.servo_pins:
+            pin.value(0)
 
 # Set up UART for debug output
 uart = machine.UART(0, baudrate=115200)
@@ -156,7 +193,9 @@ try:
                 uart.write(str(e).encode())
                 uart.write(b"\n")
         
-        time.sleep(0.01)  # Small delay to prevent busy-waiting
+        # Update servo multiplexing
+        servo_controller.update()
+        time.sleep(0.001)  # Smaller delay for more frequent updates
 
 except KeyboardInterrupt:
     # Disable all servos on Ctrl+C

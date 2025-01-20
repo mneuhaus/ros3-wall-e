@@ -148,9 +148,30 @@ servos = {
     'arm_right': {'index': 8, 'max': 180}       # 0-180 degrees
 }
 
-# Center all servos
+# Center all servos and do a small movement pattern
 for name, config in servos.items():
-    servo_controller.set_servo(config['index'], config['max'] / 2)
+    center = config['max'] / 2
+    servo_controller.set_servo(config['index'], center)
+
+# Small movement pattern on startup
+def startup_pattern():
+    """Move servos in a small pattern to show they're working."""
+    uart.write(b"Running startup pattern...\n")
+    for _ in range(3):  # Repeat 3 times
+        for name, config in servos.items():
+            center = config['max'] / 2
+            # Move +/- 5 degrees from center
+            for pos in [center + 5, center - 5, center]:
+                servo_controller.set_servo(config['index'], pos)
+                # Update LEDs
+                if name in led_map:
+                    r, g, b = degree_to_rgb(pos, config['max'])
+                    led_bar.set_rgb(led_map[name], r, g, b)
+                time.sleep(0.05)
+                servo_controller.update()
+
+startup_pattern()
+uart.write(b"Startup pattern complete.\n")
 
 try:
     while True:

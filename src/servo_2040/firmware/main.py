@@ -5,18 +5,21 @@ import math
 import array
 from plasma import WS2812
 from rp2 import PIO, StateMachine, asm_pio
+from machine import Pin
 
 @asm_pio(sideset_init=PIO.OUT_LOW)
 def servo_program():
     """PIO program for generating servo PWM signals."""
-    pull(noblock) .side(0)    # Pull from FIFO to OSR if available, else keep last value
-    mov(x, osr)              # Copy OSR to X scratch register
-    mov(y, isr)              # Initialize Y with the period count
+    wrap_target()
+    pull(noblock)            .side(0)    # Pull from FIFO to OSR if available
+    mov(x, osr)                          # Copy OSR to X scratch register
+    mov(y, isr)                          # Initialize Y with period count
     label("loop")
-    jmp(x_not_y, "skip")    # Skip if X != Y (pulse not active)
-    nop()         .side(1)   # Set output high
+    jmp(not_x, "skip")                   # Skip if X == 0 (pulse not active)
+    nop()                    .side(1)    # Set output high
     label("skip")
-    jmp(y_dec, "loop")      # Decrement Y, loop if not zero
+    jmp(y_dec, "loop")                   # Decrement Y, continue if not zero
+    wrap()
     
 class ServoController:
     def __init__(self, pin_base, num_servos):

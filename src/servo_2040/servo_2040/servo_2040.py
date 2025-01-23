@@ -29,6 +29,7 @@ class Servo2040Node(Node):
 
         # Servo state
         self.servo_positions: List[float] = [90.0] * 9  # Default to center position
+        self.prev_positions = self.servo_positions.copy()  # Track previous positions
         self.movement_increment: float = 5.0
         
         # Subscribe to joy messages
@@ -88,14 +89,17 @@ class Servo2040Node(Node):
                 self.serial = serial.Serial(
                     port=self.serial_port,
                     baudrate=self.baudrate,
-                    timeout=1,
-                    write_timeout=1
+                    timeout=2,  # Increased from 1
+                    write_timeout=2,  # Increased from 1
+                    write_buffer_size=2048  # Add buffer size
                 )
+                self.serial.reset_input_buffer()
+                self.serial.reset_output_buffer()
                 self.get_logger().info(f"Connected to {self.serial_port}")
-                time.sleep(2)  # Allow firmware initialization
+                time.sleep(2.5)  # Increased firmware init time
             except serial.SerialException as e:
                 self.get_logger().error(f"Connection failed: {e}, retrying...")
-                time.sleep(1)
+                time.sleep(1.5)
 
     def joy_callback(self, msg: Joy) -> None:
         """Handle joystick input to control servos"""
@@ -117,17 +121,42 @@ class Servo2040Node(Node):
             self.servo_positions[i] = max(min_limit, min(new_pos, max_limit))
 
     def send_servo_command(self) -> None:
-        """Send JSON command to firmware"""
+        """Send JSON command to firmware with flow control"""
+        if not self.serial or not self.serial.writable():
+            self.reconnect_serial()
+            return
+
         try:
-            command = json.dumps({
-                "servos": [[idx, float(pos)] for idx, pos in enumerate(self.servo_positions)]
-            }) + "\n"
+            # Create command
+            command_data = {
+                "servos": [[idx, float(pos)] 
+                          for idx, pos in enumerate(self.servo_positions)
+                          if pos != self.prev_positions[idx]]
+            }
             
+            # Only send if there are changes
+            if not command_data["servos"]:
+                return
+
+            command = json.dumps(command_data) + "\n"
+            
+            # Check output buffer capacity
+            if self.serial.out_waiting > 1024:
+                self.get_logger().warning("Output buffer full, clearing...")
+                self.serial.reset_output_buffer()
+
+            # Write with timeout handling
             self.serial.write(command.encode())
             self.serial.flush()
+            self.prev_positions = self.servo_positions.copy()
             self.get_logger().debug(f"Sent command: {command.strip()}")
-        except (serial.SerialException, json.JSONDecodeError) as e:
-            self.get_logger().error(f"Command send failed: {e}")
+
+        except serial.SerialTimeoutException:
+            self.get_logger().warning("Write timeout - reconnecting...")
+            self.reconnect_serial()
+        except (serial.SerialException, TypeError) as e:
+            self.get_logger().error(f"Command failed: {str(e)}")
+            self.reconnect_serial()
 
     def read_serial_data(self) -> None:
         """Handle incoming serial data"""

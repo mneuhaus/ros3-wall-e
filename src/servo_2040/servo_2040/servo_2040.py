@@ -4,22 +4,32 @@ from sensor_msgs.msg import Joy
 import serial
 import time
 import threading
-from .protocol import Protocol, CommandType
+import json
+from typing import Dict, List, Tuple
 
 
 class Servo2040Node(Node):
     def __init__(self):
         super().__init__('servo_2040')
+        # Parameter declarations
         self.declare_parameter('serial_port', '/dev/ttyACM0')
         self.declare_parameter('baudrate', 115200)
-        self.declare_parameter('terminate_before_upload', True)
+        self.declare_parameter('servo_limits', [180]*9)  # All servos 0-180 by default
+        
+        # Get parameters
+        self.serial_port: str = self.get_parameter('serial_port').value
+        self.baudrate: int = self.get_parameter('baudrate').value
+        self.servo_limits: List[Tuple[float, float]] = [
+            (0, float(limit)) for limit in self.get_parameter('servo_limits').value
+        ]
+        
+        # Serial connection
+        self.serial: serial.Serial = None
+        self.connect_serial()
 
-        self.serial_port = self.get_parameter('serial_port').value
-        self.baudrate = self.get_parameter('baudrate').value
-        self.serial = None
-
-        # Default servo positions (middle positions)
-        self.servo_positions = [45.0, 45.0, 20.0, 20.0, 45.0, 90.0, 90.0, 90.0, 90.0]
+        # Servo state
+        self.servo_positions: List[float] = [90.0] * 9  # Default to center position
+        self.movement_increment: float = 5.0
         
         # Subscribe to joy messages
         self.joy_subscription = self.create_subscription(
@@ -71,114 +81,77 @@ class Servo2040Node(Node):
             'arm_right': 180       # SERVO_9
         }
 
-    def connect_serial(self):
-        """Attempts to connect to the serial port."""
-        while self.serial is None:
+    def connect_serial(self) -> None:
+        """Establish serial connection with automatic retries"""
+        while not self.serial:
             try:
                 self.serial = serial.Serial(
                     port=self.serial_port,
                     baudrate=self.baudrate,
                     timeout=1,
-                    write_timeout=None  # Blocking writes
+                    write_timeout=1
                 )
-                self.get_logger().info(f"Connected to {self.serial_port} at {self.baudrate} baud")
-                # Give the device time to initialize
-                time.sleep(2.0)
+                self.get_logger().info(f"Connected to {self.serial_port}")
+                time.sleep(2)  # Allow firmware initialization
             except serial.SerialException as e:
-                self.get_logger().error(f"Failed to connect to {self.serial_port}: {e}")
-                time.sleep(1)  # Wait 1 second before retrying
+                self.get_logger().error(f"Connection failed: {e}, retrying...")
+                time.sleep(1)
 
-    def joy_callback(self, msg):
-        """Handle incoming joy messages."""
-        position_changed = False
-        
-        # Check each mapped button
-        for button_idx, mapping in self.button_map.items():
-            if button_idx < len(msg.buttons) and msg.buttons[button_idx]:
-                direction = mapping['direction']
-                
-                # Update all servo positions
-                for servo_idx in range(len(self.servo_positions)):
-                    # Calculate new position
-                    new_position = self.servo_positions[servo_idx] + (direction * self.movement_increment)
-                    
-                    # Apply limits
-                    min_val, max_val = self.servo_limits[servo_idx]
-                    new_position = max(min_val, min(max_val, new_position))
-                    
-                    # Update position if changed
-                    if new_position != self.servo_positions[servo_idx]:
-                        self.get_logger().info(f"Moving servo {servo_idx} from {self.servo_positions[servo_idx]} to {new_position} degrees")
-                        self.servo_positions[servo_idx] = new_position
-                        position_changed = True
-        
-        # Send command if positions changed
-        if position_changed:
-            try:
-                positions = {
-                    'eyebrow_left': self.servo_positions[0],
-                    'eyebrow_right': self.servo_positions[1],
-                    'head_left': self.servo_positions[2],
-                    'head_right': self.servo_positions[3],
-                    'neck_tilt': self.servo_positions[4],
-                    'neck_raise': self.servo_positions[5],
-                    'neck_pan': self.servo_positions[6],
-                    'arm_left': self.servo_positions[7],
-                    'arm_right': self.servo_positions[8]
-                }
-                
-                if self.serial:
-                    try:
-                        command = Protocol.encode_servo_positions(positions)
-                        self.get_logger().info(f"Sending command: {command}")
-                        self.serial.write(command)
-                        self.serial.flush()  # Ensure the data is sent
-                    except serial.SerialTimeoutException:
-                        self.get_logger().error("Write timeout occurred!")
-                    except serial.SerialException as e:
-                        self.get_logger().error(f"Serial error during write: {e}")
-            except Exception as e:
-                self.get_logger().error(f"Error sending command: {e}")
+    def joy_callback(self, msg: Joy) -> None:
+        """Handle joystick input to control servos"""
+        if not self.serial:
+            return
 
-    def read_serial_data(self):
-        """Continuously reads data from the serial port in a separate thread."""
-        consecutive_errors = 0
+        # Map buttons to control all servos
+        if len(msg.buttons) >= 2:
+            direction = msg.buttons[0] - msg.buttons[1]  # A=up, B=down
+            if direction != 0:
+                self.update_servo_positions(direction)
+                self.send_servo_command()
+        
+    def update_servo_positions(self, direction: int) -> None:
+        """Calculate new positions within limits"""
+        for i in range(9):
+            new_pos = self.servo_positions[i] + direction * self.movement_increment
+            min_limit, max_limit = self.servo_limits[i]
+            self.servo_positions[i] = max(min_limit, min(new_pos, max_limit))
+
+    def send_servo_command(self) -> None:
+        """Send JSON command to firmware"""
+        try:
+            command = json.dumps({
+                "servos": [[idx, float(pos)] for idx, pos in enumerate(self.servo_positions)]
+            }) + "\n"
+            
+            self.serial.write(command.encode())
+            self.serial.flush()
+            self.get_logger().debug(f"Sent command: {command.strip()}")
+        except (serial.SerialException, json.JSONDecodeError) as e:
+            self.get_logger().error(f"Command send failed: {e}")
+
+    def read_serial_data(self) -> None:
+        """Handle incoming serial data"""
         while rclpy.ok():
-            if self.serial is None:
+            if self.serial and self.serial.in_waiting:
                 try:
-                    self.connect_serial()
-                    consecutive_errors = 0  # Reset error count on successful connection
-                except Exception as e:
-                    consecutive_errors += 1
-                    self.get_logger().error(f"Connection attempt failed ({consecutive_errors}): {e}")
-                    if consecutive_errors > 10:
-                        self.get_logger().error("Too many consecutive errors, shutting down...")
-                        return
-                    time.sleep(1)  # Wait before retry
-                continue
+                    line = self.serial.readline().decode().strip()
+                    if line:
+                        self.get_logger().info(f"Firmware: {line}")
+                except UnicodeDecodeError:
+                    self.get_logger().warn("Received invalid serial data")
+                except serial.SerialException:
+                    self.reconnect_serial()
+            time.sleep(0.01)
 
-            try:
-                if self.serial.in_waiting:  # Only read if data available
-                    data = self.serial.readline().decode('utf-8').strip()
-                    if data:  # Only log if there's actual data
-                        self.get_logger().info(f"Firmware: {data}")
-                        consecutive_errors = 0  # Reset error count on successful read
-                else:
-                    time.sleep(0.01)  # Small sleep when no data
-            except serial.SerialException as e:
-                consecutive_errors += 1
-                self.get_logger().error(f"Serial error ({consecutive_errors}): {e}")
-                if consecutive_errors > 10:
-                    self.get_logger().error("Too many consecutive errors, reconnecting...")
-                    try:
-                        self.serial.close()
-                    except:
-                        pass
-                    self.serial = None
-                    time.sleep(1)
-            except Exception as e:
-                self.get_logger().error(f"Unexpected error: {e}")
-                time.sleep(0.1)
+    def reconnect_serial(self) -> None:
+        """Handle serial connection recovery"""
+        self.get_logger().warn("Reconnecting to serial...")
+        try:
+            self.serial.close()
+        except Exception:
+            pass
+        self.serial = None
+        self.connect_serial()
 
 
 def main(args=None):
@@ -187,7 +160,7 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
+        node.get_logger().info("Shutting down...")
     finally:
         if node.serial:
             node.serial.close()

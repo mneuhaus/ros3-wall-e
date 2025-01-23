@@ -103,6 +103,22 @@ scripts/                   # Development utilities
    - Manual validation checklist
    - LED patterns for status reporting
 
+## Firmware Update Protocol
+
+1. To safely update firmware:
+   - Send `{"command": "enter_bootloader"}` via serial
+   - Firmware will reset into bootloader mode within 500ms
+   - USB mass storage device will appear for file upload
+
+2. Serial communication must:
+   - Use 115200 baud rate
+   - Include 100ms pauses between commands
+   - Send UTF-8 encoded JSON messages ending with newline
+
+3. Failure recovery:
+   - Hardware reset: Hold BOOTSEL while plugging in
+   - Automatically resets to normal mode after 5s timeout
+
 ## Hardware-Specific Conventions
 
 1. UART Configuration:

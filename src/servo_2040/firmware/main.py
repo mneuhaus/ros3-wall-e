@@ -1,11 +1,15 @@
 from servo import Servo, servo2040
-from machine import UART, Pin
+from machine import Pin, bootloader
 import json
+import sys
+import select
+import time
 
 class SimpleServoController:
     def __init__(self):
-        # Initialize UART for communication
-        self.uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
+        # Initialize USB serial
+        self.poll = select.poll()
+        self.poll.register(sys.stdin, select.POLLIN)
         
         # Initialize all servo pins from servo2040 board
         self.servos = [
@@ -24,7 +28,7 @@ class SimpleServoController:
         for servo in self.servos:
             servo.enable()
         
-        self.uart.write(b"Servo controller ready\n")
+        print("Servo controller ready\n")
 
     def set_servo_position(self, servo_index, degrees):
         """Set servo position with safety checks"""
@@ -39,29 +43,39 @@ class SimpleServoController:
         try:
             data = json.loads(command)
             
+            if 'command' in data and data['command'] == 'enter_bootloader':
+                print("Entering bootloader mode...")
+                time.sleep(0.5)  # Allow message to send
+                bootloader()  # Jump to UF2 bootloader
+                return True
+                
             if 'servos' in data:
                 for servo_cmd in data['servos']:
                     index, position = servo_cmd
                     if self.set_servo_position(index, position):
-                        self.uart.write(f"Servo {index} -> {position}°\n".encode())
+                        print(f"Servo {index} -> {position}°\n")
                     else:
-                        self.uart.write(f"Invalid servo index: {index}\n".encode())
+                        print(f"Invalid servo index: {index}\n")
                 return True
                 
-        except (json.JSONDecodeError, KeyError, ValueError) as e:
-            self.uart.write(f"Error: {str(e)}\n".encode())
+        except Exception as e:
+            print(f"Error: {str(e)}\n")
             return False
 
     def run(self):
         """Main processing loop"""
         while True:
-            if self.uart.any():
+            # Check for input with 100ms timeout
+            if self.poll.poll(100):
                 try:
-                    command = self.uart.readline().decode().strip()
+                    command = sys.stdin.readline().strip()
                     if command:
                         self.process_command(command)
-                except UnicodeDecodeError:
-                    self.uart.write(b"Invalid command encoding\n")
+                except Exception as e:
+                    print(f"Read error: {str(e)}\n")
+            
+            # Add periodic yield to prevent USB blocking
+            time.sleep(0.01)
 
 # Start the controller
 controller = SimpleServoController()

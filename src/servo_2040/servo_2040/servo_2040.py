@@ -172,6 +172,16 @@ class Servo2040Node(Node):
                     self.reconnect_serial()
             time.sleep(0.01)
 
+    def enter_bootloader(self) -> None:
+        """Trigger firmware bootloader mode"""
+        try:
+            self.serial.write(b'{"command": "enter_bootloader"}\n')
+            self.serial.flush()
+            time.sleep(0.6)
+            self.serial.close()
+        except Exception:
+            pass
+            
     def reconnect_serial(self) -> None:
         """Handle serial connection recovery"""
         self.get_logger().warn("Reconnecting to serial...")

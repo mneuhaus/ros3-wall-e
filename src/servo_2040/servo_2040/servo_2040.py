@@ -89,9 +89,8 @@ class Servo2040Node(Node):
                 self.serial = serial.Serial(
                     port=self.serial_port,
                     baudrate=self.baudrate,
-                    timeout=2,  # Increased from 1
-                    write_timeout=2,  # Increased from 1
-                    write_buffer_size=2048  # Add buffer size
+                    timeout=2,
+                    write_timeout=2
                 )
                 self.serial.reset_input_buffer()
                 self.serial.reset_output_buffer()

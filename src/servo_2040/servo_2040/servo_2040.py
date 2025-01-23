@@ -13,6 +13,7 @@ class Servo2040Node(Node):
         super().__init__('servo_2040')
         # Parameter declarations
         self.declare_parameter('serial_port', '/dev/ttyACM0')
+        self.serial_lock = threading.Lock()
         self.declare_parameter('baudrate', 115200)
         self.declare_parameter('servo_limits', [180]*9)  # All servos 0-180 by default
         
@@ -121,9 +122,10 @@ class Servo2040Node(Node):
 
     def send_servo_command(self) -> None:
         """Send JSON command to firmware with flow control"""
-        if not self.serial or not self.serial.writable():
-            self.reconnect_serial()
-            return
+        with self.serial_lock:
+            if not self.serial or not self.serial.is_open:
+                self.reconnect_serial()
+                return
 
         try:
             # Create command
@@ -160,15 +162,20 @@ class Servo2040Node(Node):
     def read_serial_data(self) -> None:
         """Handle incoming serial data"""
         while rclpy.ok():
-            if self.serial and self.serial.in_waiting:
+            with self.serial_lock:
+                if not self.serial or not self.serial.is_open:
+                    time.sleep(0.1)
+                    continue
+                
                 try:
-                    line = self.serial.readline().decode().strip()
-                    if line:
-                        self.get_logger().info(f"Firmware: {line}")
-                except UnicodeDecodeError:
-                    self.get_logger().warn("Received invalid serial data")
-                except serial.SerialException:
+                    if self.serial.in_waiting:
+                        line = self.serial.readline().decode().strip()
+                        if line:
+                            self.get_logger().info(f"Firmware: {line}")
+                except (UnicodeDecodeError, OSError, serial.SerialException) as e:
+                    self.get_logger().warn(f"Serial read error: {str(e)}")
                     self.reconnect_serial()
+            
             time.sleep(0.01)
 
     def enter_bootloader(self) -> None:
@@ -183,13 +190,15 @@ class Servo2040Node(Node):
             
     def reconnect_serial(self) -> None:
         """Handle serial connection recovery"""
-        self.get_logger().warn("Reconnecting to serial...")
-        try:
-            self.serial.close()
-        except Exception:
-            pass
-        self.serial = None
-        self.connect_serial()
+        with self.serial_lock:
+            self.get_logger().warn("Reconnecting to serial...")
+            try:
+                if self.serial:
+                    self.serial.close()
+            except Exception:
+                pass
+            self.serial = None
+            self.connect_serial()
 
 
 def main(args=None):

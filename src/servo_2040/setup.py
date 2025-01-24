@@ -11,39 +11,6 @@ class CustomInstallCommand(install):
         # Run the standard install process
         install.run(self)
 
-        # Build the C firmware
-        print("Building C firmware...")
-        firmware_dir = os.path.join(os.path.dirname(__file__), 'firmware')
-        build_dir = os.path.join(firmware_dir, 'build')
-        flash_script = os.path.join(os.path.dirname(__file__), 'scripts/flash_firmware.py')
-        
-        try:
-            # Create build directory
-            os.makedirs(build_dir, exist_ok=True)
-            
-            # Run CMake
-            subprocess.run(['cmake', '..'], 
-                         cwd=build_dir, 
-                         check=True)
-            
-            # Run Make
-            subprocess.run(['make'], 
-                         cwd=build_dir, 
-                         check=True)
-            
-            print("C firmware built successfully!")
-            
-            # Flash the firmware
-            print("\nAttempting to flash firmware...")
-            subprocess.run(['python3', flash_script], check=True)
-            
-        except subprocess.CalledProcessError as e:
-            print(f"Build/flash process failed: {e}")
-            exit(1)
-        except Exception as e:
-            print(f"Error during build/flash: {e}")
-            exit(1)
-
 setup(
     name=package_name,
     version='0.0.0',

@@ -1257,3 +1257,158 @@
 
 # 2025-01-24 20:29:35.392860
 +/run make build-firmware
+
+# 2025-01-24 20:46:36.954624
++ok, lets do some maintenance, please rename the build and flash commands for the firmware inside the Makefile servo2040/build and servo2040/flash to reflect, that its related to the servo2040
+
+# 2025-01-24 20:47:13.442166
++n
+
+# 2025-01-24 20:56:16.155344
++to be consistent lets rename the ros related commands ros2/*
+
+# 2025-01-24 21:04:20.602316
++could you please add a section to the Readme.md to technically describe the DOV, Servos, Motors, etc of this project
+
+# 2025-01-24 21:05:16.227377
++i meant a bit more specific, a concrete List or table that gives detailed inside and will be the "reference" going forward for implementation into code
+
+# 2025-01-24 21:13:31.431849
++pretty good lets add head-pan, head-right-raise, head-left-raise, bay-door, laser, microphone, speaker, battery-display
+
+# 2025-01-24 21:18:26.041188
++the laser, microphone, speaker and battery display will be connected to this raspberry pi cm4 directly instead
+
+# 2025-01-24 21:22:05.112234
++the Microphone will be an Adafruit SPH0645
+
+# 2025-01-24 21:22:37.487834
++y
+
+# 2025-01-24 21:22:37.505074
++/run sudo apt install -y alsa-utils
+
+# 2025-01-24 21:22:37.505292
++/run sudo apt install -y alsa-utils
+
+# 2025-01-24 21:26:33.909128
++great, the Display is an ZJY-IPS130-V2.0
+
+# 2025-01-24 21:27:22.481677
++n
+
+# 2025-01-24 21:27:48.467479
++the track motors are controlled by an Cytron MD13S each
+
+# 2025-01-24 21:35:20.515167
++please add a section in the Readme.md about the main hardware components
+
+# 2025-01-24 22:30:09.737983
++ok lets try to get the tracks working, i've got them connected connected to GPIO15/GPIO16 and GPIO17/18
+
+# 2025-01-24 22:31:22.183938
++ok lets try to get the tracks working, i've got them connected connected to GPIO15/GPIO16 and GPIO17/18 of the Servo2040
+
+# 2025-01-24 22:34:04.364911
++great now update the servo_2040 node to send instructions based on the left joystick for forward and the right joystick for steering
+
+# 2025-01-24 22:34:58.938842
++n
+
+# 2025-01-24 22:39:27.546776
++/run ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5}, angular: {z: 0.0}}" 
+
+# 2025-01-24 22:41:17.769153
++please add some debug output for the tracks to the node
+
+# 2025-01-24 22:41:37.280827
++n
+
+# 2025-01-24 22:45:58.858235
++please merge the track relevant stuff into the servo_2040 node and remove the motor controller node
+
+# 2025-01-24 22:46:25.634395
++n
+
+# 2025-01-24 22:46:39.352761
++please try agani
+
+# 2025-01-24 22:47:31.379711
++/run rm -rf src/motor_controller
+
+# 2025-01-24 22:47:31.379971
++/run rm -rf src/motor_controller
+
+# 2025-01-24 22:47:35.769644
++n
+
+# 2025-01-24 22:48:58.709433
++[servo_2040-3] [INFO] [1737755301.011964975] [servo_2040]: Connected to /dev/ttyACM0
++[servo_2040-3] [WARN] [1737755304.577489645] [servo_2040]: Serial read error: [Errno 9] Bad file descriptor
++[servo_2040-3] Traceback (most recent call last):
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040", line 33, in <module>
++[servo_2040-3]     sys.exit(load_entry_point('servo-2040==0.0.0', 'console_scripts', 'servo_2040')())
++[servo_2040-3]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 267, in main
++[servo_2040-3]     rclpy.spin(node)
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 244, in spin
++[servo_2040-3]     executor.spin_once()
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 827, in spin_once
++[servo_2040-3]     self._spin_once_impl(timeout_sec)
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 822, in _spin_once_impl
++[servo_2040-3]     raise handler.exception()
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 239, in __call__
++[servo_2040-3]     self._handler.send(None)
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 508, in handler
++[servo_2040-3]     await call_coroutine()
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 396, in _execute
++[servo_2040-3]     await await_or_execute(sub.callback, *msg_tuple)
++[servo_2040-3]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 111, in await_or_execute
++[servo_2040-3]     return callback(*args)
++[servo_2040-3]            ^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 256, in cmd_vel_callback
++[servo_2040-3]     self.ser.write(command.encode('utf-8'))
++[servo_2040-3]     ^^^^^^^^
++[servo_2040-3] AttributeError: 'Servo2040Node' object has no attribute 'ser'
+
+# 2025-01-24 22:49:27.634034
++n
+
+# 2025-01-24 22:51:03.000081
++i think the easing is causing problems, please remove it from the servo2040 firmware
+
+# 2025-01-24 22:51:26.040908
++no
+
+# 2025-01-24 22:54:15.857389
++the servo_2040 firmware seems to react with 1-2s delay to my commands
+
+# 2025-01-24 22:54:51.185072
++n
+
+# 2025-01-24 22:57:42.637068
++ok, so far so good, still a little bit "laggy" but not too bad, anything else we can do to make it just little bit quicker?
+
+# 2025-01-24 23:03:02.164754
++ok, something is wrong with the tracks, if i push the jostick to the left both tracks move forware, when i push forward it's twisting/turning , when i push right it's also turning right pushing down also moves forward
+
+# 2025-01-24 23:03:29.968063
++/run ros2 run servo_2040 servo_2040_node --ros-args --log-level debug
+
+# 2025-01-24 23:03:29.968286
++/run ros2 run servo_2040 servo_2040_node --ros-args --log-level debug
+
+# 2025-01-24 23:03:37.555698
++n
+
+# 2025-01-24 23:04:43.675359
++yea no, i think one of the motors has the gpio the wrong way around
+
+# 2025-01-24 23:05:09.358934
++n
+
+# 2025-01-24 23:05:17.772852
++make sure to reverse the other change
+
+# 2025-01-24 23:05:45.297933
++n

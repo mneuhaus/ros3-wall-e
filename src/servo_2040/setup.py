@@ -6,19 +6,38 @@ from setuptools.command.install import install
 package_name = 'servo_2040'
 
 class CustomInstallCommand(install):
-    """Custom install command to upload firmware during colcon build."""
+    """Custom install command to build firmware during colcon build."""
     def run(self):
         # Run the standard install process
         install.run(self)
 
-        # Run the custom post-build step to upload firmware
-        # print("Running custom post-build step: Uploading firmware...")
-        # firmware_uploader = os.path.join(os.path.dirname(__file__), 'scripts/upload_main.py')
-        # try:
-        #     subprocess.run(['python3', firmware_uploader], check=True)
-        # except subprocess.CalledProcessError as e:
-        #     print(f"Firmware upload failed: {e}")
-        #     exit(1)
+        # Build the C firmware
+        print("Building C firmware...")
+        firmware_dir = os.path.join(os.path.dirname(__file__), 'firmware')
+        build_dir = os.path.join(firmware_dir, 'build')
+        
+        try:
+            # Create build directory
+            os.makedirs(build_dir, exist_ok=True)
+            
+            # Run CMake
+            subprocess.run(['cmake', '..'], 
+                         cwd=build_dir, 
+                         check=True)
+            
+            # Run Make
+            subprocess.run(['make'], 
+                         cwd=build_dir, 
+                         check=True)
+            
+            print("C firmware built successfully!")
+            
+        except subprocess.CalledProcessError as e:
+            print(f"Firmware build failed: {e}")
+            exit(1)
+        except Exception as e:
+            print(f"Error during firmware build: {e}")
+            exit(1)
 
 setup(
     name=package_name,
@@ -29,7 +48,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/all_launch.py']),
-        ('share/' + package_name + '/firmware', ['firmware/main.py']),
+        ('share/' + package_name + '/firmware', ['firmware/main.c', 'firmware/CMakeLists.txt']),
     ],
     install_requires=['setuptools', 'pyserial', 'adafruit-ampy'],
     zip_safe=True,

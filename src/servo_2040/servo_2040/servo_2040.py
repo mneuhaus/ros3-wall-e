@@ -60,7 +60,7 @@ class Servo2040Node(Node):
         }
         
         # Add rate limiting parameters
-        self.declare_parameter('max_command_rate', 30.0)  # Hz
+        self.declare_parameter('max_command_rate', 100.0)  # Hz
         self.declare_parameter('deadband_threshold', 0.05)
         
         # Add rate limiting members
@@ -116,7 +116,7 @@ class Servo2040Node(Node):
                 self.serial.reset_input_buffer()
                 self.serial.reset_output_buffer()
                 self.get_logger().info(f"Connected to {self.serial_port}")
-                time.sleep(2.5)  # Increased firmware init time
+                time.sleep(0.5)  # Brief init time
             except serial.SerialException as e:
                 self.get_logger().error(f"Connection failed: {e}, retrying...")
                 time.sleep(1.5)
@@ -205,7 +205,7 @@ class Servo2040Node(Node):
                     self.get_logger().warn(f"Serial read error: {str(e)}")
                     self.reconnect_serial()
             
-            time.sleep(0.01)
+            time.sleep(0.001)  # Poll more frequently
 
     def enter_bootloader(self) -> None:
         """Trigger firmware bootloader mode"""

@@ -189,8 +189,8 @@ int main() {
             }
         }
         
-        // Small delay to prevent busy-waiting
-        sleep_ms(10);
+        // Minimal delay to prevent busy-waiting
+        sleep_ms(1);
     }
     
     return 0;

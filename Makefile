@@ -36,26 +36,11 @@ clean:
 
 # Variables
 FIRMWARE_DIR = src/servo_2040/firmware
-PYTHON_FILE = $(FIRMWARE_DIR)/main.py
-UF2_FILE = $(FIRMWARE_DIR)/main.uf2
-MICROPYTHON_URL = https://datasheets.raspberrypi.com/soft/micropython-firmware-pico-w-130623.uf2
-MICROPYTHON_FILE = $(FIRMWARE_DIR)/micropython.uf2
 
-# Help message
-# Flash base firmware to Servo 2040
-flash-servo2040:
-	@echo "Flashing Servo 2040 base firmware..."
+# Flash firmware to Servo 2040
+flash-firmware:
+	@echo "Flashing Servo 2040 firmware..."
 	python3 src/servo_2040/scripts/flash_firmware.py
-
-# Flash C firmware to Servo 2040
-flash-c-firmware:
-	@echo "Flashing C firmware to Servo 2040..."
-	python3 src/servo_2040/scripts/flash_c_firmware.py
-
-# Upload code to Servo 2040
-upload-code:
-	@echo "Uploading code to Servo 2040..."
-	python3 src/servo_2040/scripts/upload_main.py
 
 help:
 	@echo "Makefile Commands:"
@@ -63,10 +48,7 @@ help:
 	@echo "  make run            - Run the node"
 	@echo "  make rebuild        - Clean and rebuild the workspace"
 	@echo "  make clean          - Clean the workspace"
-	@echo "  make flash-firmware - Flash fresh MicroPython firmware (BOOTSEL mode)"
-	@echo "  make flash-servo2040 - Flash Servo 2040 base firmware (BOOTSEL mode)"
-	@echo "  make flash-c-firmware - Flash C firmware to Servo 2040 (BOOTSEL mode)"
-	@echo "  make upload-code    - Upload main.py code to Servo 2040"
+	@echo "  make flash-firmware - Flash firmware to Servo 2040 (BOOTSEL mode)"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)

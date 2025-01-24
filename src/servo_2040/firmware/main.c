@@ -28,7 +28,7 @@ typedef struct {
     float target_angle;
 } servo_t;
 
-#define EASING_STEP 2.0f  // Degrees per update
+#define EASING_STEP 1.0f  // Degrees per update
 
 servo_t servos[NUM_SERVOS];
 

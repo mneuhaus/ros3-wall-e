@@ -56,7 +56,7 @@ class Servo2040Node(Node):
         self.command_period = 1.0 / self.get_parameter('max_command_rate').value
         
         # Movement increment in degrees
-        self.movement_increment = 5.0
+        self.movement_increment = 5
         
         # Servo limits
         self.servo_limits = [

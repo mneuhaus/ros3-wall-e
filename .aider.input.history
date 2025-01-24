@@ -1011,3 +1011,249 @@
 +  1 package had stderr output: servo_2040
 +  1 package not processed
 +make: *** [Makefile:18: build] Error 1
+
+# 2025-01-21 00:10:52.348735
++n
+
+# 2025-01-21 00:12:51.873771
++seems to be sending/receiving commands, but servos are not moving: [servo_2040-3] [INFO] [1737414750.718920045] [servo_2040]: Sending command: b'{"type": "servo_positions", "payload": {"positions": {"eyebrow_left": 15.0, "eyebrow_right": 15.0, "head_left": 15.0, "head_right": 15.0, "neck_tilt": 15.0, "neck_raise": 45.0, "neck_pan": 45.0, "arm_left": 45.0, "arm_right": 45.0}}}\n'
++[servo_2040-3] [INFO] [1737414751.761152672] [servo_2040]: Firmware: {"type": "servo_positions", "payload": {"positions": {"eyebrow_left": 5.0, "eyebrow_right": 5.0, "head_left": 5.0, "head_right": 5.0, "neck_tilt": 5.0, "neck_raise": 35.0, "neck_pan": 35.0, "arm_left": 35.0, "arm_right": 35.0}}}{"type": "servo_positions", "payload": {"positions": {"eyebrow_left": 10.0, "eyebrow_right": 10.0, "head_left": 10.0, "head_right": 10.0, "neck_tilt": 10.0, "neck_raise": 40.0, "neck_pan": 40.0, "arm_left": 40.0, "arm_right": 40.0}}}{"type": "servo_positions", "payload": {"positions": {"eyebrow_left": 15.0, "eyebrow_right": 15.0, "head_left": 15.0, "head_right": 15.0, "neck_tilt": 15.0, "neck_raise": 45.0, "neck_pan": 45.0, "arm_left": 45.0, "arm_right": 45.0}}}
+
+# 2025-01-21 00:16:11.540988
++firmware does not respond anymore and the whole ros seems to freeze
+
+# 2025-01-21 00:17:08.416339
++n
+
+# 2025-01-24 00:23:56.285690
++no
+
+# 2025-01-24 00:24:09.344023
++please take a look around and update the CONVENTIONS.md
+
+# 2025-01-24 00:27:46.797529
++please take a look at the servo_2040 firmware in src/servo_2040/firmware/main.py take a look at it, start from scratch and implement a simple firmware that receives commands from the nodes and controls servos accordingly
+
+# 2025-01-24 00:32:27.308122
++great, now please do the same for src/servo_2040/servo_2040/servo_2040.py
+
+# 2025-01-24 00:34:53.136663
++[teleop_node-2] [INFO] [1737675266.808674354] [TeleopTwistJoy]: Angular axis yaw on 2 at scale 5.000000.
++[teleop_node-2] [INFO] [1737675266.808693539] [TeleopTwistJoy]: Turbo for angular axis yaw is scale 10.000000.
++[servo_2040-3] [INFO] [1737675268.495982703] [servo_2040]: Connected to /dev/ttyACM0
++[joy_node-1] [INFO] [1737675271.710826883] [joy_node]: Opened joystick: Pro Controller.  deadzone: 0.050000
++[servo_2040-3] [ERROR] [1737675276.059435458] [servo_2040]: Command send failed: Write timeout
++[servo_2040-3] [ERROR] [1737675280.380722207] [servo_2040]: Command send failed: Write timeout
+
+# 2025-01-24 00:39:53.169842
++make sure the firmware on the servo_2040 is not blocking "future" firmware uploads
+
+# 2025-01-24 00:48:26.895146
++[ERROR] [servo_2040-3]: process has died [pid 15123, exit code 1, cmd '/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040 --ros-args --log-level info --ros-args -r __node:=servo_2040 --params-file /tmp/launch_params_zzjy9b93 --params-file /tmp/launch_params_s8uqkwmd'].
++[INFO] [servo_2040-3]: process started with pid [15166]
++[servo_2040-3] Traceback (most recent call last):
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040", line 33, in <module>
++[servo_2040-3]     sys.exit(load_entry_point('servo-2040==0.0.0', 'console_scripts', 'servo_2040')())
++[servo_2040-3]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 198, in main
++[servo_2040-3]     node = Servo2040Node()
++[servo_2040-3]            ^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 28, in __init__
++[servo_2040-3]     self.connect_serial()
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 89, in connect_serial
++[servo_2040-3]     self.serial = serial.Serial(
++[servo_2040-3]                   ^^^^^^^^^^^^^^
++[servo_2040-3]   File "/usr/lib/python3/dist-packages/serial/serialutil.py", line 241, in __init__
++[servo_2040-3]     raise ValueError('unexpected keyword arguments: {!r}'.format(kwargs))
++[servo_2040-3] ValueError: unexpected keyword arguments: {'write_buffer_size': 2048}
++[joy_node-1] [INFO] [1737676092.110688725] [joy_node]: Opened joystick: Pro Controller.  deadzone: 0.050000
++[ERROR] [servo_2040-3]: process has died [pid 15166, exit code 1, cmd '/home/mneuhaus/ros2_ws/install/servo_2040/lib/servo_2040/servo_2040 --ros-args --log-level info --ros-args -r __node:=servo_2040 --params-file /tmp/launch_params_zzjy9b93 --params-file /tmp/launch_params_s8uqkwmd'].
++[INFO] [servo_2040-3]: process started with pid [15182]
+
+# 2025-01-24 00:50:48.776129
++[servo_2040-3] [INFO] [1737676219.499953483] [servo_2040]: Firmware: Servo 3 -> 20.0°
++[servo_2040-3] [INFO] [1737676219.528588999] [servo_2040]: Firmware: Servo 4 -> 25.0°
++[servo_2040-3] [WARN] [1737676219.530851333] [servo_2040]: Write timeout - reconnecting...
++[servo_2040-3] [WARN] [1737676219.534839580] [servo_2040]: Reconnecting to serial...
++[servo_2040-3] Exception in thread Thread-1 (read_serial_data):
++[servo_2040-3] Traceback (most recent call last):
++[servo_2040-3]   File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
++[servo_2040-3]     self.run()
++[servo_2040-3]   File "/usr/lib/python3.12/threading.py", line 1010, in run
++[servo_2040-3]     self._target(*self._args, **self._kwargs)
++[servo_2040-3]   File "/home/mneuhaus/ros2_ws/install/servo_2040/lib/python3.12/site-packages/servo_2040/servo_2040.py", line 163, in read_serial_data
++[servo_2040-3]     if self.serial and self.serial.in_waiting:
++[servo_2040-3]                        ^^^^^^^^^^^^^^^^^^^^^^
++[servo_2040-3]   File "/usr/lib/python3/dist-packages/serial/serialposix.py", line 549, in in_waiting
++[servo_2040-3]     s = fcntl.ioctl(self.fd, TIOCINQ, TIOCM_zero_str)
++[servo_2040-3]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[servo_2040-3] OSError: [Errno 9] Bad file descriptor
++[servo_2040-3] [INFO] [1737676226.617646415] [servo_2040]: Connected to /dev/ttyACM0
++[servo_2040-3] [WARN] [1737676238.027187804] [servo_2040]: Write timeout - reconnecting...
++[servo_2040-3] [WARN] [1737676238.031228439] [servo_2040]: Reconnecting to serial...
++[servo_2040-3] [INFO] [1737676242.317126036] [servo_2040]: Connected to /dev/ttyACM0
+
+# 2025-01-24 00:58:08.537567
++awesome, but somehow the servo_2040 seems to "hang" when to much commands come in, could it be because there are too many commands coming it at the same time?
+
+# 2025-01-24 01:13:24.529051
++could you create a new Makefile command to pair and trust a new gamepad through bluetooth?
+
+# 2025-01-24 01:16:44.300085
++could you give me a list of pairable devices instead?
+
+# 2025-01-24 17:46:53.568066
++please create a c alternative of of the micropython firmware src/servo_2040/firmware/main.py
+
+# 2025-01-24 17:51:18.218470
++n
+
+# 2025-01-24 17:52:02.983693
++something went wrong creating that file, please try again and put this into a seperate subfolder beneath firmware
+
+# 2025-01-24 17:52:57.587932
++/run mkdir -p src/servo_2040/firmware/c_version/build
+
+# 2025-01-24 17:52:57.588192
++/run mkdir -p src/servo_2040/firmware/c_version/build
+
+# 2025-01-24 17:52:59.840258
++/run cd src/servo_2040/firmware/c_version/build
+
+# 2025-01-24 17:52:59.840786
++/run cd src/servo_2040/firmware/c_version/build
+
+# 2025-01-24 17:53:02.065220
++/run cmake ..
+
+# 2025-01-24 17:53:02.065650
++/run cmake ..
+
+# 2025-01-24 17:53:04.682426
++/run make
+
+# 2025-01-24 17:53:04.682926
++/run make
+
+# 2025-01-24 17:53:33.137472
++n
+
+# 2025-01-24 17:58:39.621142
++ok, now add a Makefile command to the Makefile that flashes the new uf2 build at the path src/servo_2040/firmware/servo_controller.uf2 onto the servo_2040
+
+# 2025-01-24 18:00:44.457304
++/run chmod +x src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:00:44.457508
++/run chmod +x src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:02:51.555732
++please use picotool instead like in the `flash_firmware`
+
+# 2025-01-24 18:04:03.818164
++/run chmod +x src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:04:03.818406
++/run chmod +x src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:09:44.825694
++awesome could we add some "easing" to the firmware motions to make it less "stuttered"?
+
+# 2025-01-24 18:12:31.704354
++/run cd src/servo_2040/firmware/c_version && mkdir -p build && cd build && cmake .. && make
+
+# 2025-01-24 18:12:31.704592
++/run cd src/servo_2040/firmware/c_version && mkdir -p build && cd build && cmake .. && make
+
+# 2025-01-24 18:12:35.721444
++/run cd ../../../.. && make flash-c-firmware
+
+# 2025-01-24 18:12:35.721822
++/run cd ../../../.. && make flash-c-firmware
+
+# 2025-01-24 18:14:53.176111
++is it possible to "instruct" the c firmware to switch into bootloader mode through uart/picotool before flashing without pushing the boot/reset buttons?
+
+# 2025-01-24 18:18:19.740017
++n
+
+# 2025-01-24 18:18:41.361916
++ok, now please remove the micropython variant and move the c variant to the firmware folder itself
+
+# 2025-01-24 18:20:19.056171
++/run mv src/servo_2040/firmware/c_version/main.c src/servo_2040/firmware/
+
+# 2025-01-24 18:20:19.056406
++/run mv src/servo_2040/firmware/c_version/main.c src/servo_2040/firmware/
+
+# 2025-01-24 18:20:21.293814
++/run mv src/servo_2040/firmware/c_version/CMakeLists.txt src/servo_2040/firmware/
+
+# 2025-01-24 18:20:21.294123
++/run mv src/servo_2040/firmware/c_version/CMakeLists.txt src/servo_2040/firmware/
+
+# 2025-01-24 18:20:23.521886
++/run rm -rf src/servo_2040/firmware/c_version
+
+# 2025-01-24 18:20:23.522167
++/run rm -rf src/servo_2040/firmware/c_version
+
+# 2025-01-24 18:20:25.894097
++/run rm src/servo_2040/firmware/main.py
+
+# 2025-01-24 18:20:25.894497
++/run rm src/servo_2040/firmware/main.py
+
+# 2025-01-24 18:20:28.121522
++/run rm src/servo_2040/scripts/upload_main.py
+
+# 2025-01-24 18:20:28.122021
++/run rm src/servo_2040/scripts/upload_main.py
+
+# 2025-01-24 18:20:30.343705
++/run rm src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:20:30.344075
++/run rm src/servo_2040/scripts/flash_c_firmware.py
+
+# 2025-01-24 18:20:39.332869
++/run cd src/servo_2040/firmware && mkdir -p build && cd build && cmake .. && make
+
+# 2025-01-24 18:20:39.333084
++/run cd src/servo_2040/firmware && mkdir -p build && cd build && cmake .. && make
+
+# 2025-01-24 18:21:31.879947
++/run cd ../../../.. && make flash-firmware
+
+# 2025-01-24 18:21:31.880274
++/run cd ../../../.. && make flash-firmware
+
+# 2025-01-24 18:22:34.252153
++great, could you please add this compilation stuff to the servo_2040 module ros2 setup step in src/servo_2040/setup.py
+
+# 2025-01-24 19:06:54.191790
++n
+
+# 2025-01-24 20:21:01.259275
++great, now please also integrate the flashing into that?
+
+# 2025-01-24 20:21:50.210478
++n
+
+# 2025-01-24 20:22:54.304509
++is there any way to make the build command in the Makerfile more verbose, especially to put out information about the building and flashing?
+
+# 2025-01-24 20:24:37.584902
++n
+
+# 2025-01-24 20:27:29.875437
++yea, please undo that
+
+# 2025-01-24 20:29:07.915900
++please create a command in the Makefile to compile the servo_2040 firmware
+
+# 2025-01-24 20:29:35.392617
++/run make build-firmware
+
+# 2025-01-24 20:29:35.392860
++/run make build-firmware

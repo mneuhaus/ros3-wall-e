@@ -48,7 +48,7 @@ def flash_firmware(firmware_path):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    firmware_path = os.path.join(script_dir, '../firmware/c_version/build/servo_controller.uf2')
+    firmware_path = os.path.join(script_dir, '../firmware/c_version/servo_controller.uf2')
 
     try:
         if wait_for_bootsel():

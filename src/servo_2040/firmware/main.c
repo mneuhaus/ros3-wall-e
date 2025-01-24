@@ -21,8 +21,8 @@
 // Track control pins
 #define LEFT_TRACK_PWM 15   // PWM signal for left motor
 #define LEFT_TRACK_DIR 16   // Direction control for left motor (HIGH=forward)
-#define RIGHT_TRACK_PWM 18  // PWM signal for right motor
-#define RIGHT_TRACK_DIR 17  // Direction control for right motor (HIGH=forward)
+#define RIGHT_TRACK_PWM 17  // PWM signal for right motor
+#define RIGHT_TRACK_DIR 18  // Direction control for right motor (HIGH=forward)
 
 // Servo pins (matching servo2040.SERVO_X)
 const uint8_t SERVO_PINS[NUM_SERVOS] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -94,20 +94,24 @@ void init_tracks(void) {
 void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     // speed: -100 to +100
     bool direction;
-    uint16_t pwm_value = (uint16_t)(abs(speed) * 655.35); // Scale -100,100 to 0,65535
-    
+    uint16_t pwm_value = (uint16_t)(abs(speed) * 655.35); // scale -100..100 to 0..65535
+
+    // If it's the LEFT track, assume "HIGH=forward".
+    // If it's the RIGHT track, invert "HIGH=backward" to align with the real hardware.
     if (pin_dir == LEFT_TRACK_DIR) {
-        direction = speed >= 0;  // TRUE/HIGH for forward
-    } else {
-        direction = speed >= 0;  // Same logic for both tracks
+        direction = (speed >= 0);  // forward if speed >= 0
+    } else { // pin_dir == RIGHT_TRACK_DIR
+        direction = (speed < 0);   // invert for right track
     }
-    
+
     gpio_put(pin_dir, direction);
-    pwm_set_chan_level(pwm_gpio_to_slice_num(pin_pwm), 
-                       pwm_gpio_to_channel(pin_pwm), 
-                       pwm_value);
-                       
-    printf("Track PWM:%d DIR:%d Speed:%d Dir:%d PWM:%u\n", 
+    pwm_set_chan_level(
+        pwm_gpio_to_slice_num(pin_pwm),
+        pwm_gpio_to_channel(pin_pwm),
+        pwm_value
+    );
+
+    printf("Track PWM:%d DIR:%d Speed:%d Dir:%d PWM:%u\n",
            pin_pwm, pin_dir, speed, direction, pwm_value);
 }
 

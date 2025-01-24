@@ -1418,3 +1418,24 @@
 
 # 2025-01-24 23:30:04.268149
 +n
+
+# 2025-01-24 23:34:48.681494
++still something wrong: Sent track command: {"tracks":[50,50]} ->  R: moves backward, L moves forward
++Sent track command: {"tracks":[-50,-50]} -> R: moves forward, L moves forward
++Sent track command: {"tracks":[50,-50]} ->  R: moves backward, L moves forward
++Sent track command: {"tracks":[-50,50]} ->  R: moves forward, L moves forward
+
+# 2025-01-24 23:35:14.941626
++n
+
+# 2025-01-24 23:36:31.418348
++well, that changed nothing
+
+# 2025-01-24 23:36:54.459919
++n
+
+# 2025-01-24 23:37:17.215230
++i think we need to "catch" that debug output in the node and output it so i can see it
+
+# 2025-01-24 23:37:57.108807
++n

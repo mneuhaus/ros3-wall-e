@@ -16,9 +16,13 @@ class Servo2040Node(Node):
         self.serial_lock = threading.Lock()
         self.declare_parameter('baudrate', 115200)
         self.declare_parameter('servo_limits', [180]*9)  # All servos 0-180 by default
+        self.declare_parameter('wheel_base', 0.2)  # Distance between tracks in meters
+        self.declare_parameter('max_speed', 1.0)  # Maximum speed in m/s
         
         # Get parameters
         self.serial_port: str = self.get_parameter('serial_port').value
+        self.wheel_base = self.get_parameter('wheel_base').value
+        self.max_speed = self.get_parameter('max_speed').value
         self.baudrate: int = self.get_parameter('baudrate').value
         self.servo_limits: List[Tuple[float, float]] = [
             (0, float(limit)) for limit in self.get_parameter('servo_limits').value

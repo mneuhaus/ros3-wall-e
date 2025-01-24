@@ -58,8 +58,8 @@ class MotorControllerNode(Node):
         left_speed = int(max(min(left_speed / self.max_speed * 100, 100), -100))
         right_speed = int(max(min(right_speed / self.max_speed * 100, 100), -100))
 
-        # Send speeds to Pico
-        command = f"{left_speed},{right_speed}\n"
+        # Send track control command to Servo2040
+        command = f'{{"tracks":[{left_speed},{right_speed}]}}\n'
         self.ser.write(command.encode('utf-8'))
 
     def read_from_pico(self):

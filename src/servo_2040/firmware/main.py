@@ -27,16 +27,30 @@ class SimpleServoController:
         # Enable all servos on startup
         for servo in self.servos:
             servo.enable()
+            
+        # Target positions and current positions for easing
+        self.current_positions = [90.0] * len(self.servos)
+        self.target_positions = [90.0] * len(self.servos)
+        self.easing_step = 2.0  # Degrees per update
         
         print("Servo controller ready\n")
 
     def set_servo_position(self, servo_index, degrees):
-        """Set servo position with safety checks"""
+        """Set servo target position with safety checks"""
         if 0 <= servo_index < len(self.servos):
             degrees = max(0, min(180, degrees))  # Clamp to 0-180
-            self.servos[servo_index].value(degrees - 90)  # Convert to -90..+90
+            self.target_positions[servo_index] = degrees
             return True
         return False
+
+    def update_positions(self):
+        """Update current positions towards target positions"""
+        for i in range(len(self.servos)):
+            if self.current_positions[i] != self.target_positions[i]:
+                diff = self.target_positions[i] - self.current_positions[i]
+                step = min(abs(diff), self.easing_step) * (1 if diff > 0 else -1)
+                self.current_positions[i] += step
+                self.servos[i].value(self.current_positions[i] - 90)  # Convert to -90..+90
 
     def process_command(self, command):
         """Handle incoming JSON commands"""
@@ -80,7 +94,8 @@ class SimpleServoController:
                 except Exception as e:
                     print(f"Read error: {str(e)}\n")
             
-            # Process servos at fixed rate
+            # Update servo positions with easing
+            self.update_positions()
             time.sleep(0.01)  # 100Hz loop
 
 # Start the controller

@@ -198,7 +198,10 @@ class Servo2040Node(Node):
                     if self.serial.in_waiting:
                         line = self.serial.readline().decode().strip()
                         if line:
-                            self.get_logger().info(f"Firmware: {line}")
+                            if line.startswith("Track"):
+                                self.get_logger().debug(f"Track Debug: {line}")
+                            else:
+                                self.get_logger().info(f"Firmware: {line}")
                 except (UnicodeDecodeError, OSError, serial.SerialException) as e:
                     self.get_logger().warn(f"Serial read error: {str(e)}")
                     self.reconnect_serial()

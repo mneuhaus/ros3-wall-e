@@ -8,13 +8,48 @@ import subprocess
 import sys
 import time
 
+def try_remote_bootloader():
+    """Try to remotely trigger bootloader mode."""
+    try:
+        # Check if device is currently running
+        result = subprocess.run(['picotool', 'info'], 
+                              capture_output=True, 
+                              text=True)
+        if result.returncode == 0:
+            print("Device detected, attempting remote bootloader entry...")
+            # Reboot into USB boot mode
+            subprocess.run(['picotool', 'reboot', '-u', '-f'], check=True)
+            time.sleep(2)  # Wait for device to restart
+            return True
+    except subprocess.CalledProcessError:
+        pass
+    return False
+
 def wait_for_bootsel():
     """Wait for the Pico to be detected in BOOTSEL mode."""
-    print("\nTo enter BOOTSEL mode:")
+    print("Waiting for device in bootloader mode...")
+    
+    # First try remote bootloader entry
+    if try_remote_bootloader():
+        # Verify device is in bootloader mode
+        for _ in range(5):  # Try for 10 seconds
+            try:
+                result = subprocess.run(['picotool', 'info'], 
+                                     capture_output=True, 
+                                     text=True)
+                if result.returncode == 0:
+                    print("Device detected in bootloader mode!")
+                    return True
+            except subprocess.CalledProcessError:
+                pass
+            time.sleep(2)
+    
+    # If remote entry failed, ask for manual intervention
+    print("\nAutomatic bootloader entry failed.")
+    print("Please enter BOOTSEL mode manually:")
     print("1. Hold the BOOTSEL button (small button near USB)")
     print("2. While holding BOOTSEL, press and release RESET (or unplug/plug USB)")
     print("3. Keep holding BOOTSEL for 1 more second, then release")
-    print("\nWaiting for device...")
     
     while True:
         try:
@@ -22,7 +57,7 @@ def wait_for_bootsel():
                                  capture_output=True, 
                                  text=True)
             if result.returncode == 0:
-                print("Device detected in BOOTSEL mode!")
+                print("Device detected in bootloader mode!")
                 return True
         except subprocess.CalledProcessError:
             pass

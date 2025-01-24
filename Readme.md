@@ -43,6 +43,60 @@
   - Motor Control: 50Hz
   - Servo Control: 100Hz
 
+### Technical Reference
+
+#### Servo Assignments and Ranges
+| Servo ID | Function        | Min° | Max° | Default° | Speed°/s | Notes                    |
+|----------|----------------|------|------|----------|----------|--------------------------|
+| 1        | Head Tilt      | 0    | 180  | 90       | 60       | Mechanical limit 30-150° |
+| 2        | Head Rotation  | 0    | 180  | 90       | 60       | Full range available     |
+| 3        | Left Arm       | 0    | 180  | 45       | 45       | Resting at 45°          |
+| 4        | Right Arm      | 0    | 180  | 135      | 45       | Mirrored, resting 135°  |
+| 5        | Left Gripper   | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
+| 6        | Right Gripper  | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
+| 7        | Left Eye       | 0    | 180  | 90       | 120      | 45-135° typical range   |
+| 8        | Right Eye      | 0    | 180  | 90       | 120      | 45-135° typical range   |
+| 9        | Neck Tilt      | 0    | 180  | 90       | 30       | Mechanical limit 60-120° |
+
+#### Motor Specifications
+| Parameter          | Value      | Notes                                    |
+|-------------------|------------|------------------------------------------|
+| Voltage           | 12V DC     | Operating range 11-13V                   |
+| Max Current       | 2A         | Per motor, stall current ~5A             |
+| Encoder PPR       | 360        | Pulses per revolution                    |
+| Gear Ratio        | 20:1       | Planetary gearbox                        |
+| No Load Speed     | 200 RPM    | At 12V                                   |
+| Stall Torque      | 2.5 Nm     | At 12V                                  |
+| Wheel Diameter    | 100mm      | Rubber tire                             |
+| Control Frequency | 50Hz       | PID control loop                        |
+
+#### Controller Button Mappings
+| Button/Axis    | Function              | Value Range | Default |
+|---------------|----------------------|-------------|---------|
+| Left Stick Y  | Forward/Back Speed   | -1.0 to 1.0 | 0.0     |
+| Right Stick X | Turn Rate            | -1.0 to 1.0 | 0.0     |
+| D-Pad Up      | Head Tilt Up         | N/A         | N/A     |
+| D-Pad Down    | Head Tilt Down       | N/A         | N/A     |
+| D-Pad Left    | Head Turn Left       | N/A         | N/A     |
+| D-Pad Right   | Head Turn Right      | N/A         | N/A     |
+| A Button      | Arms Down            | N/A         | N/A     |
+| B Button      | Arms Up              | N/A         | N/A     |
+| X Button      | Arms Forward         | N/A         | N/A     |
+| Y Button      | Arms Back            | N/A         | N/A     |
+| L1 Button     | Close Grippers       | N/A         | N/A     |
+| R1 Button     | Open Grippers        | N/A         | N/A     |
+| L2 Button     | Eyes Left            | N/A         | N/A     |
+| R2 Button     | Eyes Right           | N/A         | N/A     |
+
+#### LED Status Indicators
+| LED | Color  | Pattern              | Meaning                    |
+|-----|--------|---------------------|----------------------------|
+| 0   | Green  | Solid               | Power on, system ready     |
+| 0   | Red    | Solid               | Error state                |
+| 1   | Blue   | Blink               | Serial communication active|
+| 2   | Yellow | Pulse               | Servo movement in progress |
+| 3   | White  | Solid               | Bootloader mode active     |
+
 System: Ubuntu 24.04.x
 
 #### Installation

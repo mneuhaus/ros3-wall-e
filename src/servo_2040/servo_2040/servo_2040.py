@@ -170,14 +170,12 @@ class Servo2040Node(Node):
 
             command = json.dumps(command_data) + "\n"
             
-            # Check output buffer capacity
-            if self.serial.out_waiting > 1024:
-                self.get_logger().warning("Output buffer full, clearing...")
+            # Non-blocking write
+            self.serial.write_timeout = 0
+            bytes_written = self.serial.write(command.encode())
+            if bytes_written != len(command):
+                self.get_logger().warning("Partial write - clearing buffers")
                 self.serial.reset_output_buffer()
-
-            # Write with timeout handling
-            self.serial.write(command.encode())
-            self.serial.flush()
             self.prev_positions = self.servo_positions.copy()
             self.get_logger().debug(f"Sent command: {command.strip()}")
 
@@ -205,7 +203,7 @@ class Servo2040Node(Node):
                     self.get_logger().warn(f"Serial read error: {str(e)}")
                     self.reconnect_serial()
             
-            time.sleep(0.001)  # Poll more frequently
+            time.sleep(0.0001)  # Poll at 10kHz
 
     def enter_bootloader(self) -> None:
         """Trigger firmware bootloader mode"""

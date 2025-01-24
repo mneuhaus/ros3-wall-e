@@ -175,22 +175,27 @@ int main() {
     int buf_pos = 0;
     
     while (1) {
-        // Non-blocking read from USB serial
-        int c = getchar_timeout_us(0);
-        if (c != PICO_ERROR_TIMEOUT) {
+        // Process up to 32 characters per iteration
+        for (int i = 0; i < 32; i++) {
+            int c = getchar_timeout_us(0);
+            if (c == PICO_ERROR_TIMEOUT) break;
+            
             if (c == '\n' || c == '\r') {
                 if (buf_pos > 0) {
                     buffer[buf_pos] = '\0';
                     process_command(buffer);
                     buf_pos = 0;
+                    break;  // Process command immediately
                 }
             } else if (buf_pos < MAX_BUFFER_SIZE - 1) {
                 buffer[buf_pos++] = c;
             }
         }
         
-        // Minimal delay to prevent busy-waiting
-        sleep_ms(1);
+        // Minimal delay only if no data was processed
+        if (buf_pos == 0) {
+            sleep_us(100);  // 100µs delay instead of 1ms
+        }
     }
     
     return 0;

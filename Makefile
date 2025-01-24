@@ -47,6 +47,11 @@ flash-servo2040:
 	@echo "Flashing Servo 2040 base firmware..."
 	python3 src/servo_2040/scripts/flash_firmware.py
 
+# Flash C firmware to Servo 2040
+flash-c-firmware:
+	@echo "Flashing C firmware to Servo 2040..."
+	python3 src/servo_2040/scripts/flash_c_firmware.py
+
 # Upload code to Servo 2040
 upload-code:
 	@echo "Uploading code to Servo 2040..."
@@ -60,8 +65,9 @@ help:
 	@echo "  make clean          - Clean the workspace"
 	@echo "  make flash-firmware - Flash fresh MicroPython firmware (BOOTSEL mode)"
 	@echo "  make flash-servo2040 - Flash Servo 2040 base firmware (BOOTSEL mode)"
+	@echo "  make flash-c-firmware - Flash C firmware to Servo 2040 (BOOTSEL mode)"
 	@echo "  make upload-code    - Upload main.py code to Servo 2040"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)
-.PHONY: all build run rebuild clean help flash-firmware
+.PHONY: all build run rebuild clean help flash-firmware flash-c-firmware

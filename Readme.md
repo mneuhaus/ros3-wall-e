@@ -46,17 +46,24 @@
 ### Technical Reference
 
 #### Servo Assignments and Ranges
-| Servo ID | Function        | Min° | Max° | Default° | Speed°/s | Notes                    |
-|----------|----------------|------|------|----------|----------|--------------------------|
-| 1        | Head Tilt      | 0    | 180  | 90       | 60       | Mechanical limit 30-150° |
-| 2        | Head Rotation  | 0    | 180  | 90       | 60       | Full range available     |
-| 3        | Left Arm       | 0    | 180  | 45       | 45       | Resting at 45°          |
-| 4        | Right Arm      | 0    | 180  | 135      | 45       | Mirrored, resting 135°  |
-| 5        | Left Gripper   | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
-| 6        | Right Gripper  | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
-| 7        | Left Eye       | 0    | 180  | 90       | 120      | 45-135° typical range   |
-| 8        | Right Eye      | 0    | 180  | 90       | 120      | 45-135° typical range   |
-| 9        | Neck Tilt      | 0    | 180  | 90       | 30       | Mechanical limit 60-120° |
+| Servo ID | Function          | Min° | Max° | Default° | Speed°/s | Notes                    |
+|----------|------------------|------|------|----------|----------|--------------------------|
+| 1        | Head Tilt        | 0    | 180  | 90       | 60       | Mechanical limit 30-150° |
+| 2        | Head Pan         | 0    | 180  | 90       | 60       | Full range available     |
+| 3        | Left Arm         | 0    | 180  | 45       | 45       | Resting at 45°          |
+| 4        | Right Arm        | 0    | 180  | 135      | 45       | Mirrored, resting 135°  |
+| 5        | Left Gripper     | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
+| 6        | Right Gripper    | 0    | 180  | 90       | 90       | 0=closed, 180=open      |
+| 7        | Left Eye         | 0    | 180  | 90       | 120      | 45-135° typical range   |
+| 8        | Right Eye        | 0    | 180  | 90       | 120      | 45-135° typical range   |
+| 9        | Neck Tilt        | 0    | 180  | 90       | 30       | Mechanical limit 60-120° |
+| 10       | Head Left Raise  | 0    | 180  | 90       | 45       | Mechanical limit 45-135° |
+| 11       | Head Right Raise | 0    | 180  | 90       | 45       | Mechanical limit 45-135° |
+| 12       | Bay Door         | 0    | 180  | 0        | 30       | 0=closed, 180=open      |
+| 13       | Laser            | 0    | 180  | 90       | 120      | 90=center position      |
+| 14       | Microphone       | 0    | 180  | 90       | 60       | For directional mic     |
+| 15       | Speaker          | 0    | 180  | 90       | 60       | For speaker direction   |
+| 16       | Battery Display  | 0    | 180  | 0        | 30       | 0=hidden, 180=visible   |
 
 #### Motor Specifications
 | Parameter          | Value      | Notes                                    |

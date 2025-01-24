@@ -64,8 +64,12 @@
 #### Motor Specifications
 | Parameter          | Value      | Notes                                    |
 |-------------------|------------|------------------------------------------|
-| Voltage           | 12V DC     | Operating range 11-13V                   |
-| Max Current       | 2A         | Per motor, stall current ~5A             |
+| Motor Driver      | Cytron MD13S | PWM control, 10-30V DC                |
+| Operating Voltage | 12V DC     | Operating range 11-13V                   |
+| Max Current       | 13A        | Per motor, continuous                    |
+| Peak Current      | 30A        | Per motor, <1s                          |
+| PWM Frequency     | 20kHz      | Internal frequency                      |
+| Control Mode      | Sign-Magnitude PWM | DIR + PWM control               |
 | Encoder PPR       | 360        | Pulses per revolution                    |
 | Gear Ratio        | 20:1       | Planetary gearbox                        |
 | No Load Speed     | 200 RPM    | At 12V                                   |

@@ -96,7 +96,9 @@ void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     bool direction = speed >= 0;
     uint16_t pwm_value = (uint16_t)(abs(speed) * 655.35); // Scale -100,100 to 0,65535
     
-    gpio_put(pin_dir, direction);
+    // Invert direction for right track
+    bool actual_direction = (pin_dir == RIGHT_TRACK_DIR) ? !direction : direction;
+    gpio_put(pin_dir, actual_direction);
     pwm_set_chan_level(pwm_gpio_to_slice_num(pin_pwm), 
                        pwm_gpio_to_channel(pin_pwm), 
                        pwm_value);

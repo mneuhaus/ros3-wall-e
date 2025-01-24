@@ -47,6 +47,14 @@ class Servo2040Node(Node):
             1: {'direction': -1},  # B button - all servos down/left
         }
         
+        # Add rate limiting parameters
+        self.declare_parameter('max_command_rate', 30.0)  # Hz
+        self.declare_parameter('deadband_threshold', 0.05)
+        
+        # Add rate limiting members
+        self.last_command_time = 0.0
+        self.command_period = 1.0 / self.get_parameter('max_command_rate').value
+        
         # Movement increment in degrees
         self.movement_increment = 5.0
         
@@ -102,12 +110,21 @@ class Servo2040Node(Node):
                 time.sleep(1.5)
 
     def joy_callback(self, msg: Joy) -> None:
-        """Handle joystick input to control servos"""
+        """Handle joystick input with rate limiting"""
         if not self.serial:
+            return
+            
+        now = time.monotonic()
+        if (now - self.last_command_time) < self.command_period:
             return
 
         # Map buttons to control all servos
         if len(msg.buttons) >= 2:
+            # Check for meaningful input
+            if abs(msg.buttons[0] - msg.buttons[1]) < self.get_parameter('deadband_threshold').value:
+                return
+                
+            self.last_command_time = now
             direction = msg.buttons[0] - msg.buttons[1]  # A=up, B=down
             if direction != 0:
                 self.update_servo_positions(direction)

@@ -40,6 +40,10 @@ class SimpleServoController:
 
     def process_command(self, command):
         """Handle incoming JSON commands"""
+        if len(command) > 256:  # Add size limit
+            print("Command too long\n")
+            return False
+            
         try:
             data = json.loads(command)
             
@@ -64,18 +68,20 @@ class SimpleServoController:
 
     def run(self):
         """Main processing loop"""
+        buffer = ''
         while True:
-            # Check for input with 100ms timeout
-            if self.poll.poll(100):
+            # Non-blocking read with buffer
+            while self.poll.poll(0):
                 try:
-                    command = sys.stdin.readline().strip()
-                    if command:
-                        self.process_command(command)
+                    buffer += sys.stdin.read(1)
+                    if '\n' in buffer:
+                        command, _, buffer = buffer.partition('\n')
+                        self.process_command(command.strip())
                 except Exception as e:
                     print(f"Read error: {str(e)}\n")
             
-            # Add periodic yield to prevent USB blocking
-            time.sleep(0.01)
+            # Process servos at fixed rate
+            time.sleep(0.01)  # 100Hz loop
 
 # Start the controller
 controller = SimpleServoController()

@@ -253,7 +253,7 @@ class Servo2040Node(Node):
         command = f'{{"tracks":[{left_speed},{right_speed}]}}\n'
         with self.serial_lock:
             try:
-                self.ser.write(command.encode('utf-8'))
+                self.serial.write(command.encode('utf-8'))
                 self.get_logger().info(f"Sent track command: {command.strip()}")
             except serial.SerialException as e:
                 self.get_logger().error(f"Failed to send track command: {e}")

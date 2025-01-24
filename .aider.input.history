@@ -1412,3 +1412,9 @@
 
 # 2025-01-24 23:05:45.297933
 +n
+
+# 2025-01-24 23:29:20.943929
++please take a closer look at the set_track_speed and init_tracks in the main.c firmware, i think we're not handling this right, the commands being sent to the servo_2040 seem corrent, so, a positive value should move the track forward, negative backwards, the right track needs to be inversed of course
+
+# 2025-01-24 23:30:04.268149
++n

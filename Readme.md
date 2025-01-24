@@ -1,3 +1,47 @@
+# Wall-E Robot Project
+
+## Technical Specifications
+
+### Hardware Components
+
+#### Servos (Servo 2040 Controller)
+- **Number of Servos:** 9
+- **Control Interface:** USB Serial (115200 baud)
+- **Angular Range:** 0-180 degrees
+- **Update Rate:** 100Hz with motion smoothing
+- **Servo Assignments:**
+  - Servos 1-2: Head tilt/rotation
+  - Servos 3-4: Arm joints
+  - Servos 5-6: Hand grippers
+  - Servos 7-8: Eye mechanisms
+  - Servo 9: Neck tilt
+
+#### Drive System (Motor Controller)
+- **Motors:** 2x 12V DC motors with encoders
+- **Control Interface:** UART (ttyAMA2, 115200 baud)
+- **Drive Configuration:** Differential drive
+- **Wheel Base:** 200mm
+- **Max Speed:** 1.0 m/s
+- **Control Rate:** 50Hz
+
+### Control Architecture
+- **Input Device:** 8BitDo Lite 2 Controller
+- **Control Mapping:**
+  - Left Stick: Linear velocity (forward/backward)
+  - Right Stick: Angular velocity (turning)
+  - D-Pad: Head movement
+  - Face Buttons: Arm control
+  - Shoulder Buttons: Gripper control
+
+### Communication
+- **ROS2 Topics:**
+  - `/cmd_vel`: Twist messages for movement
+  - `/servo_positions`: Custom messages for servo control
+  - `/joy`: Joystick input data
+- **Update Rates:**
+  - Joy Node: 100Hz
+  - Motor Control: 50Hz
+  - Servo Control: 100Hz
 
 System: Ubuntu 24.04.x
 

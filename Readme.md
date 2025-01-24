@@ -1,5 +1,35 @@
 # Wall-E Robot Project
 
+## Main Hardware Components
+
+### Raspberry Pi CM4
+- **Model:** Compute Module 4 with WiFi
+- **CPU:** Quad-core Cortex-A72 (ARM v8) 64-bit @ 1.5GHz
+- **RAM:** 4GB LPDDR4-3200
+- **Storage:** 32GB eMMC Flash
+- **Connectivity:** 2.4GHz and 5.0GHz IEEE 802.11ac wireless, Bluetooth 5.0, BLE
+- **Purpose:** Main robot controller running ROS2 nodes
+
+### Pimoroni Servo 2040
+- **Microcontroller:** RP2040 (Dual-core ARM Cortex M0+ @ 133MHz)
+- **Servo Channels:** 18 independent channels
+- **Current Monitoring:** Per-channel current sensing
+- **Interface:** USB Serial for commands and feedback
+- **Purpose:** Precise servo control for robot movements
+
+### Motor Controller Board
+- **Type:** Cytron MD13S Dual Channel
+- **Voltage:** 12V DC operation
+- **Current:** 13A continuous per channel
+- **Control:** PWM input for speed control
+- **Purpose:** Differential drive control for robot movement
+
+### Power System
+- **Main Battery:** 12V 10000mAh LiPo
+- **Auxiliary Battery:** 5V 2000mAh for logic circuits
+- **Protection:** Over-voltage, under-voltage, and current protection
+- **Monitoring:** Battery voltage and current monitoring via I2C
+
 ## Technical Specifications
 
 ### Hardware Components

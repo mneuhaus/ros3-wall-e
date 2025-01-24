@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
+from geometry_msgs.msg import Twist
 import serial
 import time
 import threading
@@ -44,6 +45,13 @@ class Servo2040Node(Node):
             self.joy_callback,
             10
         )
+        
+        # Subscribe to movement commands
+        self.cmd_vel_sub = self.create_subscription(
+            Twist,
+            'cmd_vel',
+            self.cmd_vel_callback,
+            10)
         
         # Button mappings for testing - move all servos
         self.button_map = {
@@ -220,6 +228,36 @@ class Servo2040Node(Node):
                 pass
             self.serial = None
             self.connect_serial()
+            
+    def cmd_vel_callback(self, msg: Twist) -> None:
+        """Handle movement commands."""
+        self.get_logger().debug(f"Received cmd_vel: linear.x={msg.linear.x}, angular.z={msg.angular.z}")
+        
+        # Convert Twist message to left and right track speeds
+        linear = msg.linear.x  # Forward/backward speed
+        angular = msg.angular.z  # Rotation speed
+
+        # Compute track speeds (differential drive)
+        left_speed = linear - (angular * self.wheel_base / 2)
+        right_speed = linear + (angular * self.wheel_base / 2)
+
+        # Scale speeds to -100 to 100
+        left_speed = int(max(min(left_speed / self.max_speed * 100, 100), -100))
+        right_speed = int(max(min(right_speed / self.max_speed * 100, 100), -100))
+
+        # Debug output
+        self.get_logger().debug(f"Raw input - linear: {msg.linear.x:.2f}, angular: {msg.angular.z:.2f}")
+        self.get_logger().debug(f"Calculated speeds - left: {left_speed}%, right: {right_speed}%")
+
+        # Send track control command
+        command = f'{{"tracks":[{left_speed},{right_speed}]}}\n'
+        with self.serial_lock:
+            try:
+                self.ser.write(command.encode('utf-8'))
+                self.get_logger().info(f"Sent track command: {command.strip()}")
+            except serial.SerialException as e:
+                self.get_logger().error(f"Failed to send track command: {e}")
+                self.reconnect_serial()
 
 
 def main(args=None):

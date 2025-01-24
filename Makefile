@@ -12,26 +12,22 @@ SETUP_SCRIPT=$(ROS2_WS)/install/setup.bash
 # Default target
 all: build
 
-# Build the workspace
-build:
-	@echo "Building the workspace..."
+# Build the ROS2 workspace
+ros2/build:
+	@echo "Building the ROS2 workspace..."
 	colcon build
 
-# Source the workspace (not typically needed in Makefile)
-#source:
-#	@echo "Workspace sourced. Note: Sourcing in a Makefile may not affect your shell."
-
-# Run the node
-run:
-	@echo "Running the node..."
+# Run the ROS2 node
+ros2/run:
+	@echo "Running the ROS2 node..."
 	ros2 launch wall_e_launch all_nodes.launch.py
 
-# Rebuild the workspace (clean and build)
-rebuild: clean build
+# Rebuild the ROS2 workspace
+ros2/rebuild: ros2/clean ros2/build
 
-# Clean the workspace
-clean:
-	@echo "Cleaning the workspace..."
+# Clean the ROS2 workspace
+ros2/clean:
+	@echo "Cleaning the ROS2 workspace..."
 	rm -rf build/ install/ log/
 
 # Variables
@@ -50,13 +46,13 @@ servo2040/flash:
 
 help:
 	@echo "Makefile Commands:"
-	@echo "  make build          - Build the workspace"
-	@echo "  make run            - Run the node"
-	@echo "  make rebuild        - Clean and rebuild the workspace"
-	@echo "  make clean          - Clean the workspace"
+	@echo "  make ros2/build    - Build the ROS2 workspace"
+	@echo "  make ros2/run      - Run the ROS2 node"
+	@echo "  make ros2/rebuild  - Clean and rebuild the ROS2 workspace"
+	@echo "  make ros2/clean    - Clean the ROS2 workspace"
 	@echo "  make servo2040/build - Build the Servo 2040 firmware"
 	@echo "  make servo2040/flash - Flash firmware to Servo 2040 (BOOTSEL mode)"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)
-.PHONY: all build run rebuild clean help servo2040/flash servo2040/build
+.PHONY: all ros2/build ros2/run ros2/rebuild ros2/clean help servo2040/flash servo2040/build

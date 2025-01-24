@@ -85,20 +85,23 @@ void init_tracks(void) {
     pwm_set_enabled(right_slice, true);
     
     // Set initial state (stopped)
-    gpio_put(LEFT_TRACK_DIR, 0);
-    gpio_put(RIGHT_TRACK_DIR, 0);
+    gpio_put(LEFT_TRACK_DIR, 1);  // Forward is HIGH
+    gpio_put(RIGHT_TRACK_DIR, 1); // Forward is HIGH
     pwm_set_chan_level(left_slice, pwm_gpio_to_channel(LEFT_TRACK_PWM), 0);
     pwm_set_chan_level(right_slice, pwm_gpio_to_channel(RIGHT_TRACK_PWM), 0);
 }
 
 void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     // speed: -100 to +100
-    bool direction = speed >= 0;
+    bool direction = speed >= 0;  // TRUE for forward
     uint16_t pwm_value = (uint16_t)(abs(speed) * 655.35); // Scale -100,100 to 0,65535
     
-    // Invert direction for right track
-    bool actual_direction = (pin_dir == RIGHT_TRACK_DIR) ? direction : !direction;
-    gpio_put(pin_dir, actual_direction);
+    if (pin_dir == RIGHT_TRACK_DIR) {
+        // Right track needs opposite direction for same movement
+        direction = !direction;
+    }
+    
+    gpio_put(pin_dir, direction);  // HIGH for forward
     pwm_set_chan_level(pwm_gpio_to_slice_num(pin_pwm), 
                        pwm_gpio_to_channel(pin_pwm), 
                        pwm_value);

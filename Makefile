@@ -14,8 +14,10 @@ all: build
 
 # Build the workspace
 build:
-	@echo "Building the workspace..."
-	colcon build
+	@echo "=== Starting ROS2 workspace build ==="
+	@echo "Building packages..."
+	VERBOSE=1 colcon build --event-handlers console_direct+
+	@echo "=== Build complete ==="
 
 # Source the workspace (not typically needed in Makefile)
 #source:
@@ -39,8 +41,10 @@ FIRMWARE_DIR = src/servo_2040/firmware
 
 # Flash firmware to Servo 2040
 flash-firmware:
-	@echo "Flashing Servo 2040 firmware..."
-	python3 src/servo_2040/scripts/flash_firmware.py
+	@echo "=== Starting firmware flash process ==="
+	@echo "Running flash script..."
+	PYTHONUNBUFFERED=1 python3 -u src/servo_2040/scripts/flash_firmware.py
+	@echo "=== Flash process complete ==="
 
 help:
 	@echo "Makefile Commands:"

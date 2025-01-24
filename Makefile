@@ -37,6 +37,12 @@ clean:
 # Variables
 FIRMWARE_DIR = src/servo_2040/firmware
 
+# Build firmware for Servo 2040
+build-firmware:
+	@echo "Building Servo 2040 firmware..."
+	mkdir -p $(FIRMWARE_DIR)/build
+	cd $(FIRMWARE_DIR)/build && cmake .. && make
+
 # Flash firmware to Servo 2040
 flash-firmware:
 	@echo "Flashing Servo 2040 firmware..."
@@ -48,8 +54,9 @@ help:
 	@echo "  make run            - Run the node"
 	@echo "  make rebuild        - Clean and rebuild the workspace"
 	@echo "  make clean          - Clean the workspace"
+	@echo "  make build-firmware - Build the Servo 2040 firmware"
 	@echo "  make flash-firmware - Flash firmware to Servo 2040 (BOOTSEL mode)"
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)
-.PHONY: all build run rebuild clean help flash-firmware flash-c-firmware
+.PHONY: all build run rebuild clean help flash-firmware build-firmware

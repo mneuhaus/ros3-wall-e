@@ -106,7 +106,7 @@
 | Laser           | GPIO23     | PWM controlled laser module               |
 | Microphone      | I2S        | Adafruit SPH0645 I2S MEMS (24-bit PCM)  |
 | Speaker         | I2S        | Audio output, controlled via ALSA         |
-| Battery Display | I2C (0x3C) | OLED display for battery status          |
+| Battery Display | I2C (0x3C) | ZJY-IPS130-V2.0 1.3" IPS LCD (240x240)  |
 
 System: Ubuntu 24.04.x
 

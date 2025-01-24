@@ -19,10 +19,10 @@
 #define MAX_PULSE_US 2500  // 180 degrees
 
 // Track control pins
-#define LEFT_TRACK_PWM 15
-#define LEFT_TRACK_DIR 16
-#define RIGHT_TRACK_PWM 17
-#define RIGHT_TRACK_DIR 18
+#define LEFT_TRACK_PWM 15   // PWM signal for left motor
+#define LEFT_TRACK_DIR 16   // Direction control for left motor (HIGH=forward)
+#define RIGHT_TRACK_PWM 18  // PWM signal for right motor
+#define RIGHT_TRACK_DIR 17  // Direction control for right motor (HIGH=forward)
 
 // Servo pins (matching servo2040.SERVO_X)
 const uint8_t SERVO_PINS[NUM_SERVOS] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -99,13 +99,16 @@ void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     if (pin_dir == LEFT_TRACK_DIR) {
         direction = speed >= 0;  // TRUE/HIGH for forward
     } else {
-        direction = speed <= 0;  // TRUE/HIGH for backward (inverted for right track)
+        direction = speed >= 0;  // Same logic for both tracks
     }
     
     gpio_put(pin_dir, direction);
     pwm_set_chan_level(pwm_gpio_to_slice_num(pin_pwm), 
                        pwm_gpio_to_channel(pin_pwm), 
                        pwm_value);
+                       
+    printf("Track PWM:%d DIR:%d Speed:%d Dir:%d PWM:%u\n", 
+           pin_pwm, pin_dir, speed, direction, pwm_value);
 }
 
 void set_servo_position(int index, float degrees) {

@@ -60,10 +60,6 @@
 | 10       | Head Left Raise  | 0    | 180  | 90       | 45       | Mechanical limit 45-135° |
 | 11       | Head Right Raise | 0    | 180  | 90       | 45       | Mechanical limit 45-135° |
 | 12       | Bay Door         | 0    | 180  | 0        | 30       | 0=closed, 180=open      |
-| 13       | Laser            | 0    | 180  | 90       | 120      | 90=center position      |
-| 14       | Microphone       | 0    | 180  | 90       | 60       | For directional mic     |
-| 15       | Speaker          | 0    | 180  | 90       | 60       | For speaker direction   |
-| 16       | Battery Display  | 0    | 180  | 0        | 30       | 0=hidden, 180=visible   |
 
 #### Motor Specifications
 | Parameter          | Value      | Notes                                    |
@@ -103,6 +99,14 @@
 | 1   | Blue   | Blink               | Serial communication active|
 | 2   | Yellow | Pulse               | Servo movement in progress |
 | 3   | White  | Solid               | Bootloader mode active     |
+
+#### CM4 Connected Peripherals
+| Device          | Connection | Details                                    |
+|-----------------|------------|-------------------------------------------|
+| Laser           | GPIO23     | PWM controlled laser module               |
+| Microphone      | I2S        | MEMS microphone for audio input          |
+| Speaker         | I2S        | Audio output, controlled via ALSA         |
+| Battery Display | I2C (0x3C) | OLED display for battery status          |
 
 System: Ubuntu 24.04.x
 

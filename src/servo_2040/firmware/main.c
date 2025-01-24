@@ -31,10 +31,8 @@ typedef struct {
     uint slice_num;
     uint channel;
     float current_angle;
-    float target_angle;
 } servo_t;
 
-#define EASING_STEP 1.0f  // Degrees per update
 
 servo_t servos[NUM_SERVOS];
 
@@ -110,22 +108,11 @@ void set_servo_position(int index, float degrees) {
     if (degrees < 0) degrees = 0;
     if (degrees > 180) degrees = 180;
     
-    servos[index].target_angle = degrees;
+    servos[index].current_angle = degrees;
+    pwm_set_chan_level(servos[index].slice_num, servos[index].channel,
+                      degrees_to_pwm(degrees));
 }
 
-void update_servo_positions(void) {
-    for (int i = 0; i < NUM_SERVOS; i++) {
-        if (servos[i].current_angle != servos[i].target_angle) {
-            float diff = servos[i].target_angle - servos[i].current_angle;
-            float step = (fabsf(diff) < EASING_STEP) ? diff : 
-                        (diff > 0 ? EASING_STEP : -EASING_STEP);
-            
-            servos[i].current_angle += step;
-            pwm_set_chan_level(servos[i].slice_num, servos[i].channel,
-                             degrees_to_pwm(servos[i].current_angle));
-        }
-    }
-}
 
 bool process_command(char* cmd) {
     // Simple JSON parsing (you might want to use a proper JSON parser in production)
@@ -202,9 +189,8 @@ int main() {
             }
         }
         
-        // Update servo positions and add small delay
-        update_servo_positions();
-        sleep_ms(10);  // 100Hz update rate
+        // Small delay to prevent busy-waiting
+        sleep_ms(10);
     }
     
     return 0;

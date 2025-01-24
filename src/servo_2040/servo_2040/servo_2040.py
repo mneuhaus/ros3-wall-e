@@ -232,8 +232,7 @@ class Servo2040Node(Node):
         self.get_logger().debug(f"Received cmd_vel: linear.x={msg.linear.x}, angular.z={msg.angular.z}")
         
         # Convert Twist message to left and right track speeds
-        # Invert linear.x since forward on joystick is negative
-        linear = -msg.linear.x  # Forward/backward speed
+        linear = msg.linear.x  # Forward/backward speed
         angular = msg.angular.z  # Rotation speed
 
         # Compute track speeds (differential drive)

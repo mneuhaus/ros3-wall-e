@@ -109,7 +109,7 @@ void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     if (pin_dir == LEFT_TRACK_DIR) {
         direction = (speed >= 0);  // forward if speed >= 0
     } else { // pin_dir == RIGHT_TRACK_DIR
-        direction = (speed < 0);   // invert for right track
+        direction = (speed >= 0);  // same direction logic for both tracks
     }
     gpio_put(pin_dir, direction);
     

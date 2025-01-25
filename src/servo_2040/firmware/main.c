@@ -1,6 +1,6 @@
 /**
- * Servo 2040 Controller Firmware
- * C implementation of servo control with JSON command interface
+ * EVE Protocol-compliant Servo Controller Firmware
+ * Implements docs/eve-protokoll.md specification
  */
 
 #include <stdio.h>
@@ -10,228 +10,202 @@
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
 #include "pico/bootrom.h"
-#include "hardware/uart.h"
 
-#define NUM_SERVOS 9
-#define MAX_BUFFER_SIZE 256
-#define PWM_FREQ 50
-#define MIN_PULSE_US 500   // 0 degrees
-#define MAX_PULSE_US 2500  // 180 degrees
-
-// Track control pins
-#define LEFT_TRACK_PWM 13   // PWM signal for left motor
-#define LEFT_TRACK_DIR 14   // Direction control for left motor (HIGH=forward)
-#define RIGHT_TRACK_PWM 17  // PWM signal for right motor
-#define RIGHT_TRACK_DIR 18  // Direction control for right motor (HIGH=forward)
-
-// Servo pins (matching servo2040.SERVO_X)
-const uint8_t SERVO_PINS[NUM_SERVOS] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+// Hardware configuration
+#define LEFT_TRACK_PWM 13
+#define LEFT_TRACK_DIR 14
+#define RIGHT_TRACK_PWM 17
+#define RIGHT_TRACK_DIR 18
+#define MAX_CMD_LENGTH 128
+#define BOOTLOADER_DELAY_MS 500
 
 typedef struct {
-    uint slice_num;
+    uint slice;
     uint channel;
-    float current_angle;
-} servo_t;
+    uint freq;
+    bool initialized;
+    float current_pos;
+} pwm_channel;
 
+pwm_channel pwm_config[30] = {0}; // Support up to pin 29
 
-servo_t servos[NUM_SERVOS];
-
-// Convert degrees to PWM value
-uint16_t degrees_to_pwm(float degrees) {
-    if (degrees < 0) degrees = 0;
-    if (degrees > 180) degrees = 180;
-    
-    float pulse_width = MIN_PULSE_US + (degrees / 180.0) * (MAX_PULSE_US - MIN_PULSE_US);
-    return (uint16_t)((pulse_width / 20000.0) * 65535);
+void send_response(const char* cmd, const char* status, const char* message) {
+    printf("%s: %s %s\n", cmd, status, message);
 }
 
-void init_servo(int index) {
-    uint pin = SERVO_PINS[index];
-    gpio_set_function(pin, GPIO_FUNC_PWM);
-    
-    servos[index].slice_num = pwm_gpio_to_slice_num(pin);
-    servos[index].channel = pwm_gpio_to_channel(pin);
-    servos[index].current_angle = 90;
-    
-    pwm_set_wrap(servos[index].slice_num, 65535);
-    pwm_set_clkdiv(servos[index].slice_num, 125.0); // 1MHz
-    pwm_set_enabled(servos[index].slice_num, true);
-    
-    // Set initial position
-    pwm_set_chan_level(servos[index].slice_num, servos[index].channel, degrees_to_pwm(90));
-}
-
-void init_tracks(void) {
-    // Setup PWM pins
-    gpio_set_function(LEFT_TRACK_PWM, GPIO_FUNC_PWM);
-    gpio_set_function(RIGHT_TRACK_PWM, GPIO_FUNC_PWM);
-    
-    // Setup direction pins as regular GPIO
-    gpio_init(LEFT_TRACK_DIR);
-    gpio_init(RIGHT_TRACK_DIR);
-    gpio_set_dir(LEFT_TRACK_DIR, GPIO_OUT);
-    gpio_set_dir(RIGHT_TRACK_DIR, GPIO_OUT);
-    
-    // Configure PWM for tracks (20kHz frequency)
-    uint left_slice = pwm_gpio_to_slice_num(LEFT_TRACK_PWM);
-    uint right_slice = pwm_gpio_to_slice_num(RIGHT_TRACK_PWM);
-    
-    pwm_set_wrap(left_slice, 65535);
-    pwm_set_wrap(right_slice, 65535);
-    pwm_set_clkdiv(left_slice, 62.5); // 20kHz @ 125MHz
-    pwm_set_clkdiv(right_slice, 62.5);
-    
-    pwm_set_enabled(left_slice, true);
-    pwm_set_enabled(right_slice, true);
-    
-    // Set initial state (stopped)
-    gpio_put(LEFT_TRACK_DIR, 1);  // Forward is HIGH
-    gpio_put(RIGHT_TRACK_DIR, 1); // Forward is HIGH
-    pwm_set_chan_level(left_slice, pwm_gpio_to_channel(LEFT_TRACK_PWM), 0);
-    pwm_set_chan_level(right_slice, pwm_gpio_to_channel(RIGHT_TRACK_PWM), 0);
-}
-
-void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
-    // speed: -100 to +100
-    bool direction;
-    
-    // First set PWM to 0 to avoid current spikes
-    pwm_set_chan_level(
-        pwm_gpio_to_slice_num(pin_pwm),
-        pwm_gpio_to_channel(pin_pwm),
-        0
-    );
-    
-    // Small delay to let PWM settle
-    sleep_us(100);
-    
-    // Determine direction and set it
-    if (pin_dir == LEFT_TRACK_DIR) {
-        direction = (speed >= 0);  // forward if speed >= 0
-    } else { // pin_dir == RIGHT_TRACK_DIR
-        direction = (speed >= 0);  // same direction logic for both tracks
+bool init_gpio(uint pin, const char* mode, uint count, uint freq) {
+    if (pin >= 30) {
+        return false;
     }
-    gpio_put(pin_dir, direction);
-    
-    // Another small delay after direction change
-    sleep_us(100);
-    
-    // Calculate and apply PWM value
-    uint16_t pwm_value;
-    if (abs(speed) < 5) {
-        // Dead zone to ensure full stop
-        pwm_value = 0;
-    } else {
-        // Scale -100..100 to 0..65535, with minimum threshold
-        pwm_value = (uint16_t)((abs(speed) * 655.35));
-        if (pwm_value < 6553) {  // Minimum 10% threshold
-            pwm_value = 6553;
-        }
+
+    if (strcmp(mode, "PWM") == 0 || strcmp(mode, "SERVO") == 0) {
+        gpio_set_function(pin, GPIO_FUNC_PWM);
+        pwm_config[pin].slice = pwm_gpio_to_slice_num(pin);
+        pwm_config[pin].channel = pwm_gpio_to_channel(pin);
+        pwm_config[pin].freq = freq;
+        
+        // Calculate clock divider from frequency (125MHz base clock)
+        float div = 125000000.0f / (65536 * freq);
+        pwm_set_clkdiv(pwm_config[pin].slice, div);
+        pwm_set_wrap(pwm_config[pin].slice, 65535);
+        pwm_set_enabled(pwm_config[pin].slice, true);
+        
+        pwm_config[pin].initialized = true;
+        return true;
     }
-    
-    pwm_set_chan_level(
-        pwm_gpio_to_slice_num(pin_pwm),
-        pwm_gpio_to_channel(pin_pwm),
-        pwm_value
-    );
-
-    printf("Track PWM:%d DIR:%d Speed:%d Dir:%d PWM:%u\n",
-           pin_pwm, pin_dir, speed, direction, pwm_value);
-}
-
-void set_servo_position(int index, float degrees) {
-    if (index < 0 || index >= NUM_SERVOS) return;
-    
-    if (degrees < 0) degrees = 0;
-    if (degrees > 180) degrees = 180;
-    
-    servos[index].current_angle = degrees;
-    pwm_set_chan_level(servos[index].slice_num, servos[index].channel,
-                      degrees_to_pwm(degrees));
-}
-
-
-bool process_command(char* cmd) {
-    // Simple JSON parsing (you might want to use a proper JSON parser in production)
-    if (strstr(cmd, "enter_bootloader") != NULL) {
-        printf("Entering bootloader mode...\n");
-        sleep_ms(500);
-        reset_usb_boot(0, 0);
+    else if (strcmp(mode, "OUTPUT") == 0) {
+        gpio_init(pin);
+        gpio_set_dir(pin, GPIO_OUT);
         return true;
     }
     
-    // Handle track commands
-    if (strstr(cmd, "\"tracks\":") != NULL) {
-        int left_speed, right_speed;
-        if (sscanf(cmd, "{\"tracks\":[%d,%d]}", &left_speed, &right_speed) == 2) {
-            set_track_speed(LEFT_TRACK_PWM, LEFT_TRACK_DIR, left_speed);
-            set_track_speed(RIGHT_TRACK_PWM, RIGHT_TRACK_DIR, right_speed);
-            printf("Tracks L:%d R:%d\n", left_speed, right_speed);
-            return true;
+    return false;
+}
+
+void set_servo_position(uint pin, float degrees) {
+    if (!pwm_config[pin].initialized || degrees < 0 || degrees > 180) {
+        return;
+    }
+
+    // Convert degrees to pulse width (500-2500µs)
+    uint16_t level = (uint16_t)(500 + (degrees / 180.0f) * 2000) * 65535 / 20000;
+    pwm_set_chan_level(pwm_config[pin].slice, pwm_config[pin].channel, level);
+    pwm_config[pin].current_pos = degrees;
+}
+
+void set_track_speed(uint pwm_pin, uint dir_pin, int speed) {
+    if (!pwm_config[pwm_pin].initialized) return;
+
+    speed = (speed < -100) ? -100 : (speed > 100) ? 100 : speed;
+    
+    // Set direction
+    gpio_put(dir_pin, speed >= 0);
+    
+    // Set PWM value
+    uint16_t level = (abs(speed) * 65535) / 100;
+    pwm_set_chan_level(pwm_config[pwm_pin].slice, 
+                      pwm_config[pwm_pin].channel, 
+                      level);
+}
+
+bool process_command(char* command) {
+    char cmd_copy[MAX_CMD_LENGTH];
+    strncpy(cmd_copy, command, MAX_CMD_LENGTH);
+    
+    // Split command into parts
+    char* saveptr;
+    char* cmd = strtok_r(command, " ", &saveptr);
+    
+    if (strcmp(cmd, "INIT_GPIO") == 0) {
+        uint pin, count = 0, freq = 0;
+        char mode[10] = {0};
+        
+        char* arg;
+        while ((arg = strtok_r(NULL, " ", &saveptr))) {
+            if (sscanf(arg, "PIN=%u", &pin)) continue;
+            if (sscanf(arg, "MODE=%9s", mode)) continue;
+            sscanf(arg, "COUNT=%u", &count);
+            sscanf(arg, "FREQ=%u", &freq);
         }
+        
+        if (init_gpio(pin, mode, count, freq)) {
+            send_response(cmd_copy, "OK", "");
+        } else {
+            send_response(cmd_copy, "ERROR", "INIT_FAILED");
+        }
+        return true;
+    }
+    else if (strcmp(cmd, "MOVE_SERVO") == 0) {
+        uint pin;
+        float pos;
+        int speed = 0;
+        
+        char* arg;
+        while ((arg = strtok_r(NULL, " ", &saveptr))) {
+            sscanf(arg, "PIN=%u", &pin);
+            sscanf(arg, "POS=%f", &pos);
+            sscanf(arg, "SPEED=%d", &speed);
+        }
+        
+        if (pin < 30 && pwm_config[pin].initialized) {
+            set_servo_position(pin, pos);
+            send_response(cmd_copy, "OK", "");
+        } else {
+            send_response(cmd_copy, "ERROR", "INVALID_PIN");
+        }
+        return true;
+    }
+    else if (strcmp(cmd, "SET_GPIO") == 0) {
+        // Handle track controls as GPIO extensions
+        uint pin, pwm_val;
+        char state[5] = {0};
+        
+        char* arg;
+        while ((arg = strtok_r(NULL, " ", &saveptr))) {
+            if (sscanf(arg, "PIN=%u", &pin)) continue;
+            if (sscanf(arg, "STATE=%4s", state)) continue;
+            if (sscanf(arg, "PWM=%u", &pwm_val)) continue;
+        }
+        
+        if (pin == LEFT_TRACK_PWM || pin == RIGHT_TRACK_PWM) {
+            int speed = (pin == LEFT_TRACK_PWM) ? 
+                       (pwm_val * 100 / 65535) : 
+                       -(pwm_val * 100 / 65535);
+            set_track_speed(pin, 
+                           (pin == LEFT_TRACK_PWM) ? LEFT_TRACK_DIR : RIGHT_TRACK_DIR,
+                           speed);
+            send_response(cmd_copy, "OK", "");
+        } else if (strlen(state) > 0) {
+            gpio_put(pin, strcmp(state, "HIGH") == 0);
+            send_response(cmd_copy, "OK", "");
+        } else {
+            send_response(cmd_copy, "ERROR", "INVALID_PIN");
+        }
+        return true;
+    }
+    else if (strcmp(cmd, "RESET_FIRMWARE") == 0) {
+        send_response(cmd_copy, "OK", "");
+        sleep_ms(BOOTLOADER_DELAY_MS);
+        reset_usb_boot(0, 0);
+        return true;
+    }
+    else if (strcmp(cmd, "PING") == 0) {
+        send_response(cmd_copy, "OK", "");
+        return true;
     }
     
-    char* servo_start = strstr(cmd, "\"servos\":");
-    if (servo_start) {
-        char* array_start = strchr(servo_start, '[');
-        if (array_start) {
-            char* ptr = array_start + 1;
-            while (*ptr) {
-                if (*ptr == '[') {
-                    int index;
-                    float position;
-                    if (sscanf(ptr, "[%d,%f]", &index, &position) == 2) {
-                        if (index >= 0 && index < NUM_SERVOS) {
-                            set_servo_position(index, position);
-                            printf("Servo %d -> %.1f°\n", index, position);
-                        }
-                    }
-                }
-                ptr++;
-            }
-            return true;
-        }
-    }
+    send_response(cmd_copy, "ERROR", "UNKNOWN_COMMAND");
     return false;
 }
 
 int main() {
     stdio_init_all();
     
-    // Initialize all servos
-    for (int i = 0; i < NUM_SERVOS; i++) {
-        init_servo(i);
-    }
+    // Initialize track controls with default 1kHz PWM
+    init_gpio(LEFT_TRACK_PWM, "PWM", 0, 1000);
+    init_gpio(RIGHT_TRACK_PWM, "PWM", 0, 1000);
+    gpio_init(LEFT_TRACK_DIR);
+    gpio_init(RIGHT_TRACK_DIR);
+    gpio_set_dir(LEFT_TRACK_DIR, GPIO_OUT);
+    gpio_set_dir(RIGHT_TRACK_DIR, GPIO_OUT);
     
-    // Initialize tracks
-    init_tracks();
+    printf("EVE Protocol Controller Ready\n");
     
-    printf("Servo and track controller ready\n");
+    char buffer[MAX_CMD_LENGTH] = {0};
+    uint8_t buf_pos = 0;
     
-    char buffer[MAX_BUFFER_SIZE];
-    int buf_pos = 0;
-    
-    while (1) {
-        // Process up to 32 characters per iteration
-        for (int i = 0; i < 32; i++) {
-            int c = getchar_timeout_us(0);
-            if (c == PICO_ERROR_TIMEOUT) break;
-            
-            if (c == '\n' || c == '\r') {
-                if (buf_pos > 0) {
-                    buffer[buf_pos] = '\0';
-                    process_command(buffer);
-                    buf_pos = 0;
-                    break;  // Process command immediately
-                }
-            } else if (buf_pos < MAX_BUFFER_SIZE - 1) {
-                buffer[buf_pos++] = c;
-            }
-        }
+    while (true) {
+        int c = getchar_timeout_us(1000);
+        if (c == PICO_ERROR_TIMEOUT) continue;
         
-        // Minimal delay only if no data was processed
-        if (buf_pos == 0) {
-            sleep_us(100);  // 100µs delay instead of 1ms
+        if (c == '\n' || c == '\r') {
+            if (buf_pos > 0) {
+                buffer[buf_pos] = '\0';
+                process_command(buffer);
+                buf_pos = 0;
+            }
+        } else if (buf_pos < MAX_CMD_LENGTH - 1) {
+            buffer[buf_pos++] = c;
         }
     }
     

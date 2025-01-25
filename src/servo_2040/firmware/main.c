@@ -19,8 +19,8 @@
 #define MAX_PULSE_US 2500  // 180 degrees
 
 // Track control pins
-#define LEFT_TRACK_PWM 15   // PWM signal for left motor
-#define LEFT_TRACK_DIR 16   // Direction control for left motor (HIGH=forward)
+#define LEFT_TRACK_PWM 13   // PWM signal for left motor
+#define LEFT_TRACK_DIR 14   // Direction control for left motor (HIGH=forward)
 #define RIGHT_TRACK_PWM 17  // PWM signal for right motor
 #define RIGHT_TRACK_DIR 18  // Direction control for right motor (HIGH=forward)
 

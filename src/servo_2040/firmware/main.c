@@ -94,17 +94,41 @@ void init_tracks(void) {
 void set_track_speed(uint pin_pwm, uint pin_dir, int speed) {
     // speed: -100 to +100
     bool direction;
-    uint16_t pwm_value = (uint16_t)(abs(speed) * 655.35); // scale -100..100 to 0..65535
-
-    // If it's the LEFT track, assume "HIGH=forward".
-    // If it's the RIGHT track, invert "HIGH=backward" to align with the real hardware.
+    
+    // First set PWM to 0 to avoid current spikes
+    pwm_set_chan_level(
+        pwm_gpio_to_slice_num(pin_pwm),
+        pwm_gpio_to_channel(pin_pwm),
+        0
+    );
+    
+    // Small delay to let PWM settle
+    sleep_us(100);
+    
+    // Determine direction and set it
     if (pin_dir == LEFT_TRACK_DIR) {
         direction = (speed >= 0);  // forward if speed >= 0
     } else { // pin_dir == RIGHT_TRACK_DIR
         direction = (speed < 0);   // invert for right track
     }
-
     gpio_put(pin_dir, direction);
+    
+    // Another small delay after direction change
+    sleep_us(100);
+    
+    // Calculate and apply PWM value
+    uint16_t pwm_value;
+    if (abs(speed) < 5) {
+        // Dead zone to ensure full stop
+        pwm_value = 0;
+    } else {
+        // Scale -100..100 to 0..65535, with minimum threshold
+        pwm_value = (uint16_t)((abs(speed) * 655.35));
+        if (pwm_value < 6553) {  // Minimum 10% threshold
+            pwm_value = 6553;
+        }
+    }
+    
     pwm_set_chan_level(
         pwm_gpio_to_slice_num(pin_pwm),
         pwm_gpio_to_channel(pin_pwm),

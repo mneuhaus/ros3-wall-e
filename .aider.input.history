@@ -1439,3 +1439,9 @@
 
 # 2025-01-24 23:37:57.108807
 +n
+
+# 2025-01-25 01:20:55.207005
++could it be, that the pwm is interfering with the direction pin?
+
+# 2025-01-25 01:23:50.414006
++somethins is wrong, the tracks always move forward, not backwards

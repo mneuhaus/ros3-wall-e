@@ -70,6 +70,10 @@ servo2040/flash:
 	@echo "Flashing Servo 2040 firmware..."
 	python3 src/servo_2040/scripts/flash_firmware.py
 
+# Build and flash Servo 2040 firmware
+servo2040/update: servo2040/build servo2040/flash
+	@echo "Servo 2040 firmware updated"
+
 # Build firmware for Eyes
 eyes/build: pico/toolchain
 	@echo "Building Eyes firmware..."
@@ -80,6 +84,10 @@ eyes/build: pico/toolchain
 eyes/flash:
 	@echo "Flashing Eyes firmware..."
 	python3 src/eyes/scripts/flash_firmware.py
+
+# Build and flash Eyes firmware
+eyes/update: eyes/build eyes/flash
+	@echo "Eyes firmware updated"
 
 help:
 	@echo "Makefile Commands:"

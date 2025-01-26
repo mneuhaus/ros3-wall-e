@@ -1685,3 +1685,87 @@
 
 # 2025-01-26 13:22:56.946801
 +please add 2 sliders to the web interface to move each track seperately
+
+# 2025-01-26 20:46:24.840641
++/ask i'm gathering audio files for wall-e to play, where should i put those?
+
+# 2025-01-26 20:49:01.581116
++great, could you please create a audio node inside the audio package to play mp3/wav files based on the files available in that folder?
+
+# 2025-01-26 20:50:45.156201
++n
+
+# 2025-01-26 20:56:28.414535
++/run sudo apt-get install python3-pygame
+
+# 2025-01-26 20:56:28.414739
++/run sudo apt-get install python3-pygame
+
+# 2025-01-26 21:00:18.269373
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:00:18.269592
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:07:18.337338
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:07:18.337556
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:07:35.348355
++/run ros2 service call /list_sounds std_msgs/String "{}"
+
+# 2025-01-26 21:07:35.348610
++/run ros2 service call /list_sounds std_msgs/String "{}"
+
+# 2025-01-26 21:07:40.024554
++/run ros2 service call /play_sound std_msgs/String "data: 'sound_name'"
+
+# 2025-01-26 21:07:40.024998
++/run ros2 service call /play_sound std_msgs/String "data: 'sound_name'"
+
+# 2025-01-26 21:07:57.121853
++please fix the missing audio node
+
+# 2025-01-26 21:09:32.596255
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:09:32.596506
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:09:42.460483
++/run source install/setup.zsh
+
+# 2025-01-26 21:09:42.460788
++/run source install/setup.zsh
+
+# 2025-01-26 21:09:45.773274
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:09:45.773537
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:09:51.233256
++y
+
+# 2025-01-26 21:09:53.458260
++n
+
+# 2025-01-26 21:10:08.628355
++Running colcon build --packages-select audio
++Starting >>> audio   
++--- stderr: audio                   
++error: can't copy 'resource/audio': doesn't exist or not a regular file
++---
++Failed   <<< audio [5.46s, exited with code 1]
++
++Summary: 0 packages finished [6.71s]
++  1 package failed: audio
++  1 package had stderr output: audio
++
++Running source install/setup.zsh
++
++Running ros2 run audio audio_node
++Package 'audio' not found
++

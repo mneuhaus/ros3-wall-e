@@ -27,7 +27,7 @@ typedef struct {
     float current_pos;
 } pwm_channel;
 
-pwm_channel pwm_config[30] = {0}; // Support up to pin 29
+pwm_channel pwm_channels[30] = {0}; // Support up to pin 29
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);
@@ -40,17 +40,17 @@ bool init_gpio(uint pin, const char* mode, uint count, uint freq) {
 
     if (strcmp(mode, "PWM") == 0 || strcmp(mode, "SERVO") == 0) {
         gpio_set_function(pin, GPIO_FUNC_PWM);
-        pwm_config[pin].slice = pwm_gpio_to_slice_num(pin);
-        pwm_config[pin].channel = pwm_gpio_to_channel(pin);
-        pwm_config[pin].freq = freq;
+        pwm_channels[pin].slice = pwm_gpio_to_slice_num(pin);
+        pwm_channels[pin].channel = pwm_gpio_to_channel(pin);
+        pwm_channels[pin].freq = freq;
         
         // Calculate clock divider from frequency (125MHz base clock)
         float div = 125000000.0f / (65536 * freq);
-        pwm_set_clkdiv(pwm_config[pin].slice, div);
-        pwm_set_wrap(pwm_config[pin].slice, 65535);
-        pwm_set_enabled(pwm_config[pin].slice, true);
+        pwm_set_clkdiv(pwm_channels[pin].slice, div);
+        pwm_set_wrap(pwm_channels[pin].slice, 65535);
+        pwm_set_enabled(pwm_channels[pin].slice, true);
         
-        pwm_config[pin].initialized = true;
+        pwm_channels[pin].initialized = true;
         return true;
     }
     else if (strcmp(mode, "OUTPUT") == 0) {
@@ -63,18 +63,18 @@ bool init_gpio(uint pin, const char* mode, uint count, uint freq) {
 }
 
 void set_servo_position(uint pin, float degrees) {
-    if (!pwm_config[pin].initialized || degrees < 0 || degrees > 180) {
+    if (!pwm_channels[pin].initialized || degrees < 0 || degrees > 180) {
         return;
     }
 
     // Convert degrees to pulse width (500-2500µs)
     uint16_t level = (uint16_t)(500 + (degrees / 180.0f) * 2000) * 65535 / 20000;
-    pwm_set_chan_level(pwm_config[pin].slice, pwm_config[pin].channel, level);
-    pwm_config[pin].current_pos = degrees;
+    pwm_set_chan_level(pwm_channels[pin].slice, pwm_channels[pin].channel, level);
+    pwm_channels[pin].current_pos = degrees;
 }
 
 void set_track_speed(uint pwm_pin, uint dir_pin, int speed) {
-    if (!pwm_config[pwm_pin].initialized) return;
+    if (!pwm_channels[pwm_pin].initialized) return;
 
     speed = (speed < -100) ? -100 : (speed > 100) ? 100 : speed;
     
@@ -127,7 +127,7 @@ bool process_command(char* command) {
             sscanf(arg, "SPEED=%d", &speed);
         }
         
-        if (pin < 30 && pwm_config[pin].initialized) {
+        if (pin < 30 && pwm_channels[pin].initialized) {
             set_servo_position(pin, pos);
             send_response(cmd_copy, "OK", "");
         } else {

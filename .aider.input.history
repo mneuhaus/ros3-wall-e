@@ -1769,3 +1769,98 @@
 +Running ros2 run audio audio_node
 +Package 'audio' not found
 +
+
+# 2025-01-26 21:12:55.512866
++n
+
+# 2025-01-26 21:13:03.643298
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:13:03.643534
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:13:05.730279
++/run chmod +x src/audio/audio/audio_node.py
+
+# 2025-01-26 21:13:05.730512
++/run chmod +x src/audio/audio/audio_node.py
+
+# 2025-01-26 21:13:07.815519
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:13:07.815928
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:13:17.668531
++/run source install/setup.zsh
+
+# 2025-01-26 21:13:17.668902
++/run source install/setup.zsh
+
+# 2025-01-26 21:13:20.993768
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:13:20.994217
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:17:44.097130
++n
+
+# 2025-01-26 21:18:12.671769
++ i think something is wrong the data_files section in the src/audio/setup.py file, could you please take a look?
+
+# 2025-01-26 21:20:08.194967
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:20:08.195237
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:20:18.074106
++/run source install/setup.zsh
+
+# 2025-01-26 21:20:18.074534
++/run source install/setup.zsh
+
+# 2025-01-26 21:20:21.392648
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:20:21.393158
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:20:59.182947
++y
+
+# 2025-01-26 21:21:03.268922
++still failing Starting >>> audio   
++--- stderr: audio                   
++error: can't copy 'resource/audio': doesn't exist or not a regular file
++---
++Failed   <<< audio [5.47s, exited with code 1]
++
+
+# 2025-01-26 21:21:28.366480
++n
+
+# 2025-01-26 21:21:33.442912
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:21:33.443137
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:21:35.552396
++/run touch src/audio/resource/audio
+
+# 2025-01-26 21:21:35.552827
++/run touch src/audio/resource/audio
+
+# 2025-01-26 21:21:37.657729
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:21:37.658147
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:21:47.532190
++/run source install/setup.zsh
+
+# 2025-01-26 21:21:47.532639
++/run source install/setup.zsh

@@ -10,7 +10,7 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "pico/bootrom.h"
-#include "pico_servo/pico_servo.hpp"
+#include "servo2040.hpp"
 
 // Hardware configuration
 #define LEFT_TRACK_PWM 13

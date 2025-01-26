@@ -70,10 +70,6 @@ def flash_firmware(firmware_path):
         print("Did you build the firmware first? Try:")
         print("cd src/servo_2040/firmware && mkdir build && cd build && cmake .. && make")
         return False
-
-    print("Erasing flash...")
-    # Erase first 1MB of flash which is sufficient for the firmware
-    subprocess.run(['picotool', 'erase', '-f', '--range', '0x0', '0x100000'], check=True)
     
     print(f"Loading firmware {firmware_path}...")
     subprocess.run(['picotool', 'load', '-f', firmware_path], check=True)

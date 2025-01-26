@@ -1,0 +1,6 @@
+[submodule "src/servo_2040/firmware/src/servo_2040/firmware/pimoroni-pico"]
+	path = src/servo_2040/firmware/src/servo_2040/firmware/pimoroni-pico
+	url = https://github.com/pimoroni/pimoroni-pico.git
+[submodule "src/servo_2040/firmware/pimoroni-pico"]
+	path = src/servo_2040/firmware/pimoroni-pico
+	url = https://github.com/pimoroni/pimoroni-pico.git

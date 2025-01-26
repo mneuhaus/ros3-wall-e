@@ -1445,3 +1445,144 @@
 
 # 2025-01-25 01:23:50.414006
 +somethins is wrong, the tracks always move forward, not backwards
+
+# 2025-01-26 00:46:14.516360
++n
+
+# 2025-01-26 00:49:40.519308
++/ask did you read the eve protocoll docs?
+
+# 2025-01-26 00:53:21.726573
++yea, no please lets start over completely by replacing the whole src/servo_2040/firmware/main.c code with a fresh implementation based on that specification, i've created that specification specifically for this project
+
+# 2025-01-26 00:59:43.533577
++n
+
+# 2025-01-26 01:00:15.380027
++nice, now please update the servo_2040 node to send the appropriate commands
+
+# 2025-01-26 01:02:38.953420
++n
+
+# 2025-01-26 01:02:48.703845
++[  6%] Building C object CMakeFiles/servo_controller.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.c:30:13: error: 'pwm_config' redeclared as different kind of symbol
++   30 | pwm_channel pwm_config[30] = {0}; // Support up to pin 29
++      |             ^~~~~~~~~~
++In file included from /home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.c:10:
++/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_pwm/include/hardware/pwm.h:72:3: note: previous declaration of 'pwm_config' with type 'pwm_config'
++   72 | } pwm_config;
++      |   ^~~~~~~~~~
++make[3]: *** [CMakeFiles/servo_controller.dir/build.make:76: CMakeFiles/servo_controller.dir/main.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make: *** [Makefile:40: servo2040/build] Error 2
+
+# 2025-01-26 01:09:35.350962
++Flashing Servo 2040 firmware...
++python3 src/servo_2040/scripts/flash_firmware.py
++Waiting for device in bootloader mode...
++Device detected, attempting remote bootloader entry...
++The device was rebooted into BOOTSEL mode.
++Device detected in bootloader mode!
++Erasing flash...
++ERROR: Cannot determine the flash size, so cannot erase the entirety of flash, try --range.
++Error during firmware flash: Command '['picotool', 'erase', '-f']' returned non-zero exit status 248.
++make: *** [Makefile:45: servo2040/flash] Error 1
++
+
+# 2025-01-26 01:12:08.525480
++n
+
+# 2025-01-26 01:13:49.234293
++python3 src/servo_2040/scripts/flash_firmware.py
++Waiting for device in bootloader mode...
++Device detected, attempting remote bootloader entry...
++The device was rebooted into BOOTSEL mode.
++Device detected in bootloader mode!
++Erasing flash...
++ERROR: Erase range not all in flash
++Error during firmware flash: Command '['picotool', 'erase', '-f', '--range', '0x0', '0x200000']' returned non-zero exit status 248.
++make: *** [Makefile:45: servo2040/flash] Error 1
+
+# 2025-01-26 01:25:30.854189
++make sure to reset and initialize all needed pins on the servo_2040 when the node is initialized
+
+# 2025-01-26 01:26:17.525655
++d
+
+# 2025-01-26 01:28:42.528984
++why did you add a count to all the servos, that's only meant for servos, also please omit speed for now
+
+# 2025-01-26 01:34:31.791085
++now please update the src/servo_2040/firmware/main.c to use a single PIO Statemachine to handle all initialized pwm pins
+
+# 2025-01-26 01:43:43.783387
++n
+
+# 2025-01-26 01:44:16.537403
++[  6%] Building C object CMakeFiles/servo_controller.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.c:11:10: fatal error: hardware/pio.h: No such file or directory
++   11 | #include "hardware/pio.h"
++      |          ^~~~~~~~~~~~~~~~
++compilation terminated.
++make[3]: *** [CMakeFiles/servo_controller.dir/build.make:76: CMakeFiles/servo_controller.dir/main.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/servo_2040/firmware/build'
++make: *** [Makefile:40: servo2040/build] Error 2
+
+# 2025-01-26 01:46:57.698635
++n
+
+# 2025-01-26 02:55:54.286526
++please add the pimoroni-pico c library to the firmware: https://github.com/pimoroni/pimoroni-pico?tab=readme-ov-file#tutorials-and-guides
+
+# 2025-01-26 03:05:06.448317
++n
+
+# 2025-01-26 03:05:15.464093
++/run cd src/servo_2040/firmware && rm -rf build && mkdir build && cd build && cmake .. && make
+
+# 2025-01-26 03:05:15.464360
++/run cd src/servo_2040/firmware && rm -rf build && mkdir build && cd build && cmake .. && make
+
+# 2025-01-26 03:38:05.923398
++i'm getting this error, allthough i'm quite sure i've got PIMORONI_PICO_PATH set and present: PICO_SDK_PATH is /home/mneuhaus/pico/pico-sdk
++Target board (PICO_BOARD) is 'pico'.
++Using board configuration from /home/mneuhaus/pico/pico-sdk/src/boards/include/boards/pico.h
++Pico Platform (PICO_PLATFORM) is 'rp2040'.
++Defaulting compiler (PICO_COMPILER) to 'pico_arm_cortex_m0plus_gcc' since not specified.
++Configuring toolchain based on PICO_COMPILER 'pico_arm_cortex_m0plus_gcc'
++CMake Error at pimoroni-pico/pimoroni_pico_import.cmake:38 (message):
++  Pimoroni Pico location was not specified.  Please set PIMORONI_PICO_PATH.
++Call Stack (most recent call first):
++  CMakeLists.txt:5 (include)
++
++
++-- Configuring incomplete, errors occurred!
+
+# 2025-01-26 03:38:57.676965
++n
+
+# 2025-01-26 03:39:57.357217
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lservo2040: No such file or directory
++collect2: error: ld returned 1 exit status
++make[2]: *** [CMakeFiles/servo_controller.dir/build.make:1368: servo_controller.elf] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make: *** [Makefile:91: all] Error 2
+
+# 2025-01-26 03:40:11.380893
++please fix: /usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lservo2040: No such file or directory
++collect2: error: ld returned 1 exit status
++make[2]: *** [CMakeFiles/servo_controller.dir/build.make:1368: servo_controller.elf] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make: *** [Makefile:91: all] Error 2
+
+# 2025-01-26 03:42:23.114153
++great, now please update the main.c firmware to use an ServoCluster with pio0 and state machine 0 for all initialized servos: https://github.com/pimoroni/pimoroni-pico/blob/main/examples/servo2040/servo2040_servo_cluster.cpp

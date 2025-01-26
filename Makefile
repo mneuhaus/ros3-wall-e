@@ -11,9 +11,19 @@ SETUP_SCRIPT=$(ROS2_WS)/install/setup.bash
 
 # Pico SDK setup
 PICO_SDK_PATH ?= $(HOME)/pico-sdk
+ARM_GCC_PATH ?= /usr/local
 
 # Default target
 all: build
+
+# Setup ARM toolchain
+pico/toolchain:
+	@if ! command -v arm-none-eabi-gcc >/dev/null 2>&1; then \
+		echo "Installing ARM toolchain..."; \
+		brew install --cask gcc-arm-embedded; \
+	else \
+		echo "ARM toolchain already installed"; \
+	fi
 
 # Setup Pico SDK
 pico/setup:
@@ -61,7 +71,7 @@ servo2040/flash:
 	python3 src/servo_2040/scripts/flash_firmware.py
 
 # Build firmware for Eyes
-eyes/build:
+eyes/build: pico/toolchain
 	@echo "Building Eyes firmware..."
 	mkdir -p $(EYES_FIRMWARE_DIR)/build
 	cd $(EYES_FIRMWARE_DIR)/build && cmake .. && make

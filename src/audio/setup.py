@@ -1,5 +1,6 @@
 import os
 from setuptools import find_packages, setup
+from glob import glob
 
 package_name = 'audio'
 
@@ -11,14 +12,15 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/resource/audio', 
-         [os.path.join('resource/audio', f) for f in os.listdir('resource/audio') if f != '.gitkeep']),
+        (os.path.join('share', package_name, 'resource', 'audio'),
+         glob(os.path.join('resource', 'audio', '**', '*.[mM][pP]3'), recursive=True) +
+         glob(os.path.join('resource', 'audio', '**', '*.wav'), recursive=True))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='mneuhaus',
     maintainer_email='marc@neuhaus.nrw',
-    description='TODO: Package description',
+    description='Audio playback package for Wall-E robot',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={

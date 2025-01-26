@@ -24,4 +24,4 @@ void display_image();
 
 // Default test pattern - replace with actual image data
 // 16-bit RGB565 format, 240x240 pixels
-extern const uint16_t default_image[];
+extern uint16_t default_image[240 * 240];

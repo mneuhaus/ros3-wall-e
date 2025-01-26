@@ -25,7 +25,7 @@
 int dma_tx;
 
 // Basic test pattern - checkerboard
-uint16_t default_image[240 * 240];
+uint16_t default_image[240 * 240] = {0};  // Zero initialize
 
 void init_default_image() {
     // Fill first half with red

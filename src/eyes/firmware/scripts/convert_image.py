@@ -41,11 +41,15 @@ def convert_image_to_header(input_path, output_path, var_name="image_data"):
         f.write("#endif // _IMAGE_DATA_H_\n")
 
 if __name__ == "__main__":
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    input_file = os.path.join(script_dir, "../../../resource/lens.jpg")
-    output_file = os.path.join(script_dir, "../generated/image_data.h")
+    import sys
+    if len(sys.argv) != 3:
+        print("Usage: convert_image.py <input_jpg> <output_header>")
+        sys.exit(1)
+        
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
     
-    # Create generated directory if it doesn't exist
+    # Create output directory if needed
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     
     convert_image_to_header(input_file, output_file)

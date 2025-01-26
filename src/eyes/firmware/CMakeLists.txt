@@ -7,14 +7,15 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Add custom command to convert image
 add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/generated/image_data.h
-    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/scripts/convert_image.py
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../resource/lens.jpg
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/generated/image_data.h
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/generated
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/scripts/convert_image.py ${CMAKE_CURRENT_SOURCE_DIR}/../resource/lens.jpg ${CMAKE_CURRENT_BINARY_DIR}/generated/image_data.h
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../resource/lens.jpg ${CMAKE_CURRENT_SOURCE_DIR}/scripts/convert_image.py
     COMMENT "Converting lens.jpg to header file"
 )
 
 add_custom_target(generate_image_header
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generated/image_data.h
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/generated/image_data.h
 )
 
 # Initialise pico_sdk from installed location
@@ -55,6 +56,8 @@ include_directories(./examples/inc)
 
 
 add_executable(eyes main.c)
+add_dependencies(eyes generate_image_header)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 pico_set_program_name(eyes "eyes")
 pico_set_program_version(eyes "0.1")

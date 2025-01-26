@@ -20,7 +20,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', ['launch/all_launch.py']),
-        ('share/' + package_name + '/firmware', ['firmware/main.c', 'firmware/CMakeLists.txt']),
+        ('share/' + package_name + '/firmware', ['firmware/main.cpp', 'firmware/CMakeLists.txt']),
     ],
     install_requires=['setuptools', 'pyserial', 'adafruit-ampy'],
     zip_safe=True,

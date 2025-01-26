@@ -83,6 +83,7 @@ add_compile_options(-O2)
                         hardware_spi
                         hardware_i2c
                         hardware_dma
+                        hardware_pwm
                         )
 # Add the standard include files to the build
 target_include_directories(eyes PRIVATE

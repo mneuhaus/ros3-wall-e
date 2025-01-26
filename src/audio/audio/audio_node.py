@@ -24,7 +24,10 @@ class AudioNode(Node):
     def setup_hardware(self):
         """Initialize audio hardware and drivers."""
         pygame.mixer.init()
-        pygame.mixer.music.set_volume(0.9)  # Set volume to 90%
+        # Set both mixer and music volume to maximum
+        pygame.mixer.music.set_volume(1.0)
+        for i in range(pygame.mixer.get_num_channels()):
+            pygame.mixer.Channel(i).set_volume(1.0)
         self.sounds_dir = os.path.join(
             get_package_share_directory('audio'),
             'sounds'
@@ -36,7 +39,11 @@ class AudioNode(Node):
         startup_sound = os.path.join(self.sounds_dir, 'startup.mp3')
         if os.path.exists(startup_sound):
             sound = pygame.mixer.Sound(startup_sound)
-            sound.play()
+            sound.set_volume(1.0)  # Set individual sound volume to maximum
+            channel = pygame.mixer.find_channel()
+            if channel:
+                channel.set_volume(1.0)
+                channel.play(sound)
             self.get_logger().info('Playing startup sound')
             # Wait for startup sound and pause
             time.sleep(2)
@@ -46,7 +53,11 @@ class AudioNode(Node):
             if sound_files:
                 random_sound = os.path.join(self.sounds_dir, random.choice(sound_files))
                 sound = pygame.mixer.Sound(random_sound)
-                sound.play()
+                sound.set_volume(1.0)  # Set individual sound volume to maximum
+                channel = pygame.mixer.find_channel()
+                if channel:
+                    channel.set_volume(1.0)
+                    channel.play(sound)
                 self.get_logger().info(f'Playing random sound: {os.path.basename(random_sound)}')
         else:
             self.get_logger().error(f'Startup sound not found at {startup_sound}')

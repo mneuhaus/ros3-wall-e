@@ -12,6 +12,7 @@ import pygame
 import rclpy
 from rclpy.node import Node
 from rclpy.timer import Timer
+from std_msgs.msg import String
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -93,7 +94,7 @@ class AudioNode(Node):
     def create_subscriptions(self):
         """Setup ROS2 subscriptions."""
         self.play_sound_sub = self.create_subscription(
-            'std_msgs/String',
+            String,
             '/play_sound',
             self.play_sound_callback,
             10

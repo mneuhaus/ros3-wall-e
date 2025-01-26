@@ -1,4 +1,6 @@
+import os
 from setuptools import find_packages, setup
+from glob import glob
 
 package_name = 'audio'
 
@@ -10,16 +12,19 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/sounds',
+         glob('resource/sounds/**/*.mp3', recursive=True))
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'pygame'],
     zip_safe=True,
     maintainer='mneuhaus',
     maintainer_email='marc@neuhaus.nrw',
-    description='TODO: Package description',
+    description='Audio playback package for Wall-E robot',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'audio_node = audio.audio_node:main',
         ],
     },
 )

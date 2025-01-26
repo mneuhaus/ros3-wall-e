@@ -1686,83 +1686,190 @@
 # 2025-01-26 13:22:56.946801
 +please add 2 sliders to the web interface to move each track seperately
 
-# 2025-01-26 20:06:56.014913
+# 2025-01-26 20:46:24.840641
++/ask i'm gathering audio files for wall-e to play, where should i put those?
+
+# 2025-01-26 20:49:01.581116
++great, could you please create a audio node inside the audio package to play mp3/wav files based on the files available in that folder?
+
+# 2025-01-26 20:50:45.156201
 +n
 
-# 2025-01-26 20:09:07.874045
-+lets build a first prototype to display an image on the rp2040 eye, how could we accomplish thath?
+# 2025-01-26 20:56:28.414535
++/run sudo apt-get install python3-pygame
 
-# 2025-01-26 20:10:14.775391
-+since it's an rp2040 that needs to be flash a firmware/main.py or main.c would probably the best way to go?
+# 2025-01-26 20:56:28.414739
++/run sudo apt-get install python3-pygame
 
-# 2025-01-26 20:11:30.843211
-+take look at the specification for the rp2040 display: https://www.waveshare.com/wiki/RP2040-LCD-1.28
+# 2025-01-26 21:00:18.269373
++/run colcon build --packages-select audio
 
-# 2025-01-26 20:21:24.203899
-+wait, ignore the eve protokoll for now regarding the yes, we're still ptototyping here
+# 2025-01-26 21:00:18.269592
++/run colcon build --packages-select audio
 
-# 2025-01-26 20:22:05.013576
-+as a first proof of concept we need a way to use a jpg/png or similar to be flashed onto the eye that is simply display on boot
+# 2025-01-26 21:07:18.337338
++/run ros2 run audio audio_node
 
-# 2025-01-26 20:24:32.123120
+# 2025-01-26 21:07:18.337556
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:07:35.348355
++/run ros2 service call /list_sounds std_msgs/String "{}"
+
+# 2025-01-26 21:07:35.348610
++/run ros2 service call /list_sounds std_msgs/String "{}"
+
+# 2025-01-26 21:07:40.024554
++/run ros2 service call /play_sound std_msgs/String "data: 'sound_name'"
+
+# 2025-01-26 21:07:40.024998
++/run ros2 service call /play_sound std_msgs/String "data: 'sound_name'"
+
+# 2025-01-26 21:07:57.121853
++please fix the missing audio node
+
+# 2025-01-26 21:09:32.596255
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:09:32.596506
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:09:42.460483
++/run source install/setup.zsh
+
+# 2025-01-26 21:09:42.460788
++/run source install/setup.zsh
+
+# 2025-01-26 21:09:45.773274
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:09:45.773537
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:09:51.233256
++y
+
+# 2025-01-26 21:09:53.458260
 +n
 
-# 2025-01-26 20:25:21.203273
-+great now please add a command to the Makefile to build and flash that eye onto the rp2040, also please update the CONVENTIONS.md to automatically create commands like that for new firmwares in the future
-
-# 2025-01-26 20:44:25.411856
-+please try agan
-
-# 2025-01-26 21:01:08.792398
-+you failed to ad the build commands to the Makefile
-
-# 2025-01-26 21:02:07.978225
-+please create a setup command to import/setup pico-sdk
-
-# 2025-01-26 21:02:38.424088
-+/run make pico/setup
-
-# 2025-01-26 21:02:38.424362
-+/run make pico/setup
-
-# 2025-01-26 21:02:43.301025
-+/run source ~/.zshrc
-
-# 2025-01-26 21:02:43.301122
-+/run source ~/.zshrc
-
-# 2025-01-26 21:03:35.171129
+# 2025-01-26 21:10:08.628355
++Running colcon build --packages-select audio
++Starting >>> audio   
++--- stderr: audio                   
++error: can't copy 'resource/audio': doesn't exist or not a regular file
++---
++Failed   <<< audio [5.46s, exited with code 1]
 +
-+Building Eyes firmware...
-+mkdir -p src/eyes/firmware/build
-+cd src/eyes/firmware/build && cmake .. && make
-+CMake Error at CMakeLists.txt:3 (include):
-+  include could not find requested file:
++Summary: 0 packages finished [6.71s]
++  1 package failed: audio
++  1 package had stderr output: audio
 +
-+    pico_sdk_import.cmake
++Running source install/setup.zsh
 +
++Running ros2 run audio audio_node
++Package 'audio' not found
 +
-+sub^Cmake: *** [eyes/build] Interrupt: 2
 
-# 2025-01-26 21:21:53.642790
-+/run make eyes/build
+# 2025-01-26 21:12:55.512866
++n
 
-# 2025-01-26 21:21:53.643273
-+/run make eyes/build
+# 2025-01-26 21:13:03.643298
++/run mkdir -p src/audio/resource
 
-# 2025-01-26 22:01:54.312997
-+arm-none-eabi-gcc: fatal error: cannot read spec file 'nosys.specs': No such file or directory
-+compilation terminated.
-+make[3]: *** [pico-sdk/src/rp2040/boot_stage2/bs2_default.elf] Error 1
-+make[2]: *** [pico-sdk/src/rp2040/boot_stage2/CMakeFiles/bs2_default.dir/all] Error 2
-+make[1]: *** [all] Error 2
-+make: *** [eyes/build] Error 2
+# 2025-01-26 21:13:03.643534
++/run mkdir -p src/audio/resource
 
-# 2025-01-26 22:02:08.560891
-+/run make eyes/build
+# 2025-01-26 21:13:05.730279
++/run chmod +x src/audio/audio/audio_node.py
 
-# 2025-01-26 22:02:08.561156
-+/run make eyes/build
+# 2025-01-26 21:13:05.730512
++/run chmod +x src/audio/audio/audio_node.py
 
-# 2025-01-26 22:02:20.120814
+# 2025-01-26 21:13:07.815519
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:13:07.815928
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:13:17.668531
++/run source install/setup.zsh
+
+# 2025-01-26 21:13:17.668902
++/run source install/setup.zsh
+
+# 2025-01-26 21:13:20.993768
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:13:20.994217
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:17:44.097130
++n
+
+# 2025-01-26 21:18:12.671769
++ i think something is wrong the data_files section in the src/audio/setup.py file, could you please take a look?
+
+# 2025-01-26 21:20:08.194967
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:20:08.195237
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:20:18.074106
++/run source install/setup.zsh
+
+# 2025-01-26 21:20:18.074534
++/run source install/setup.zsh
+
+# 2025-01-26 21:20:21.392648
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:20:21.393158
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:20:59.182947
++y
+
+# 2025-01-26 21:21:03.268922
++still failing Starting >>> audio   
++--- stderr: audio                   
++error: can't copy 'resource/audio': doesn't exist or not a regular file
++---
++Failed   <<< audio [5.47s, exited with code 1]
++
+
+# 2025-01-26 21:21:28.366480
++n
+
+# 2025-01-26 21:21:33.442912
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:21:33.443137
++/run mkdir -p src/audio/resource
+
+# 2025-01-26 21:21:35.552396
++/run touch src/audio/resource/audio
+
+# 2025-01-26 21:21:35.552827
++/run touch src/audio/resource/audio
+
+# 2025-01-26 21:21:37.657729
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:21:37.658147
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:21:47.532190
++/run source install/setup.zsh
+
+# 2025-01-26 21:21:47.532639
++/run source install/setup.zsh
+
+# 2025-01-26 21:26:20.081348
++/run ros2 run audio audio_node 
+
+# 2025-01-26 21:26:28.336828
++What's wrong? Fix
+
+# 2025-01-26 21:26:47.717370
 +n

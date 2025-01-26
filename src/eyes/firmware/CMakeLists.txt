@@ -5,6 +5,18 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+# Add custom command to convert image
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/generated/image_data.h
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/scripts/convert_image.py
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/../resource/lens.jpg
+    COMMENT "Converting lens.jpg to header file"
+)
+
+add_custom_target(generate_image_header
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/generated/image_data.h
+)
+
 # Initialise pico_sdk from installed location
 # (note this can come from environment, CMake cache etc)
 set(PICO_BOARD pico CACHE STRING "Board type")

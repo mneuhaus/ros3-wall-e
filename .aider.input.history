@@ -1586,3 +1586,75 @@
 
 # 2025-01-26 03:42:23.114153
 +great, now please update the main.c firmware to use an ServoCluster with pio0 and state machine 0 for all initialized servos: https://github.com/pimoroni/pimoroni-pico/blob/main/examples/servo2040/servo2040_servo_cluster.cpp
+
+# 2025-01-26 03:46:59.595307
++please update the main.cpp from the old c syntax to cpp
+
+# 2025-01-26 03:47:56.141662
++go ahead
+
+# 2025-01-26 03:49:31.644996
++In file included from /home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.cpp:13:
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/pimoroni-pico/libraries/servo2040/servo2040.hpp:4:10: fatal error: ws2812.hpp: No such file or directory
++    4 | #include "ws2812.hpp"
++      |          ^~~~~~~~~~~~
++compilation terminated.
++make[2]: *** [CMakeFiles/servo_controller.dir/build.make:76: CMakeFiles/servo_controller.dir/main.cpp.o] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make: *** [Makefile:91: all] Error 2
+
+# 2025-01-26 03:53:54.479089
++n
+
+# 2025-01-26 03:54:04.852836
++[  6%] Building CXX object CMakeFiles/servo_controller.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.cpp:13:10: fatal error: libraries/pico_servo/pico_servo.hpp: No such file or directory
++   13 | #include "libraries/pico_servo/pico_servo.hpp"
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++compilation terminated.
++make[2]: *** [CMakeFiles/servo_controller.dir/build.make:76: CMakeFiles/servo_controller.dir/main.cpp.o] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/servo_controller.dir/all] Error 2
++make: *** [Makefile:91: all] Error 2
+
+# 2025-01-26 04:08:47.330009
++[ 56%] Building CXX object CMakeFiles/pico-boilerplate.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.cpp:13:10: fatal error: pico_servo/pico_servo.hpp: No such file or directory
++   13 | #include "pico_servo/pico_servo.hpp"
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++compilation terminated.
++make[2]: *** [CMakeFiles/pico-boilerplate.dir/build.make:76: CMakeFiles/pico-boilerplate.dir/main.cpp.o] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1790: CMakeFiles/pico-boilerplate.dir/all] Error 2
++make: *** [Makefile:156: all] Error 2
+
+# 2025-01-26 04:10:36.521740
++n
+
+# 2025-01-26 04:15:26.156268
++[  4%] Building CXX object CMakeFiles/pico-boilerplate.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/servo_2040/firmware/main.cpp:13:10: fatal error: servo2040.hpp: No such file or directory
++   13 | #include "servo2040.hpp"
++      |          ^~~~~~~~~~~~~~~
++compilation terminated.
++make[2]: *** [CMakeFiles/pico-boilerplate.dir/build.make:76: CMakeFiles/pico-boilerplate.dir/main.cpp.o] Error 1
++make[1]: *** [CMakeFiles/Makefile2:1786: CMakeFiles/pico-boilerplate.dir/all] Error 2
++make: *** [Makefile:156: all] Error 2
+
+# 2025-01-26 12:47:03.393258
++ok, let's focus on another part of this setup for a change, there is a rough serve_web node, could you add this to the all_launch.py
+
+# 2025-01-26 12:47:44.860328
++n
+
+# 2025-01-26 12:49:03.192482
++Finished <<< wall_e_launch [2.71s]                                                                      
++--- stderr: servo_2040                                                   
++error: can't copy 'firmware/main.c': doesn't exist or not a regular file
++---
++Failed   <<< servo_2040 [7.81s, exited with code 1]
++Aborted  <<< wall_e_web [8.65s]                      
++
++Summary: 1 package finished [10.4s]
++  1 package failed: servo_2040
++  1 package aborted: wall_e_web
++  1 package had stderr output: servo_2040
++make: *** [Makefile:18: ros2/build] Error 1

@@ -4,5 +4,5 @@ weak-model: openrouter/openai/gpt-4o
 auto-lint: false
 
 file:
-  - CONVENTIONS.md
-  - docs/*
+  - docs/Conventions.md
+  - docs/eve-protokoll.md

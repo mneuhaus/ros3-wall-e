@@ -19,6 +19,7 @@ class AudioNode(Node):
     def __init__(self):
         super().__init__('audio_node')
         self.setup_hardware()
+        self.create_subscriptions()
         self.get_logger().info('Audio node started')
         self.play_startup_sound()
         
@@ -58,6 +59,24 @@ class AudioNode(Node):
         except pygame.error as e:
             self.get_logger().error(f'Error playing startup sound: {e}')
         
+    def play_sound_callback(self, msg):
+        """Handle sound playback requests."""
+        sound_file = os.path.join(self.sounds_dir, msg.data)
+        if not os.path.exists(sound_file):
+            self.get_logger().error(f'Sound file not found: {sound_file}')
+            return
+            
+        try:
+            sound = pygame.mixer.Sound(sound_file)
+            sound.set_volume(1.0)
+            channel = pygame.mixer.find_channel()
+            if channel:
+                channel.set_volume(1.0)
+                channel.play(sound)
+                self.get_logger().info(f'Playing sound: {msg.data}')
+        except pygame.error as e:
+            self.get_logger().error(f'Error playing sound {msg.data}: {e}')
+    
     def play_random_sound(self):
         """Play a random sound from the available MP3 files."""
         sound_files = [f for f in os.listdir(self.sounds_dir) if f.endswith('.mp3') and f != 'startup.mp3']
@@ -73,7 +92,12 @@ class AudioNode(Node):
 
     def create_subscriptions(self):
         """Setup ROS2 subscriptions."""
-        pass  # TODO: Add subscriptions for audio control
+        self.play_sound_sub = self.create_subscription(
+            'std_msgs/String',
+            '/play_sound',
+            self.play_sound_callback,
+            10
+        )
         
     def create_publishers(self):
         """Setup ROS2 publishers."""

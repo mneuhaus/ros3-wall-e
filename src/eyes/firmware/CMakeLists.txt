@@ -40,13 +40,13 @@ include_directories(./lib/QMI8658)
 include_directories(./lib/lvgl)
 include_directories(./examples/inc)
 
-add_executable(RP2040-LCD-1.28 main.c)
+add_executable(eyes main.c)
 
-pico_set_program_name(RP2040-LCD-1.28  "RP2040-LCD-1.28")
-pico_set_program_version(RP2040-LCD-1.28 "0.1")
+pico_set_program_name(eyes "eyes")
+pico_set_program_version(eyes "0.1")
 
-pico_enable_stdio_uart(RP2040-LCD-1.28 1)
-pico_enable_stdio_usb(RP2040-LCD-1.28  0)
+pico_enable_stdio_uart(eyes 1)
+pico_enable_stdio_usb(eyes 0)
 
 # Add the standard library to the build
 
@@ -56,7 +56,7 @@ set(LV_CONF_PATH
 add_compile_options(-O2)
 
 
-target_link_libraries(RP2040-LCD-1.28  
+target_link_libraries(eyes
                       LCD 
                       QMI8658
                       LVGL
@@ -68,10 +68,9 @@ target_link_libraries(RP2040-LCD-1.28
                       hardware_dma
                       )
 # Add the standard include files to the build
-target_include_directories(RP2040-LCD-1.28   PRIVATE
+target_include_directories(eyes PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
-  # ${CMAKE_CURRENT_LIST_DIR}
   )
 
-pico_add_extra_outputs(RP2040-LCD-1.28)
+pico_add_extra_outputs(eyes)
 

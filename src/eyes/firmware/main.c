@@ -1,14 +1,22 @@
-#include <stdio.h>
-#include "pico/stdlib.h"
+#include "LVGL_example.h"
 
 int main(void)
 {
     stdio_init_all();
-    printf("Hello from Wall-E's Eyes!\n");
+    printf("Initializing Wall-E's Eyes...\n");
+
+    // Initialize LVGL and display
+    LVGL_Init();
     
+    // Create a simple label
+    lv_obj_t * label = lv_label_create(lv_scr_act());
+    lv_label_set_text(label, "WALL-E");
+    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    
+    // Main loop
     while(1) {
-        sleep_ms(1000);
-        printf("Blink!\n");
+        lv_timer_handler();
+        sleep_ms(5);
     }
     
     return 0;

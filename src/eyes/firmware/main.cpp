@@ -11,6 +11,9 @@
 #include "pico/bootrom.h"
 #include "display.h"
 
+// External DMA channel declaration
+extern int dma_tx;
+
 #define MAX_CMD_LENGTH 128
 #define BOOTLOADER_DELAY_MS 500
 

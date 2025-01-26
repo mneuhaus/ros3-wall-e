@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.13)
 
 # Pull in SDK
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
-include(pimoroni-pico/pimoroni_pico_import.cmake)
+
+# Set Pimoroni Pico path - check env var first, then try local directory
+if(DEFINED ENV{PIMORONI_PICO_PATH})
+    set(PIMORONI_PICO_PATH $ENV{PIMORONI_PICO_PATH})
+else()
+    set(PIMORONI_PICO_PATH ${CMAKE_CURRENT_SOURCE_DIR}/pimoroni-pico)
+endif()
+
+include(${PIMORONI_PICO_PATH}/pimoroni_pico_import.cmake)
 
 project(servo_controller C CXX ASM)
 set(CMAKE_C_STANDARD 11)

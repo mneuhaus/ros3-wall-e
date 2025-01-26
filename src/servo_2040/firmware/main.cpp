@@ -77,16 +77,33 @@ bool process_command(char* command) {
         char mode[10] = {0};
         
         char* arg;
+        bool has_pin = false, has_mode = false;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
             if (strncmp(arg, "PIN=", 4) == 0) {
-                sscanf(arg + 4, "%u", &pin);
+                if (sscanf(arg + 4, "%u", &pin) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_PIN_FORMAT");
+                    return false;
+                }
+                has_pin = true;
             } else if (strncmp(arg, "MODE=", 5) == 0) {
                 strncpy(mode, arg + 5, sizeof(mode) - 1);
+                has_mode = true;
             } else if (strncmp(arg, "COUNT=", 6) == 0) {
-                sscanf(arg + 6, "%u", &count);
+                if (sscanf(arg + 6, "%u", &count) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_COUNT_FORMAT");
+                    return false;
+                }
             } else if (strncmp(arg, "FREQ=", 5) == 0) {
-                sscanf(arg + 5, "%u", &freq);
+                if (sscanf(arg + 5, "%u", &freq) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_FREQ_FORMAT");
+                    return false;
+                }
             }
+        }
+        
+        if (!has_pin || !has_mode) {
+            send_response(cmd_copy, "ERROR", "MISSING_REQUIRED_PARAMS");
+            return false;
         }
         
         if (init_gpio(pin, mode, count, freq)) {
@@ -102,14 +119,31 @@ bool process_command(char* command) {
         int speed = 0;
         
         char* arg;
+        bool has_pin = false, has_pos = false;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
             if (strncmp(arg, "PIN=", 4) == 0) {
-                sscanf(arg + 4, "%u", &pin);
+                if (sscanf(arg + 4, "%u", &pin) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_PIN_FORMAT");
+                    return false;
+                }
+                has_pin = true;
             } else if (strncmp(arg, "POS=", 4) == 0) {
-                sscanf(arg + 4, "%f", &pos);
+                if (sscanf(arg + 4, "%f", &pos) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_POS_FORMAT");
+                    return false;
+                }
+                has_pos = true;
             } else if (strncmp(arg, "SPEED=", 6) == 0) {
-                sscanf(arg + 6, "%d", &speed);
+                if (sscanf(arg + 6, "%d", &speed) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_SPEED_FORMAT");
+                    return false;
+                }
             }
+        }
+        
+        if (!has_pin || !has_pos) {
+            send_response(cmd_copy, "ERROR", "MISSING_REQUIRED_PARAMS");
+            return false;
         }
         
         if (pin < 30 && pwm_channels[pin].initialized) {
@@ -126,14 +160,29 @@ bool process_command(char* command) {
         char state[5] = {0};
         
         char* arg;
+        bool has_pin = false, has_state = false, has_pwm = false;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
             if (strncmp(arg, "PIN=", 4) == 0) {
-                sscanf(arg + 4, "%u", &pin);
+                if (sscanf(arg + 4, "%u", &pin) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_PIN_FORMAT");
+                    return false;
+                }
+                has_pin = true;
             } else if (strncmp(arg, "STATE=", 6) == 0) {
                 strncpy(state, arg + 6, sizeof(state) - 1);
+                has_state = true;
             } else if (strncmp(arg, "PWM=", 4) == 0) {
-                sscanf(arg + 4, "%u", &pwm_val);
+                if (sscanf(arg + 4, "%u", &pwm_val) != 1) {
+                    send_response(cmd_copy, "ERROR", "INVALID_PWM_FORMAT");
+                    return false;
+                }
+                has_pwm = true;
             }
+        }
+        
+        if (!has_pin || (!has_state && !has_pwm)) {
+            send_response(cmd_copy, "ERROR", "MISSING_REQUIRED_PARAMS");
+            return false;
         }
         
         if (pin == LEFT_TRACK_PWM || pin == RIGHT_TRACK_PWM) {

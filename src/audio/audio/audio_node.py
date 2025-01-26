@@ -34,22 +34,29 @@ class AudioNode(Node):
             'sounds'
         )
         
-    def play_startup_sound(self):
+    def play_startup_sound(self) -> None:
         """Play the startup sound followed by a random sound."""
         # Play startup sound
         startup_sound = os.path.join(self.sounds_dir, 'startup.mp3')
-        if os.path.exists(startup_sound):
+        if not os.path.exists(startup_sound):
+            self.get_logger().error(f'Startup sound not found at {startup_sound}')
+            return
+            
+        try:
             sound = pygame.mixer.Sound(startup_sound)
             sound.set_volume(1.0)  # Set individual sound volume to maximum
             channel = pygame.mixer.find_channel()
-            if channel:
-                channel.set_volume(1.0)
-                channel.play(sound)
+            if not channel:
+                self.get_logger().error('No available audio channels')
+                return
+                
+            channel.set_volume(1.0)
+            channel.play(sound)
             self.get_logger().info('Playing startup sound')
             # Wait for startup sound to finish
             time.sleep(2)
-        else:
-            self.get_logger().error(f'Startup sound not found at {startup_sound}')
+        except pygame.error as e:
+            self.get_logger().error(f'Error playing startup sound: {e}')
         
     def play_random_sound(self):
         """Play a random sound from the available MP3 files."""

@@ -24,6 +24,7 @@ class AudioNode(Node):
     def setup_hardware(self):
         """Initialize audio hardware and drivers."""
         pygame.mixer.init()
+        pygame.mixer.music.set_volume(0.9)  # Set volume to 90%
         self.sounds_dir = os.path.join(
             get_package_share_directory('audio'),
             'sounds'

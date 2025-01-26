@@ -15,6 +15,16 @@ include(${PIMORONI_PICO_PATH}/pimoroni_pico_import.cmake)
 project(servo_controller C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Add compiler warnings
+add_compile_options(
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Werror
+)
 
 pico_sdk_init()
 

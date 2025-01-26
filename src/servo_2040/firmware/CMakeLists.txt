@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 # Include Pimoroni libraries
-include_directories(${PIMORONI_PICO_PATH}/drivers)
+include_directories(pimoroni-pico/drivers)
 
 add_executable(servo_controller
     main.c

@@ -9,8 +9,20 @@
 #include <cmath>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "hardware/pwm.h"
+#include "hardware/pio.h"
 #include "pico/bootrom.h"
-#include "servo2040.hpp"
+
+// PWM configuration for servos
+struct PWMChannel {
+    bool initialized;
+    uint slice_num;
+    uint channel;
+    float min_us;
+    float max_us;
+};
+
+PWMChannel pwm_channels[30] = {0};
 
 // Hardware configuration
 #define LEFT_TRACK_PWM 13

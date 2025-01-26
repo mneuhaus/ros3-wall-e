@@ -6,6 +6,8 @@ Handles playback of sound effects and background music.
 """
 
 import os
+import time
+import random
 import pygame
 import rclpy
 from rclpy.node import Node
@@ -28,12 +30,23 @@ class AudioNode(Node):
         )
         
     def play_startup_sound(self):
-        """Play the startup sound."""
+        """Play the startup sound followed by a random sound."""
+        # Play startup sound
         startup_sound = os.path.join(self.sounds_dir, 'startup.mp3')
         if os.path.exists(startup_sound):
             sound = pygame.mixer.Sound(startup_sound)
             sound.play()
             self.get_logger().info('Playing startup sound')
+            # Wait for startup sound and pause
+            time.sleep(2)
+            
+            # Play random sound
+            sound_files = [f for f in os.listdir(self.sounds_dir) if f.endswith('.mp3') and f != 'startup.mp3']
+            if sound_files:
+                random_sound = os.path.join(self.sounds_dir, random.choice(sound_files))
+                sound = pygame.mixer.Sound(random_sound)
+                sound.play()
+                self.get_logger().info(f'Playing random sound: {os.path.basename(random_sound)}')
         else:
             self.get_logger().error(f'Startup sound not found at {startup_sound}')
         

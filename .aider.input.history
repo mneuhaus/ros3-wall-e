@@ -2321,3 +2321,15 @@
 
 # 2025-01-26 23:47:43.994671
 +n
+
+# 2025-01-26 23:50:56.841220
++ok, display lights up, can you display a simple text or shape on the display based on the LVGL_example.c ?
+
+# 2025-01-26 23:52:19.427105
++y
+
+# 2025-01-26 23:53:01.893305
++i can only see a blank white screen
+
+# 2025-01-26 23:53:55.159375
++n

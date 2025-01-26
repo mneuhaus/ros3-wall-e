@@ -21,8 +21,6 @@ class AudioNode(Node):
         self.setup_hardware()
         self.get_logger().info('Audio node started')
         self.play_startup_sound()
-        # Create timer for random sound playback
-        self.create_timer(5.0, self.play_random_sound)  # Play every 5 seconds
         
     def setup_hardware(self):
         """Initialize audio hardware and drivers."""
@@ -48,11 +46,8 @@ class AudioNode(Node):
                 channel.set_volume(1.0)
                 channel.play(sound)
             self.get_logger().info('Playing startup sound')
-            # Wait for startup sound and pause
+            # Wait for startup sound to finish
             time.sleep(2)
-            
-            # Initial random sound after startup
-            self.play_random_sound()
         else:
             self.get_logger().error(f'Startup sound not found at {startup_sound}')
         

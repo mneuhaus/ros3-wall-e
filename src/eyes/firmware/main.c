@@ -1,6 +1,6 @@
 #include "DEV_Config.h"
 #include "LCD_1in28.h"
-#include "../generated/image_data.h"
+#include "generated/image_data.h"
 
 // LCD is 240x240 pixels
 #define LCD_WIDTH 240

@@ -1873,3 +1873,198 @@
 
 # 2025-01-26 21:26:47.717370
 +n
+
+# 2025-01-26 21:27:52.243464
++/run ros2 run audio audio_node 
+
+# 2025-01-26 21:27:59.102645
++What's wrong? Fix
+
+# 2025-01-26 21:28:36.000095
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:28:36.000328
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:28:46.683932
++/run source install/setup.zsh
+
+# 2025-01-26 21:28:46.684160
++/run source install/setup.zsh
+
+# 2025-01-26 21:28:50.011497
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:28:50.011853
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:29:40.963296
++great, now lets add the startup.mp3 to play when the audio node is started and ready to receive topics
+
+# 2025-01-26 21:30:31.598887
++n
+
+# 2025-01-26 21:30:40.110432
++/run pip3 install pygame
+
+# 2025-01-26 21:30:40.110631
++/run pip3 install pygame
+
+# 2025-01-26 21:30:49.945316
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:30:49.945518
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:31:00.850726
++/run source install/setup.zsh
+
+# 2025-01-26 21:31:00.851032
++/run source install/setup.zsh
+
+# 2025-01-26 21:31:04.232205
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:31:04.232639
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:31:42.348452
++n
+
+# 2025-01-26 21:32:04.408313
++i didn't hear anything, also please simply play random mp3 after the startup with 2s pause in between
+
+# 2025-01-26 21:32:39.304494
++/run sudo apt install python3-pygame
+
+# 2025-01-26 21:32:39.304806
++/run sudo apt install python3-pygame
+
+# 2025-01-26 21:32:49.168144
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:32:49.168395
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:32:59.897897
++/run source install/setup.zsh
+
+# 2025-01-26 21:32:59.898368
++/run source install/setup.zsh
+
+# 2025-01-26 21:33:03.219264
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:33:03.219642
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:33:53.108928
++n
+
+# 2025-01-26 21:34:24.099213
++it's barely hearable, could we raise the volume up to 90%?
+
+# 2025-01-26 21:34:41.262743
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:34:41.262974
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:34:51.948265
++/run source install/setup.zsh
+
+# 2025-01-26 21:34:51.948740
++/run source install/setup.zsh
+
+# 2025-01-26 21:34:55.288370
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:34:55.288717
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:37:36.568884
++n
+
+# 2025-01-26 21:39:00.019595
++/ask ok, something is wrong, i can hear the sounds, but only barely, they are really quiet. i've got the 8Ohm2W speaker connected to an GF1002 amplifiert, that's powered by 5V, that amplifier is connected to the cm4 audio jack
+
+# 2025-01-26 21:39:38.604878
++please give me some commands to test with alsamixer, etc.
+
+# 2025-01-26 21:40:55.806507
++n
+
+# 2025-01-26 21:41:10.824830
++ok, lets try to run that node again, i managed to increase the volumne of the alsamixer
+
+# 2025-01-26 21:41:25.972557
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:41:25.972741
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:41:36.642134
++/run source install/setup.zsh
+
+# 2025-01-26 21:41:36.642354
++/run source install/setup.zsh
+
+# 2025-01-26 21:41:39.979623
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:41:39.980114
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:42:36.425891
++n
+
+# 2025-01-26 21:42:39.772582
++ros2 run audio audio_node 
+
+# 2025-01-26 21:42:50.591250
++/run ros2 run audio audio_node 
+
+# 2025-01-26 21:43:46.073320
++ok, the sound quality is a bit shitty, but that's probably the amplifier or bad speaker, but i noticed, that the random playing does only play one sound after the startup
+
+# 2025-01-26 21:44:34.981856
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:44:34.982100
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:44:45.637104
++/run source install/setup.zsh
+
+# 2025-01-26 21:44:45.637503
++/run source install/setup.zsh
+
+# 2025-01-26 21:44:48.964898
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:44:48.965387
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:47:35.377702
++ok, i need to get a better speaker, but it's working, now please remove the random noises :D
+
+# 2025-01-26 21:47:49.668185
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:47:49.668398
++/run colcon build --packages-select audio
+
+# 2025-01-26 21:48:00.375565
++/run source install/setup.zsh
+
+# 2025-01-26 21:48:00.375806
++/run source install/setup.zsh
+
+# 2025-01-26 21:48:03.723200
++/run ros2 run audio audio_node
+
+# 2025-01-26 21:48:03.723641
++/run ros2 run audio audio_node
+
+# 2025-01-26 22:01:39.162139
++nice, now please add this node to the all_nodes.launch.py and update the main readme.md feel free to add a page to the docs directory detailing this module

@@ -5,3 +5,4 @@ install
 .aider.tags.cache*
 build
 .aider*
+srv/servo_2040/firmware/pimoroni-pico/

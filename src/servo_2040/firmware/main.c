@@ -3,14 +3,15 @@
  * Implements docs/eve-protokoll.md specification
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "pico/bootrom.h"
 #include "servo2040.hpp"
+#include "pico_servo.hpp"
 
 // Hardware configuration
 #define LEFT_TRACK_PWM 13
@@ -20,10 +21,10 @@
 #define MAX_CMD_LENGTH 128
 #define BOOTLOADER_DELAY_MS 500
 
-using namespace servo;
-
-// Create a servo cluster for all possible servos, using PIO 0 and State Machine 0
-ServoCluster servos(pio0, 0, 0, 30);  // Support up to pin 29
+namespace {
+    // Create a servo cluster for all possible servos, using PIO 0 and State Machine 0
+    servo::ServoCluster servos(pio0, 0, 0, 30);  // Support up to pin 29
+}
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);

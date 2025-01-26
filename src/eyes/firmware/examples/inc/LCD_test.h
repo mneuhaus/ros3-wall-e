@@ -37,6 +37,7 @@
 #include "pico/stdlib.h"
 #include "DEV_Config.h"
 #include "LCD_1in28.h"
+#include "CST816S.h"
 #include "QMI8658.h"
 #include "LVGL_example.h"
 

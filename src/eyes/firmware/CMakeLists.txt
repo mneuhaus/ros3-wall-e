@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Initialise pico_sdk from installed location
 # (note this can come from environment, CMake cache etc)
-
 set(PICO_BOARD pico CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
@@ -27,6 +26,7 @@ pico_sdk_init()
 #添加编译子目录
 add_subdirectory(./lib/Config)
 add_subdirectory(./lib/LCD)
+add_subdirectory(./lib/Touch)
 add_subdirectory(./lib/QMI8658)
 add_subdirectory(./lib/lvgl)
 add_subdirectory(./examples)
@@ -36,17 +36,19 @@ add_subdirectory(./examples)
 include_directories(./examples)
 include_directories(./lib/Config)
 include_directories(./lib/LCD)
+include_directories(./lib/Touch)
 include_directories(./lib/QMI8658)
 include_directories(./lib/lvgl)
 include_directories(./examples/inc)
 
-add_executable(eyes main.c)
 
-pico_set_program_name(eyes "eyes")
-pico_set_program_version(eyes "0.1")
+add_executable(RP2040-Touch-LCD-1.28 main.c)
 
-pico_enable_stdio_uart(eyes 1)
-pico_enable_stdio_usb(eyes 0)
+pico_set_program_name(RP2040-Touch-LCD-1.28  "RP2040-Touch-LCD-1.28")
+pico_set_program_version(RP2040-Touch-LCD-1.28 "0.1")
+
+pico_enable_stdio_uart(RP2040-Touch-LCD-1.28 1)
+pico_enable_stdio_usb(RP2040-Touch-LCD-1.28  0)
 
 # Add the standard library to the build
 
@@ -56,21 +58,23 @@ set(LV_CONF_PATH
 add_compile_options(-O2)
 
 
-target_link_libraries(eyes
-                      LCD 
-                      QMI8658
-                      LVGL
-                      Config
-                      examples
-                      pico_stdlib
-                      hardware_spi
-                      hardware_i2c
-                      hardware_dma
-                      )
+  target_link_libraries(RP2040-Touch-LCD-1.28  
+                        LCD 
+                        Touch
+                        QMI8658
+                        LVGL
+                        Config
+                        examples
+                        pico_stdlib
+                        hardware_spi
+                        hardware_i2c
+                        hardware_dma
+                        )
 # Add the standard include files to the build
-target_include_directories(eyes PRIVATE
+target_include_directories(RP2040-Touch-LCD-1.28   PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
+  # ${CMAKE_CURRENT_LIST_DIR}
   )
 
-pico_add_extra_outputs(eyes)
+pico_add_extra_outputs(RP2040-Touch-LCD-1.28)
 

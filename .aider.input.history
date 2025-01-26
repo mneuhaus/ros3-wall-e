@@ -2276,3 +2276,39 @@
 
 # 2025-01-26 23:08:40.321543
 +n
+
+# 2025-01-26 23:20:04.878580
++i've replaced the old eye firmware with a basic example from the manufacturer, it compiles properly, but puts out a built called "RP2040-LCD-1.28.uf2" could you update the build process to generate an eyes.uf2 instead?
+
+# 2025-01-26 23:21:37.983562
++n
+
+# 2025-01-26 23:24:46.925592
++ok, great, thanks now could you update the main.c to output something plain an simple like a hello world or something similar?
+
+# 2025-01-26 23:25:10.367006
++n
+
+# 2025-01-26 23:25:25.486726
++no, i meant through lvgl on the display
+
+# 2025-01-26 23:26:07.942990
++add src/eyes/firmware/lib/LCD/LCD_Test.h
+
+# 2025-01-26 23:26:14.113035
++/add src/eyes/firmware/lib/LCD/LCD_Test.h
+
+# 2025-01-26 23:27:04.837455
++those files don't exist, and i don't think you need thank take a look at LVGL_example.c
+
+# 2025-01-26 23:27:39.893407
++/add src/eyes/firmware/examples/src/LVGL_example.c.
+
+# 2025-01-26 23:27:52.974845
++/add src/eyes/firmware/examples/src/LVGL_example.c
+
+# 2025-01-26 23:28:07.086983
++there you go
+
+# 2025-01-26 23:28:57.925550
++n

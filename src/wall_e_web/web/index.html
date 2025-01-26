@@ -98,6 +98,19 @@
                     <input type="range" id="angularVel" min="-1.0" max="1.0" step="0.1" value="0">
                     <span id="angularVelValue" class="value-display">0</span>
                 </div>
+
+                <h3>Individual Track Control</h3>
+                <div class="slider-container">
+                    <label>Left Track:</label>
+                    <input type="range" id="leftTrack" min="-100" max="100" step="1" value="0">
+                    <span id="leftTrackValue" class="value-display">0</span>
+                </div>
+                
+                <div class="slider-container">
+                    <label>Right Track:</label>
+                    <input type="range" id="rightTrack" min="-100" max="100" step="1" value="0">
+                    <span id="rightTrackValue" class="value-display">0</span>
+                </div>
             </div>
 
             <div class="control-section">
@@ -150,6 +163,12 @@
             messageType: 'geometry_msgs/msg/Twist'
         });
 
+        var trackTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/servo_2040/track_speed',
+            messageType: 'std_msgs/msg/Float32MultiArray'
+        });
+
         var servoTopic = new ROSLIB.Topic({
             ros: ros,
             name: '/servo_2040/servo_position',
@@ -179,6 +198,25 @@
         var linearSlider = document.getElementById('linearVel');
         var angularSlider = document.getElementById('angularVel');
         var headTiltSlider = document.getElementById('headTilt');
+        var leftTrackSlider = document.getElementById('leftTrack');
+        var rightTrackSlider = document.getElementById('rightTrack');
+
+        function publishTrackSpeeds(left, right) {
+            var trackMsg = new ROSLIB.Message({
+                data: [left, right]
+            });
+            trackTopic.publish(trackMsg);
+        }
+
+        leftTrackSlider.oninput = function() {
+            document.getElementById('leftTrackValue').innerText = this.value;
+            publishTrackSpeeds(parseFloat(this.value), parseFloat(rightTrackSlider.value));
+        };
+
+        rightTrackSlider.oninput = function() {
+            document.getElementById('rightTrackValue').innerText = this.value;
+            publishTrackSpeeds(parseFloat(leftTrackSlider.value), parseFloat(this.value));
+        };
 
         linearSlider.oninput = function() {
             document.getElementById('linearVelValue').innerText = this.value;
@@ -199,9 +237,14 @@
         document.getElementById('stopButton').onclick = function() {
             linearSlider.value = 0;
             angularSlider.value = 0;
+            leftTrackSlider.value = 0;
+            rightTrackSlider.value = 0;
             document.getElementById('linearVelValue').innerText = '0';
             document.getElementById('angularVelValue').innerText = '0';
+            document.getElementById('leftTrackValue').innerText = '0';
+            document.getElementById('rightTrackValue').innerText = '0';
             publishVelocity(0, 0);
+            publishTrackSpeeds(0, 0);
         };
 
         // Keyboard controls

@@ -78,11 +78,15 @@ bool process_command(char* command) {
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            int result;
-            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
-            if ((result = sscanf(arg, "MODE=%9s", mode)) > 0) continue;
-            if ((result = sscanf(arg, "COUNT=%u", &count)) > 0) continue;
-            if ((result = sscanf(arg, "FREQ=%u", &freq)) > 0) continue;
+            if (strncmp(arg, "PIN=", 4) == 0) {
+                sscanf(arg + 4, "%u", &pin);
+            } else if (strncmp(arg, "MODE=", 5) == 0) {
+                strncpy(mode, arg + 5, sizeof(mode) - 1);
+            } else if (strncmp(arg, "COUNT=", 6) == 0) {
+                sscanf(arg + 6, "%u", &count);
+            } else if (strncmp(arg, "FREQ=", 5) == 0) {
+                sscanf(arg + 5, "%u", &freq);
+            }
         }
         
         if (init_gpio(pin, mode, count, freq)) {
@@ -99,10 +103,13 @@ bool process_command(char* command) {
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            int result;
-            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
-            if ((result = sscanf(arg, "POS=%f", &pos)) > 0) continue;
-            if ((result = sscanf(arg, "SPEED=%d", &speed)) > 0) continue;
+            if (strncmp(arg, "PIN=", 4) == 0) {
+                sscanf(arg + 4, "%u", &pin);
+            } else if (strncmp(arg, "POS=", 4) == 0) {
+                sscanf(arg + 4, "%f", &pos);
+            } else if (strncmp(arg, "SPEED=", 6) == 0) {
+                sscanf(arg + 6, "%d", &speed);
+            }
         }
         
         if (pin < 30 && pwm_channels[pin].initialized) {
@@ -120,10 +127,13 @@ bool process_command(char* command) {
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            int result;
-            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
-            if ((result = sscanf(arg, "STATE=%4s", state)) > 0) continue;
-            if ((result = sscanf(arg, "PWM=%u", &pwm_val)) > 0) continue;
+            if (strncmp(arg, "PIN=", 4) == 0) {
+                sscanf(arg + 4, "%u", &pin);
+            } else if (strncmp(arg, "STATE=", 6) == 0) {
+                strncpy(state, arg + 6, sizeof(state) - 1);
+            } else if (strncmp(arg, "PWM=", 4) == 0) {
+                sscanf(arg + 4, "%u", &pwm_val);
+            }
         }
         
         if (pin == LEFT_TRACK_PWM || pin == RIGHT_TRACK_PWM) {

@@ -2083,3 +2083,196 @@
 
 # 2025-01-26 22:25:32.109013
 +ls -la
+
+# 2025-01-26 22:34:57.037194
++time for some maintenance, anthing you'd clean up/change?
+
+# 2025-01-26 22:37:46.221962
++/run git status
+
+# 2025-01-26 22:37:54.456472
++n
+
+# 2025-01-26 22:40:39.512401
++any docs that are missing?
+
+# 2025-01-26 22:41:57.324593
++n
+
+# 2025-01-26 22:43:37.897843
++[  6%] Building CXX object CMakeFiles/eyes.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:30:6: error: expected identifier before numeric constant
++   30 |     [0 ... (240*240/2)-1] = 0xF800,   // Red
++      |      ^
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: In lambda function:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:30:27: error: expected '{' before '=' token
++   30 |     [0 ... (240*240/2)-1] = 0xF800,   // Red
++      |                           ^
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: At global scope:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:30:29: error: no match for 'operator=' (operand types are '<lambda()>' and 'int')
++   30 |     [0 ... (240*240/2)-1] = 0xF800,   // Red
++      |                             ^~~~~~
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:30:25: note: candidate: '<lambda()>&<lambda()>::operator=(const<lambda()>&)' (deleted)
++   30 |     [0 ... (240*240/2)-1] = 0xF800,   // Red
++      |                         ^
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:30:25: note:   no known conversion for argument 1 from 'int' to 'const<lambda()>&'
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:31:6: error: expected identifier before numeric constant
++   31 |     [240*240/2 ... 240*240-1] = 0x07E0 // Green
++      |      ^~~
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: In lambda function:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:31:31: error: expected '{' before '=' token
++   31 |     [240*240/2 ... 240*240-1] = 0x07E0 // Green
++      |                               ^
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: At global scope:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:31:33: error: no match for 'operator=' (operand types are '<lambda()>' and 'int')
++   31 |     [240*240/2 ... 240*240-1] = 0x07E0 // Green
++      |                                 ^~~~~~
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:31:29: note: candidate: '<lambda()>&<lambda()>::operator=(const<lambda()>&)' (deleted)
++   31 |     [240*240/2 ... 240*240-1] = 0x07E0 // Green
++      |                             ^
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:31:29: note:   no known conversion for argument 1 from 'int' to 'const<lambda()>&'
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.cpp.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:77: eyes/build] Error 2
+
+# 2025-01-26 22:44:04.883769
++/run cd ~/ros2_ws && make eyes/build
+
+# 2025-01-26 22:44:04.884036
++/run cd ~/ros2_ws && make eyes/build
+
+# 2025-01-26 22:44:16.015902
++n
+
+# 2025-01-26 22:44:17.308524
++[  6%] Building CXX object CMakeFiles/eyes.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:28:10: error: conflicting declaration 'uint16_t default_image [57600]'
++   28 | uint16_t default_image[240 * 240];
++      |          ^~~~~~~~~~~~~
++In file included from /home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:12:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/display.h:27:23: note: previous declaration as 'const uint16_t default_image []'
++   27 | extern const uint16_t default_image[];
++      |                       ^~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: In function 'void init_default_image()':
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:33:26: error: assignment of read-only location 'default_image[i]'
++   33 |         default_image[i] = 0xF800;  // Red
++      |         ~~~~~~~~~~~~~~~~~^~~~~~~~
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:37:26: error: assignment of read-only location 'default_image[i]'
++   37 |         default_image[i] = 0x07E0;  // Green
++      |         ~~~~~~~~~~~~~~~~~^~~~~~~~
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.cpp.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:77: eyes/build] Error 2
+
+# 2025-01-26 22:44:44.109672
++n
+
+# 2025-01-26 22:52:54.616559
++please refactor the eyes firmware to use LVGL
+
+# 2025-01-26 22:53:36.974309
++n
+
+# 2025-01-26 22:53:48.168760
++d
+
+# 2025-01-26 23:00:06.609161
++-- Configuring done (285.7s)
++CMake Error at CMakeLists.txt:21 (add_executable):
++  Cannot find source file:
++
++    display.cpp
++
++  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
++  .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
++  .f95 .f03 .hip .ispc
++
++
++-- Generating done (1.2s)
++CMake Generate step failed.  Build files cannot be regenerated correctly.
++make: *** [Makefile:77: eyes/build] Error 1
+
+# 2025-01-26 23:00:45.531071
++n
+
+# 2025-01-26 23:00:52.991480
++-- Configuring done (285.7s)
++CMake Error at CMakeLists.txt:21 (add_executable):
++  Cannot find source file:
++
++    display.cpp
++
++  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
++  .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
++  .f95 .f03 .hip .ispc
++
++
++-- Generating done (1.2s)
++CMake Generate step failed.  Build files cannot be regenerated correctly.
++make: *** [Makefile:77: eyes/build] Error 1
+
+# 2025-01-26 23:01:29.948601
++n
+
+# 2025-01-26 23:01:46.652587
++In file included from /home/mneuhaus/ros2_ws/src/eyes/firmware/build/_deps/lvgl-src/src/misc/lv_log.h:16,
++                 from /home/mneuhaus/ros2_ws/src/eyes/firmware/build/_deps/lvgl-src/lvgl.h:25,
++                 from /home/mneuhaus/ros2_ws/src/eyes/firmware/display.h:3,
++                 from /home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:12:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/build/_deps/lvgl-src/src/misc/../lv_conf_internal.h:41:18: fatal error: ../../lv_conf.h: No such file or directory
++   41 |         #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
++      |                  ^~~~~~~~~~~~~~~~~
++compilation terminated.
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.cpp.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1804: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:136: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:77: eyes/build] Error 2
+
+# 2025-01-26 23:02:16.445847
++n
+
+# 2025-01-26 23:05:52.683974
++[ 39%] Linking CXX executable eyes.elf
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: CMakeFiles/eyes.dir/display.cpp.o:/home/mneuhaus/ros2_ws/src/eyes/firmware/display.cpp:20: multiple definition of `dma_tx'; CMakeFiles/eyes.dir/main.cpp.o:/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:25: first defined here
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/eyes.dir/build.make:4472: eyes.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1804: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:136: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:77: eyes/build] Error 2
+
+# 2025-01-26 23:07:02.588170
++[  1%] Building CXX object CMakeFiles/eyes.dir/main.cpp.o
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: In function 'void init_display()':
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:105:5: error: 'dma_tx' was not declared in this scope; did you mean 'dma_hw'?
++  105 |     dma_tx = dma_claim_unused_channel(true);
++      |     ^~~~~~
++      |     dma_hw
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp: In function 'void display_image()':
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.cpp:135:59: error: 'dma_tx' was not declared in this scope; did you mean 'dma_hw'?
++  135 |     dma_channel_config c = dma_channel_get_default_config(dma_tx);
++      |                                                           ^~~~~~
++      |                                                           dma_hw
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.cpp.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1804: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:136: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:77: eyes/build] Error 2
+
+# 2025-01-26 23:08:40.321543
++n

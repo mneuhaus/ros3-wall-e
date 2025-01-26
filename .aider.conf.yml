@@ -6,8 +6,14 @@ auto-lint: false
 file:
   - Makefile
   - Readme.md
+  - docs/audio.md
   - docs/conventions.md
   - docs/eve-protokoll.md
+  - docs/firmware_update.md
+  - docs/hardware_setup.md
+  - docs/installation.md
+  - docs/servo_2040.md
+  - docs/wall_e_web.md
 
   - src/audio/audio/audio_node.py
   - src/audio/package.xml

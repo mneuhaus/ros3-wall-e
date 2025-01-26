@@ -1,50 +1,77 @@
+# Generated Cmake Pico project file
+
 cmake_minimum_required(VERSION 3.13)
 
-include(pico_sdk_import.cmake)
-include(FetchContent)
-
-# Fetch LVGL
-FetchContent_Declare(
-    lvgl
-    GIT_REPOSITORY https://github.com/lvgl/lvgl.git
-    GIT_TAG v8.3.9
-)
-FetchContent_MakeAvailable(lvgl)
-
-project(eyes_firmware C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
-# Initialize the SDK
+# Initialise pico_sdk from installed location
+# (note this can come from environment, CMake cache etc)
+
+set(PICO_BOARD pico CACHE STRING "Board type")
+
+# Pull in Raspberry Pi Pico SDK (must be before project)
+include(pico_sdk_import.cmake)
+
+if (PICO_SDK_VERSION_STRING VERSION_LESS "1.4.0")
+  message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.4.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
+endif()
+
+project(waveshare_rp2040_lcd_1.28 C CXX ASM)
+
+# Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_executable(eyes
-    main.cpp
-    display.cpp
-)
+# Add executable. Default name is the project name, version 0.1
 
-# Add LVGL source files
-file(GLOB_RECURSE LVGL_SOURCES ${lvgl_SOURCE_DIR}/src/*.c)
-target_sources(eyes PRIVATE ${LVGL_SOURCES})
+#添加编译子目录
+add_subdirectory(./lib/Config)
+add_subdirectory(./lib/LCD)
+add_subdirectory(./lib/QMI8658)
+add_subdirectory(./lib/lvgl)
+add_subdirectory(./examples)
 
-# Include directories
-target_include_directories(eyes PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${lvgl_SOURCE_DIR}
-)
 
-# Add pico_stdlib library which aggregates commonly used features
-target_link_libraries(eyes 
-    pico_stdlib 
-    hardware_spi 
-    hardware_dma
-    hardware_pio
-    pico_bootrom
-)
+#添加头文件目录
+include_directories(./examples)
+include_directories(./lib/Config)
+include_directories(./lib/LCD)
+include_directories(./lib/QMI8658)
+include_directories(./lib/lvgl)
+include_directories(./examples/inc)
 
-# Enable USB output, disable UART output
-pico_enable_stdio_usb(eyes 1)
-pico_enable_stdio_uart(eyes 0)
+add_executable(RP2040-LCD-1.28 main.c)
 
-# Create map/bin/hex/uf2 file etc.
-pico_add_extra_outputs(eyes)
+pico_set_program_name(RP2040-LCD-1.28  "RP2040-LCD-1.28")
+pico_set_program_version(RP2040-LCD-1.28 "0.1")
+
+pico_enable_stdio_uart(RP2040-LCD-1.28 1)
+pico_enable_stdio_usb(RP2040-LCD-1.28  0)
+
+# Add the standard library to the build
+
+set(LV_CONF_PATH
+  ${CMAKE_CURRENT_SOURCE_DIR}/lib/LVGL/lv_conf.h
+    CACHE STRING "" FORCE)
+add_compile_options(-O2)
+
+
+target_link_libraries(RP2040-LCD-1.28  
+                      LCD 
+                      QMI8658
+                      LVGL
+                      Config
+                      examples
+                      pico_stdlib
+                      hardware_spi
+                      hardware_i2c
+                      hardware_dma
+                      )
+# Add the standard include files to the build
+target_include_directories(RP2040-LCD-1.28   PRIVATE
+  ${CMAKE_CURRENT_LIST_DIR}
+  # ${CMAKE_CURRENT_LIST_DIR}
+  )
+
+pico_add_extra_outputs(RP2040-LCD-1.28)
+

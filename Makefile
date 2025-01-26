@@ -9,8 +9,23 @@ ROS2_WS=$(shell pwd)
 # Define the setup script
 SETUP_SCRIPT=$(ROS2_WS)/install/setup.bash
 
+# Pico SDK setup
+PICO_SDK_PATH ?= $(HOME)/pico-sdk
+
 # Default target
 all: build
+
+# Setup Pico SDK
+pico/setup:
+	@if [ ! -d "$(PICO_SDK_PATH)" ]; then \
+		echo "Cloning Pico SDK..."; \
+		git clone https://github.com/raspberrypi/pico-sdk.git $(PICO_SDK_PATH); \
+		cd $(PICO_SDK_PATH) && git submodule update --init; \
+	else \
+		echo "Updating Pico SDK..."; \
+		cd $(PICO_SDK_PATH) && git pull && git submodule update --init; \
+	fi
+	@echo "export PICO_SDK_PATH=$(PICO_SDK_PATH)" >> ~/.zshrc
 
 # Build the ROS2 workspace
 ros2/build:
@@ -62,6 +77,7 @@ help:
 	@echo "  make ros2/run      - Run the ROS2 node"
 	@echo "  make ros2/rebuild  - Clean and rebuild the ROS2 workspace"
 	@echo "  make ros2/clean    - Clean the ROS2 workspace"
+	@echo "  make pico/setup    - Setup/update Pico SDK"
 	@echo "  make servo2040/build - Build the Servo 2040 firmware"
 	@echo "  make servo2040/flash - Flash firmware to Servo 2040 (BOOTSEL mode)"
 	@echo "  make eyes/build     - Build the Eyes firmware"
@@ -69,4 +85,4 @@ help:
 	@echo "  make help           - Show this help message"
 
 # Phony targets (not associated with files)
-.PHONY: all ros2/build ros2/run ros2/rebuild ros2/clean help servo2040/flash servo2040/build eyes/build eyes/flash
+.PHONY: all ros2/build ros2/run ros2/rebuild ros2/clean help pico/setup servo2040/flash servo2040/build eyes/build eyes/flash

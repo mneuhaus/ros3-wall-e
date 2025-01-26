@@ -15,7 +15,7 @@ setup(
         ('share/' + package_name + '/sounds',
          glob('resource/sounds/**/*.mp3', recursive=True))
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'pygame'],
     zip_safe=True,
     maintainer='mneuhaus',
     maintainer_email='marc@neuhaus.nrw',

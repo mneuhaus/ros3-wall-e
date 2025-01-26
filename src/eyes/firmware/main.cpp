@@ -25,11 +25,18 @@
 int dma_tx;
 
 // Basic test pattern - checkerboard
-const uint16_t default_image[240 * 240] = {
-    // Initialize with alternating colors
-    [0 ... (240*240/2)-1] = 0xF800,   // Red
-    [240*240/2 ... 240*240-1] = 0x07E0 // Green
-};
+uint16_t default_image[240 * 240];
+
+void init_default_image() {
+    // Fill first half with red
+    for(int i = 0; i < (240*240/2); i++) {
+        default_image[i] = 0xF800;  // Red
+    }
+    // Fill second half with green
+    for(int i = (240*240/2); i < (240*240); i++) {
+        default_image[i] = 0x07E0;  // Green
+    }
+}
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);
@@ -231,7 +238,8 @@ bool process_command(char* command) {
 int main() {
     stdio_init_all();
     
-    // Initialize and show image
+    // Initialize test pattern and display
+    init_default_image();
     init_display();
     display_image();
     

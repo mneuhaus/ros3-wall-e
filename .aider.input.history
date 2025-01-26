@@ -2068,3 +2068,18 @@
 
 # 2025-01-26 22:01:39.162139
 +nice, now please add this node to the all_nodes.launch.py and update the main readme.md feel free to add a page to the docs directory detailing this module
+
+# 2025-01-26 22:19:39.880445
++we should update the conventions with a section about documentation, we should make sure the docs folder contains appropriate documentation about the core packages, etc. that makes this project work. please update the convenntions to reflect this requirement.
+
+# 2025-01-26 22:21:49.347482
++please take a look at the project and add missing docs
+
+# 2025-01-26 22:23:45.086235
++n
+
+# 2025-01-26 22:24:07.847666
++go ahead, create a servo_2040 and wall_e_web doc
+
+# 2025-01-26 22:25:32.109013
++ls -la

@@ -1,5 +1,5 @@
 #include "DEV_Config.h"
-#include "LCD_1in28.h"
+#include "Display.h"
 #include "generated/image_data.h"
 
 int main(void)
@@ -9,13 +9,13 @@ int main(void)
         return -1;
     }
     
-    // Initialize LCD with no rotation (0)
-    LCD_1IN28_Init(0);
-    LCD_1IN28_Clear(BLACK);
+    // Initialize display
+    Display_Init();
+    Display_Clear(COLOR_BLACK);
     DEV_SET_PWM(100);  // Full brightness
     
     // Display the lens image
-    LCD_1IN28_Display((uint16_t *)image_data);
+    Display_DrawImage(image_data);
     
     // Main loop
     while(1) {

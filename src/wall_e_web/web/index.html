@@ -3,53 +3,157 @@
 <head>
     <title>Wall-E Control</title>
     <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .control-section {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        input[type="range"] {
+            flex-grow: 1;
+        }
+        .value-display {
+            min-width: 50px;
+            text-align: right;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #stopButton {
+            background-color: #ff4444;
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #status {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .status-connected { background-color: #90EE90; }
+        .status-disconnected { background-color: #FFB6C1; }
+        .status-error { background-color: #FF6B6B; }
+        .head-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .head-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .servo-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Wall-E Control Panel</h1>
+    <div class="container">
+        <h1>🤖 Wall-E Control Panel</h1>
+        
+        <div class="control-panel">
+            <div class="control-section">
+                <h2>Movement Controls</h2>
+                <div class="slider-container">
+                    <label>Forward/Back:</label>
+                    <input type="range" id="linearVel" min="-1.0" max="1.0" step="0.1" value="0">
+                    <span id="linearVelValue" class="value-display">0</span>
+                </div>
+                
+                <div class="slider-container">
+                    <label>Turn Left/Right:</label>
+                    <input type="range" id="angularVel" min="-1.0" max="1.0" step="0.1" value="0">
+                    <span id="angularVelValue" class="value-display">0</span>
+                </div>
+            </div>
 
-    <!-- Linear Velocity Control -->
-    <label>Linear Velocity:</label>
-    <input type="range" id="linearVel" min="-1.0" max="1.0" step="0.1" value="0">
-    <span id="linearVelValue">0</span>
-    <br>
+            <div class="control-section">
+                <h2>Head Controls</h2>
+                <div class="head-controls">
+                    <button class="head-button" onclick="setServoPosition(0, 90)">Look Up</button>
+                    <button class="head-button" onclick="setServoPosition(0, 45)">Center</button>
+                    <button class="head-button" onclick="setServoPosition(0, 0)">Look Down</button>
+                </div>
+                <div class="servo-controls">
+                    <div class="slider-container">
+                        <label>Head Tilt:</label>
+                        <input type="range" id="headTilt" min="0" max="180" step="1" value="90">
+                        <span id="headTiltValue" class="value-display">90</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Angular Velocity Control -->
-    <label>Angular Velocity:</label>
-    <input type="range" id="angularVel" min="-1.0" max="1.0" step="0.1" value="0">
-    <span id="angularVelValue">0</span>
-    <br><br>
-
-    <!-- Stop Button -->
-    <button id="stopButton">Stop</button>
-    <br><br>
-
-    <!-- Connection Status -->
-    <div id="status">Status: Disconnected</div>
+        <button id="stopButton">⚠️ EMERGENCY STOP</button>
+        <div id="status" class="status-disconnected">Status: Disconnected</div>
+    </div>
 
     <script>
         // Connect to ROS
         var ros = new ROSLIB.Ros({
-            url: 'ws://wall-e.local:9090' // Update 'localhost' if accessing remotely
+            url: 'ws://wall-e.local:9090'
         });
 
         ros.on('connection', function() {
             document.getElementById('status').innerText = 'Status: Connected';
+            document.getElementById('status').className = 'status-connected';
         });
 
         ros.on('error', function(error) {
             document.getElementById('status').innerText = 'Status: Error';
+            document.getElementById('status').className = 'status-error';
             console.error(error);
         });
 
         ros.on('close', function() {
             document.getElementById('status').innerText = 'Status: Disconnected';
+            document.getElementById('status').className = 'status-disconnected';
         });
 
-        // Create a topic for /cmd_vel
+        // Create topics
         var cmdVel = new ROSLIB.Topic({
             ros: ros,
             name: '/cmd_vel',
             messageType: 'geometry_msgs/msg/Twist'
+        });
+
+        var servoTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/servo_2040/servo_position',
+            messageType: 'std_msgs/msg/Float32MultiArray'
         });
 
         // Publish velocity commands
@@ -61,9 +165,20 @@
             cmdVel.publish(twist);
         }
 
+        // Publish servo position
+        function setServoPosition(servoIndex, position) {
+            var servoMsg = new ROSLIB.Message({
+                data: [servoIndex, position]
+            });
+            servoTopic.publish(servoMsg);
+            document.getElementById('headTilt').value = position;
+            document.getElementById('headTiltValue').innerText = position;
+        }
+
         // Update velocity from sliders
         var linearSlider = document.getElementById('linearVel');
         var angularSlider = document.getElementById('angularVel');
+        var headTiltSlider = document.getElementById('headTilt');
 
         linearSlider.oninput = function() {
             document.getElementById('linearVelValue').innerText = this.value;
@@ -75,6 +190,11 @@
             publishVelocity(parseFloat(linearSlider.value), parseFloat(this.value));
         };
 
+        headTiltSlider.oninput = function() {
+            document.getElementById('headTiltValue').innerText = this.value;
+            setServoPosition(0, parseFloat(this.value));
+        };
+
         // Stop button
         document.getElementById('stopButton').onclick = function() {
             linearSlider.value = 0;
@@ -83,6 +203,53 @@
             document.getElementById('angularVelValue').innerText = '0';
             publishVelocity(0, 0);
         };
+
+        // Keyboard controls
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowUp':
+                    linearSlider.value = 0.5;
+                    publishVelocity(0.5, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowDown':
+                    linearSlider.value = -0.5;
+                    publishVelocity(-0.5, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowLeft':
+                    angularSlider.value = 0.5;
+                    publishVelocity(parseFloat(linearSlider.value), 0.5);
+                    break;
+                case 'ArrowRight':
+                    angularSlider.value = -0.5;
+                    publishVelocity(parseFloat(linearSlider.value), -0.5);
+                    break;
+                case ' ':  // Spacebar
+                    document.getElementById('stopButton').click();
+                    break;
+            }
+            updateSliderDisplays();
+        });
+
+        document.addEventListener('keyup', function(event) {
+            switch(event.key) {
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    linearSlider.value = 0;
+                    publishVelocity(0, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    angularSlider.value = 0;
+                    publishVelocity(parseFloat(linearSlider.value), 0);
+                    break;
+            }
+            updateSliderDisplays();
+        });
+
+        function updateSliderDisplays() {
+            document.getElementById('linearVelValue').innerText = linearSlider.value;
+            document.getElementById('angularVelValue').innerText = angularSlider.value;
+        }
     </script>
 </body>
 </html>

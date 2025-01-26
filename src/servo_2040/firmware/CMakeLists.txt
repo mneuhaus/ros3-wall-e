@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
-# Change your executable name to something creative!
-set(NAME pico-boilerplate) # <-- Name your project/executable here!
+set(NAME servo_controller)
 
 include(pico_sdk_import.cmake)
 include(pimoroni_pico_import.cmake)
 
-# Gooey boilerplate
 project(${NAME} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -16,22 +14,24 @@ pico_sdk_init()
 
 # Add your source files
 add_executable(${NAME}
-    main.cpp # <-- Add source files here!
+    main.cpp
 )
 
-# Include required libraries
-# This assumes `pimoroni-pico` is stored alongside your project
-include(common/pimoroni_i2c)
-include(common/pimoroni_bus)
-include(libraries/bitmap_fonts/bitmap_fonts)
-include(libraries/hershey_fonts/hershey_fonts)
-include(libraries/pico_explorer/pico_explorer)
+# Include Pimoroni libraries
+include_directories(${PIMORONI_PICO_PATH}/libraries)
 
-# Don't forget to link the libraries you need!
+# Link the libraries we need
 target_link_libraries(${NAME}
-    pimoroni_i2c
-    pico_explorer # <-- List libraries here!
+    pico_stdlib
+    hardware_gpio
+    hardware_pwm
+    hardware_pio
+    pico_servo
 )
+
+# Enable USB output, disable UART output
+pico_enable_stdio_usb(${NAME} 1)
+pico_enable_stdio_uart(${NAME} 0)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(${NAME})

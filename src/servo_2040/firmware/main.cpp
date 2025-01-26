@@ -73,15 +73,16 @@ bool process_command(char* command) {
     char* cmd = strtok_r(command, " ", &saveptr);
     
     if (strcmp(cmd, "INIT_GPIO") == 0) {
-        uint pin, count = 0, freq = 0;
+        uint pin = 0, count = 0, freq = 0;
         char mode[10] = {0};
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            if (sscanf(arg, "PIN=%u", &pin)) continue;
-            if (sscanf(arg, "MODE=%9s", mode)) continue;
-            sscanf(arg, "COUNT=%u", &count);
-            sscanf(arg, "FREQ=%u", &freq);
+            int result;
+            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
+            if ((result = sscanf(arg, "MODE=%9s", mode)) > 0) continue;
+            if ((result = sscanf(arg, "COUNT=%u", &count)) > 0) continue;
+            if ((result = sscanf(arg, "FREQ=%u", &freq)) > 0) continue;
         }
         
         if (init_gpio(pin, mode, count, freq)) {
@@ -92,15 +93,16 @@ bool process_command(char* command) {
         return true;
     }
     else if (strcmp(cmd, "MOVE_SERVO") == 0) {
-        uint pin;
-        float pos;
+        uint pin = 0;
+        float pos = 0.0f;
         int speed = 0;
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            sscanf(arg, "PIN=%u", &pin);
-            sscanf(arg, "POS=%f", &pos);
-            sscanf(arg, "SPEED=%d", &speed);
+            int result;
+            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
+            if ((result = sscanf(arg, "POS=%f", &pos)) > 0) continue;
+            if ((result = sscanf(arg, "SPEED=%d", &speed)) > 0) continue;
         }
         
         if (pin < 30 && pwm_channels[pin].initialized) {
@@ -113,14 +115,15 @@ bool process_command(char* command) {
     }
     else if (strcmp(cmd, "SET_GPIO") == 0) {
         // Handle track controls as GPIO extensions
-        uint pin, pwm_val;
+        uint pin = 0, pwm_val = 0;
         char state[5] = {0};
         
         char* arg;
         while ((arg = strtok_r(NULL, " ", &saveptr))) {
-            if (sscanf(arg, "PIN=%u", &pin)) continue;
-            if (sscanf(arg, "STATE=%4s", state)) continue;
-            if (sscanf(arg, "PWM=%u", &pwm_val)) continue;
+            int result;
+            if ((result = sscanf(arg, "PIN=%u", &pin)) > 0) continue;
+            if ((result = sscanf(arg, "STATE=%4s", state)) > 0) continue;
+            if ((result = sscanf(arg, "PWM=%u", &pwm_val)) > 0) continue;
         }
         
         if (pin == LEFT_TRACK_PWM || pin == RIGHT_TRACK_PWM) {

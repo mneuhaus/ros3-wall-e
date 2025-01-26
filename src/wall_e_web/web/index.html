@@ -130,9 +130,45 @@
             </div>
         </div>
 
+        <div class="control-section">
+            <h2>Sound Controls</h2>
+            <div class="sound-controls">
+                <button onclick="playSound('startup.mp3')">Startup Sound</button>
+                <button onclick="playSound('wall-e-1.mp3')">Voice 1</button>
+                <button onclick="playSound('wall-e-4.mp3')">Voice 2</button>
+                <button onclick="playSound('gorgeus.mp3')">Gorgeous</button>
+                <button onclick="playSound('background-music.mp3')">Background Music</button>
+                <button onclick="playSound('destruct.mp3')">Destruct</button>
+                <button onclick="playSound('whoa.mp3')">Whoa</button>
+            </div>
+        </div>
+
         <button id="stopButton">⚠️ EMERGENCY STOP</button>
         <div id="status" class="status-disconnected">Status: Disconnected</div>
     </div>
+
+    <style>
+        .sound-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .sound-controls button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .sound-controls button:hover {
+            background-color: #45a049;
+        }
+    </style>
 
     <script>
         // Connect to ROS
@@ -174,6 +210,19 @@
             name: '/servo_2040/servo_position',
             messageType: 'std_msgs/msg/Float32MultiArray'
         });
+
+        var soundTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/play_sound',
+            messageType: 'std_msgs/msg/String'
+        });
+
+        function playSound(soundFile) {
+            var soundMsg = new ROSLIB.Message({
+                data: soundFile
+            });
+            soundTopic.publish(soundMsg);
+        }
 
         // Publish velocity commands
         function publishVelocity(linear, angular) {

@@ -85,7 +85,7 @@ bool process_command(char* command) {
         
         char* arg;
         bool has_pin = false, has_mode = false;
-        while ((arg = strtok_r(NULL, " ", &saveptr))) {
+        while (saveptr != NULL && (arg = strtok_r(NULL, " ", &saveptr))) {
             if (strncmp(arg, "PIN=", 4) == 0) {
                 if (sscanf(arg + 4, "%u", &pin) != 1) {
                     send_response(cmd_copy, "ERROR", "INVALID_PIN_FORMAT");
@@ -115,7 +115,7 @@ bool process_command(char* command) {
         
         char* arg;
         bool has_pos = false, has_size = false;
-        while ((arg = strtok_r(NULL, " ", &saveptr))) {
+        while (saveptr != NULL && (arg = strtok_r(NULL, " ", &saveptr))) {
             if (strncmp(arg, "X=", 2) == 0) {
                 sscanf(arg + 2, "%hu", &x);
                 has_pos = true;

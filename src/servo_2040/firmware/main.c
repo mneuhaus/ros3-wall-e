@@ -83,8 +83,8 @@ void set_track_speed(uint pwm_pin, uint dir_pin, int speed) {
     
     // Set PWM value
     uint16_t level = (abs(speed) * 65535) / 100;
-    pwm_set_chan_level(pwm_config[pwm_pin].slice, 
-                      pwm_config[pwm_pin].channel, 
+    pwm_set_chan_level(pwm_channels[pwm_pin].slice, 
+                      pwm_channels[pwm_pin].channel, 
                       level);
 }
 

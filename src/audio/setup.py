@@ -12,9 +12,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/audio',
-         glob('resource/audio/**/*.[mM][pP]3', recursive=True) +
-         glob('resource/audio/**/*.wav', recursive=True))
+        ('share/' + package_name + '/sounds',
+         glob('resource/sounds/**/*.mp3', recursive=True))
     ],
     install_requires=['setuptools'],
     zip_safe=True,

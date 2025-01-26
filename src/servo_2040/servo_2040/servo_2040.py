@@ -113,7 +113,7 @@ class Servo2040Node(Node):
             
         # Initialize all servo pins
         for pin in self.servo_pins:
-            cmd = f"INIT_GPIO PIN={pin} MODE=SERVO COUNT=20000 FREQ=50\n"
+            cmd = f"INIT_GPIO PIN={pin} MODE=SERVO FREQ=50\n"
             try:
                 self.serial.write(cmd.encode())
                 time.sleep(0.1)  # Allow time for initialization
@@ -123,8 +123,8 @@ class Servo2040Node(Node):
         # Initialize track control pins
         track_init_commands = [
             # PWM pins for speed control
-            "INIT_GPIO PIN=13 MODE=PWM COUNT=0 FREQ=1000\n",  # Left track PWM
-            "INIT_GPIO PIN=17 MODE=PWM COUNT=0 FREQ=1000\n",  # Right track PWM
+            "INIT_GPIO PIN=13 MODE=PWM FREQ=1000\n",  # Left track PWM
+            "INIT_GPIO PIN=17 MODE=PWM FREQ=1000\n",  # Right track PWM
             # Direction control pins
             "INIT_GPIO PIN=14 MODE=OUTPUT\n",  # Left track direction
             "INIT_GPIO PIN=18 MODE=OUTPUT\n",  # Right track direction
@@ -139,7 +139,7 @@ class Servo2040Node(Node):
         
         # Set all servos to center position
         for pin in self.servo_pins:
-            cmd = f"MOVE_SERVO PIN={pin} POS=90.0 SPEED=50\n"
+            cmd = f"MOVE_SERVO PIN={pin} POS=90.0\n"
             try:
                 self.serial.write(cmd.encode())
                 time.sleep(0.1)

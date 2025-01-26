@@ -63,4 +63,21 @@ def generate_launch_description():
             ],
             arguments=['--ros-args', '--log-level', 'info']
         ),
+        
+        # Start the web server and rosbridge
+        Node(
+            package='rosbridge_server',
+            executable='rosbridge_websocket',
+            name='rosbridge_websocket',
+            output='screen',
+            parameters=[{
+                'port': 9090
+            }]
+        ),
+        Node(
+            package='wall_e_web',
+            executable='serve_web',
+            name='web_server',
+            output='screen'
+        ),
     ])

@@ -20,15 +20,19 @@ pico_sdk_init()
 
 # Include Pimoroni libraries
 include_directories(${PIMORONI_PICO_PATH}/drivers)
+include_directories(${PIMORONI_PICO_PATH}/libraries/servo2040)
+include_directories(${PIMORONI_PICO_PATH}/libraries/pico_servo)
 
 add_executable(servo_controller
-    main.c
+    main.cpp
 )
 
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(servo_controller 
     pico_stdlib
     hardware_pwm
+    servo2040
+    pico_servo
 )
 
 # Enable USB output, disable UART output

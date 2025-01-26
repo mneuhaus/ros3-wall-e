@@ -7,13 +7,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
+#include "hardware/pwm.h"
 #include "hardware/gpio.h"
-#include "hardware/pio.h"
-#include "hardware/clocks.h"
 #include "pico/bootrom.h"
-
-// Include the PIO program
-#include "pwm.pio.h"
 
 // Hardware configuration
 #define LEFT_TRACK_PWM 13
@@ -24,17 +20,14 @@
 #define BOOTLOADER_DELAY_MS 500
 
 typedef struct {
-    PIO pio;
-    uint sm;
-    uint offset;
+    uint slice;
+    uint channel;
+    uint freq;
     bool initialized;
     float current_pos;
-    float freq;
-} pio_pwm_channel;
+} pwm_channel;
 
-pio_pwm_channel pwm_channels[30] = {0}; // Support up to pin 29
-PIO pio = pio0;
-uint next_sm = 0;
+pwm_channel pwm_channels[30] = {0}; // Support up to pin 29
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);
@@ -46,17 +39,17 @@ bool init_gpio(uint pin, const char* mode, uint count, uint freq) {
     }
 
     if (strcmp(mode, "PWM") == 0 || strcmp(mode, "SERVO") == 0) {
-        if (next_sm >= 4) {  // PIO has 4 state machines
-            return false;
-        }
-        
-        uint offset = pio_add_program(pio, &pwm_program);
-        pwm_channels[pin].pio = pio;
-        pwm_channels[pin].sm = next_sm++;
-        pwm_channels[pin].offset = offset;
+        gpio_set_function(pin, GPIO_FUNC_PWM);
+        pwm_channels[pin].slice = pwm_gpio_to_slice_num(pin);
+        pwm_channels[pin].channel = pwm_gpio_to_channel(pin);
         pwm_channels[pin].freq = freq;
         
-        pwm_program_init(pio, pwm_channels[pin].sm, offset, pin, freq);
+        // Calculate clock divider from frequency (125MHz base clock)
+        float div = 125000000.0f / (65536 * freq);
+        pwm_set_clkdiv(pwm_channels[pin].slice, div);
+        pwm_set_wrap(pwm_channels[pin].slice, 65535);
+        pwm_set_enabled(pwm_channels[pin].slice, true);
+        
         pwm_channels[pin].initialized = true;
         return true;
     }
@@ -75,14 +68,8 @@ void set_servo_position(uint pin, float degrees) {
     }
 
     // Convert degrees to pulse width (500-2500µs)
-    uint32_t period = clock_get_hz(clk_sys) / pwm_channels[pin].freq;
-    uint32_t pulse_width = (500 + (degrees / 180.0f) * 2000) * period / 20000;
-    
-    // Set the compare value for the PWM
-    pio_sm_put(pwm_channels[pin].pio, pwm_channels[pin].sm, pulse_width);
-    pio_sm_exec(pwm_channels[pin].pio, pwm_channels[pin].sm, pio_encode_pull(false, false));
-    pio_sm_exec(pwm_channels[pin].pio, pwm_channels[pin].sm, pio_encode_mov(pio_isr, pio_osr));
-    
+    uint16_t level = (uint16_t)(500 + (degrees / 180.0f) * 2000) * 65535 / 20000;
+    pwm_set_chan_level(pwm_channels[pin].slice, pwm_channels[pin].channel, level);
     pwm_channels[pin].current_pos = degrees;
 }
 

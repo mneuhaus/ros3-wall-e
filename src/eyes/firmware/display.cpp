@@ -17,7 +17,7 @@ lv_color_t buf_2[DISP_WIDTH * 10];
 lv_disp_drv_t disp_drv;
 
 // DMA channel
-int dma_tx;
+static int dma_tx;
 
 static void write_cmd(uint8_t cmd) {
     gpio_put(PIN_DC, 0);  // Command mode

@@ -21,8 +21,6 @@
 #define PIN_CS   5  // Chip select
 #define PIN_RST  6  // Reset
 
-// DMA channel for display updates
-int dma_tx;
 
 // Basic test pattern - checkerboard
 uint16_t default_image[240 * 240] = {0};  // Zero initialize

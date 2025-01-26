@@ -16,18 +16,18 @@ class Servo2040Node(Node):
         self.declare_parameter('serial_port', '/dev/ttyACM0')
         self.serial_lock = threading.Lock()
         self.declare_parameter('baudrate', 115200)
-        self.declare_parameter('servo_limits', [180]*9)  # All servos 0-180 by default
-        self.declare_parameter('wheel_base', 0.2)  # Distance between tracks in meters
-        self.declare_parameter('max_speed', 1.0)  # Maximum speed in m/s
+        self.declare_parameter('servo_limits', [180]*9)
+        self.declare_parameter('wheel_base', 0.2)
+        self.declare_parameter('max_speed', 1.0)
+        self.declare_parameter('servo_pins', [0, 1, 2, 3, 4, 5, 6, 7, 8])  # GPIO pins for servos
         
         # Get parameters
-        self.serial_port: str = self.get_parameter('serial_port').value
+        self.serial_port = self.get_parameter('serial_port').value
         self.wheel_base = self.get_parameter('wheel_base').value
         self.max_speed = self.get_parameter('max_speed').value
-        self.baudrate: int = self.get_parameter('baudrate').value
-        self.servo_limits: List[Tuple[float, float]] = [
-            (0, float(limit)) for limit in self.get_parameter('servo_limits').value
-        ]
+        self.baudrate = self.get_parameter('baudrate').value
+        self.servo_limits = [float(limit) for limit in self.get_parameter('servo_limits').value]
+        self.servo_pins = self.get_parameter('servo_pins').value
         
         # Serial connection
         self.serial: serial.Serial = None
@@ -150,34 +150,35 @@ class Servo2040Node(Node):
             self.servo_positions[i] = max(min_limit, min(new_pos, max_limit))
 
     def send_servo_command(self) -> None:
-        """Send JSON command to firmware with flow control"""
+        """Send EVE Protocol commands to firmware"""
         with self.serial_lock:
             if not self.serial or not self.serial.is_open:
                 self.reconnect_serial()
                 return
 
         try:
-            # Create command
-            command_data = {
-                "servos": [[idx, float(pos)] 
-                          for idx, pos in enumerate(self.servo_positions)
-                          if pos != self.prev_positions[idx]]
-            }
-            
+            # Build EVE Protocol commands for changed positions
+            commands = []
+            for idx, (current, prev) in enumerate(zip(self.servo_positions, self.prev_positions)):
+                if current != prev:
+                    pin = self.servo_pins[idx]
+                    commands.append(f"MOVE_SERVO PIN={pin} POS={current:.1f} SPEED=50\n")
+
             # Only send if there are changes
-            if not command_data["servos"]:
+            if not commands:
                 return
 
-            command = json.dumps(command_data) + "\n"
-            
-            # Non-blocking write
+            # Join commands and send
+            command_str = "".join(commands)
             self.serial.write_timeout = 0
-            bytes_written = self.serial.write(command.encode())
-            if bytes_written != len(command):
+            bytes_written = self.serial.write(command_str.encode())
+            
+            if bytes_written != len(command_str):
                 self.get_logger().warning("Partial write - clearing buffers")
                 self.serial.reset_output_buffer()
-            self.prev_positions = self.servo_positions.copy()
-            self.get_logger().debug(f"Sent command: {command.strip()}")
+            else:
+                self.prev_positions = self.servo_positions.copy()
+                self.get_logger().debug(f"Sent commands: {command_str.strip().replace('\n', '; ')}")
 
         except serial.SerialTimeoutException:
             self.get_logger().warning("Write timeout - reconnecting...")
@@ -231,31 +232,33 @@ class Servo2040Node(Node):
             self.connect_serial()
             
     def cmd_vel_callback(self, msg: Twist) -> None:
-        """Handle movement commands."""
+        """Handle movement commands using EVE Protocol"""
         self.get_logger().debug(f"Received cmd_vel: linear.x={msg.linear.x}, angular.z={msg.angular.z}")
         
-        # Convert Twist message to left and right track speeds
-        linear = msg.linear.x  # Forward/backward speed
-        angular = msg.angular.z  # Rotation speed
-
-        # Compute track speeds (differential drive)
+        # Convert Twist to differential drive speeds
+        linear = msg.linear.x
+        angular = msg.angular.z
         left_speed = linear + (angular * self.wheel_base / 2)
         right_speed = linear - (angular * self.wheel_base / 2)
 
-        # Scale speeds to -100 to 100
-        left_speed = int(max(min(left_speed / self.max_speed * 100, 100), -100))
-        right_speed = int(max(min(right_speed / self.max_speed * 100, 100), -100))
+        # Scale to PWM values (0-65535)
+        left_pwm = int(abs(left_speed / self.max_speed) * 65535)
+        right_pwm = int(abs(right_speed / self.max_speed) * 65535)
 
-        # Debug output
-        self.get_logger().debug(f"Raw input - linear: {msg.linear.x:.2f}, angular: {msg.angular.z:.2f}")
-        self.get_logger().debug(f"Calculated speeds - left: {left_speed}%, right: {right_speed}%")
+        # Build EVE Protocol commands
+        commands = [
+            f"SET_GPIO PIN=13 PWM={left_pwm}\n",
+            f"SET_GPIO PIN=17 PWM={right_pwm}\n",
+            f"SET_GPIO PIN=14 STATE={'HIGH' if left_speed >= 0 else 'LOW'}\n",
+            f"SET_GPIO PIN=18 STATE={'HIGH' if right_speed >= 0 else 'LOW'}\n"
+        ]
 
-        # Send track control command
-        command = f'{{"tracks":[{left_speed},{right_speed}]}}\n'
+        # Send commands
         with self.serial_lock:
             try:
-                self.serial.write(command.encode('utf-8'))
-                self.get_logger().info(f"Sent track command: {command.strip()}")
+                command_str = "".join(commands)
+                self.serial.write(command_str.encode('utf-8'))
+                self.get_logger().info(f"Sent track commands: {command_str.strip().replace('\n', '; ')}")
             except serial.SerialException as e:
                 self.get_logger().error(f"Failed to send track command: {e}")
                 self.reconnect_serial()

@@ -119,6 +119,7 @@ class Servo2040Node(Node):
                 time.sleep(0.1)  # Allow time for initialization
             except serial.SerialException as e:
                 self.get_logger().error(f"Failed to initialize servo pin {pin}: {e}")
+                raise RuntimeError(f"Hardware initialization failed: {e}")
                 
         # Initialize track control pins
         track_init_commands = [
@@ -147,8 +148,16 @@ class Servo2040Node(Node):
                 self.get_logger().error(f"Failed to center servo {pin}: {e}")
 
     def connect_serial(self) -> None:
-        """Establish serial connection with automatic retries"""
-        while not self.serial:
+        """
+        Establish serial connection with automatic retries.
+        
+        Raises:
+            RuntimeError: If connection fails after max retries
+        """
+        max_retries = 5
+        retry_count = 0
+        
+        while not self.serial and retry_count < max_retries:
             try:
                 self.serial = serial.Serial(
                     port=self.serial_port,
@@ -161,7 +170,10 @@ class Servo2040Node(Node):
                 self.get_logger().info(f"Connected to {self.serial_port}")
                 time.sleep(0.5)  # Brief init time
             except serial.SerialException as e:
-                self.get_logger().error(f"Connection failed: {e}, retrying...")
+                retry_count += 1
+                self.get_logger().error(f"Connection failed ({retry_count}/{max_retries}): {e}")
+                if retry_count >= max_retries:
+                    raise RuntimeError(f"Failed to connect after {max_retries} attempts")
                 time.sleep(1.5)
 
     def joy_callback(self, msg: Joy) -> None:

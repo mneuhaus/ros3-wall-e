@@ -11,6 +11,7 @@ import random
 import pygame
 import rclpy
 from rclpy.node import Node
+from rclpy.timer import Timer
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -20,6 +21,8 @@ class AudioNode(Node):
         self.setup_hardware()
         self.get_logger().info('Audio node started')
         self.play_startup_sound()
+        # Create timer for random sound playback
+        self.create_timer(5.0, self.play_random_sound)  # Play every 5 seconds
         
     def setup_hardware(self):
         """Initialize audio hardware and drivers."""
@@ -48,20 +51,24 @@ class AudioNode(Node):
             # Wait for startup sound and pause
             time.sleep(2)
             
-            # Play random sound
-            sound_files = [f for f in os.listdir(self.sounds_dir) if f.endswith('.mp3') and f != 'startup.mp3']
-            if sound_files:
-                random_sound = os.path.join(self.sounds_dir, random.choice(sound_files))
-                sound = pygame.mixer.Sound(random_sound)
-                sound.set_volume(1.0)  # Set individual sound volume to maximum
-                channel = pygame.mixer.find_channel()
-                if channel:
-                    channel.set_volume(1.0)
-                    channel.play(sound)
-                self.get_logger().info(f'Playing random sound: {os.path.basename(random_sound)}')
+            # Initial random sound after startup
+            self.play_random_sound()
         else:
             self.get_logger().error(f'Startup sound not found at {startup_sound}')
         
+    def play_random_sound(self):
+        """Play a random sound from the available MP3 files."""
+        sound_files = [f for f in os.listdir(self.sounds_dir) if f.endswith('.mp3') and f != 'startup.mp3']
+        if sound_files:
+            random_sound = os.path.join(self.sounds_dir, random.choice(sound_files))
+            sound = pygame.mixer.Sound(random_sound)
+            sound.set_volume(1.0)  # Set individual sound volume to maximum
+            channel = pygame.mixer.find_channel()
+            if channel:
+                channel.set_volume(1.0)
+                channel.play(sound)
+            self.get_logger().info(f'Playing random sound: {os.path.basename(random_sound)}')
+
     def create_subscriptions(self):
         """Setup ROS2 subscriptions."""
         pass  # TODO: Add subscriptions for audio control

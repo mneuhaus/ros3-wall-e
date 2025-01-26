@@ -83,9 +83,12 @@ class Servo2040Node(Node):
             (0, 180),  # arm_right
         ]
 
+        # Initialize all hardware pins
+        self.init_hardware()
+        
         # Initial attempt to connect
         self.connect_serial()
-
+        
         # Start serial reader thread
         self.reader_thread = threading.Thread(target=self.read_serial_data, daemon=True)
         self.reader_thread.start()
@@ -102,6 +105,46 @@ class Servo2040Node(Node):
             'arm_left': 180,       # SERVO_8
             'arm_right': 180       # SERVO_9
         }
+
+    def init_hardware(self) -> None:
+        """Initialize all hardware pins and configurations"""
+        if not self.serial:
+            self.connect_serial()
+            
+        # Initialize all servo pins
+        for pin in self.servo_pins:
+            cmd = f"INIT_GPIO PIN={pin} MODE=SERVO COUNT=20000 FREQ=50\n"
+            try:
+                self.serial.write(cmd.encode())
+                time.sleep(0.1)  # Allow time for initialization
+            except serial.SerialException as e:
+                self.get_logger().error(f"Failed to initialize servo pin {pin}: {e}")
+                
+        # Initialize track control pins
+        track_init_commands = [
+            # PWM pins for speed control
+            "INIT_GPIO PIN=13 MODE=PWM COUNT=0 FREQ=1000\n",  # Left track PWM
+            "INIT_GPIO PIN=17 MODE=PWM COUNT=0 FREQ=1000\n",  # Right track PWM
+            # Direction control pins
+            "INIT_GPIO PIN=14 MODE=OUTPUT\n",  # Left track direction
+            "INIT_GPIO PIN=18 MODE=OUTPUT\n",  # Right track direction
+        ]
+        
+        for cmd in track_init_commands:
+            try:
+                self.serial.write(cmd.encode())
+                time.sleep(0.1)  # Allow time for initialization
+            except serial.SerialException as e:
+                self.get_logger().error(f"Failed to initialize track control: {e}")
+        
+        # Set all servos to center position
+        for pin in self.servo_pins:
+            cmd = f"MOVE_SERVO PIN={pin} POS=90.0 SPEED=50\n"
+            try:
+                self.serial.write(cmd.encode())
+                time.sleep(0.1)
+            except serial.SerialException as e:
+                self.get_logger().error(f"Failed to center servo {pin}: {e}")
 
     def connect_serial(self) -> None:
         """Establish serial connection with automatic retries"""

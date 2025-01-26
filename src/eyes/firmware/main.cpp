@@ -1,6 +1,5 @@
 /**
- * EVE Protocol-compliant Eyes Display Controller
- * Implements docs/eve-protokoll.md specification
+ * Basic Eyes Display Controller
  */
 
 #include <cstdio>
@@ -9,12 +8,9 @@
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "hardware/dma.h"
-#include "hardware/pio.h"
 #include "pico/bootrom.h"
+#include "display.h"
 
-// Display configuration
-#define DISP_WIDTH 240
-#define DISP_HEIGHT 240
 #define MAX_CMD_LENGTH 128
 #define BOOTLOADER_DELAY_MS 500
 
@@ -27,6 +23,13 @@
 
 // DMA channel for display updates
 int dma_tx;
+
+// Basic test pattern - checkerboard
+const uint16_t default_image[240 * 240] = {
+    // Initialize with alternating colors
+    [0 ... (240*240/2)-1] = 0xF800,   // Red
+    [240*240/2 ... 240*240-1] = 0x07E0 // Green
+};
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);
@@ -54,6 +57,34 @@ bool init_gpio(uint pin, const char* mode) {
     return false;
 }
 
+void write_cmd(uint8_t cmd) {
+    gpio_put(PIN_DC, 0);  // Command mode
+    gpio_put(PIN_CS, 0);
+    spi_write_blocking(spi0, &cmd, 1);
+    gpio_put(PIN_CS, 1);
+}
+
+void write_data(uint8_t data) {
+    gpio_put(PIN_DC, 1);  // Data mode
+    gpio_put(PIN_CS, 0);
+    spi_write_blocking(spi0, &data, 1);
+    gpio_put(PIN_CS, 1);
+}
+
+void set_window(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
+    write_cmd(CMD_CASET);
+    write_data(x1 >> 8);
+    write_data(x1 & 0xFF);
+    write_data(x2 >> 8);
+    write_data(x2 & 0xFF);
+    
+    write_cmd(CMD_RASET);
+    write_data(y1 >> 8);
+    write_data(y1 & 0xFF);
+    write_data(y2 >> 8);
+    write_data(y2 & 0xFF);
+}
+
 void init_display() {
     // Initialize SPI at 62.5MHz
     spi_init(spi0, 62500000);
@@ -68,7 +99,51 @@ void init_display() {
     // Setup DMA channel
     dma_tx = dma_claim_unused_channel(true);
     
-    // TODO: Add GC9A01A initialization sequence
+    // Reset display
+    gpio_put(PIN_RST, 0);
+    sleep_ms(100);
+    gpio_put(PIN_RST, 1);
+    sleep_ms(100);
+    
+    // Initialize GC9A01A
+    write_cmd(CMD_SLPOUT);    // Sleep out
+    sleep_ms(120);
+    
+    write_cmd(CMD_COLMOD);    // Color mode
+    write_data(0x55);         // 16-bit color
+    
+    write_cmd(CMD_MADCTL);    // Memory data access control
+    write_data(0x00);         // Normal orientation
+    
+    write_cmd(CMD_DISPON);    // Display on
+    sleep_ms(20);
+}
+
+void display_image() {
+    set_window(0, 0, DISP_WIDTH-1, DISP_HEIGHT-1);
+    
+    write_cmd(CMD_RAMWR);
+    gpio_put(PIN_DC, 1);  // Data mode
+    gpio_put(PIN_CS, 0);
+    
+    // Send image data using DMA
+    dma_channel_config c = dma_channel_get_default_config(dma_tx);
+    channel_config_set_transfer_data_size(&c, DMA_SIZE_16);
+    channel_config_set_read_increment(&c, true);
+    channel_config_set_write_increment(&c, false);
+    channel_config_set_dreq(&c, spi_get_dreq(spi0, true));
+    
+    dma_channel_configure(
+        dma_tx,
+        &c,
+        &spi_get_hw(spi0)->dr,
+        default_image,
+        DISP_WIDTH * DISP_HEIGHT,
+        true
+    );
+    
+    dma_channel_wait_for_finish_blocking(dma_tx);
+    gpio_put(PIN_CS, 1);
 }
 
 bool process_command(char* command) {
@@ -156,7 +231,11 @@ bool process_command(char* command) {
 int main() {
     stdio_init_all();
     
-    printf("EVE Protocol Eyes Display Ready\n");
+    // Initialize and show image
+    init_display();
+    display_image();
+    
+    printf("Eyes Display Ready\n");
     
     char buffer[MAX_CMD_LENGTH] = {0};
     uint8_t buf_pos = 0;

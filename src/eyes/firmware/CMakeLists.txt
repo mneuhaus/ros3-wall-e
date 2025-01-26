@@ -73,7 +73,7 @@ add_compile_options(-O2)
 
 
   target_link_libraries(eyes
-                        LCD 
+                        Display
                         Touch
                         QMI8658
                         LVGL

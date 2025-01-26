@@ -80,4 +80,16 @@ def generate_launch_description():
             name='web_server',
             output='screen'
         ),
+        
+        # Start the audio node
+        Node(
+            package='audio',
+            executable='audio_node',
+            name='audio_node',
+            output='screen',
+            parameters=[{
+                'startup_sound': True,
+                'volume': 1.0
+            }]
+        ),
     ])

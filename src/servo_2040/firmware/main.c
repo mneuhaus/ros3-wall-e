@@ -10,6 +10,7 @@
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
 #include "pico/bootrom.h"
+#include "hardware/clocks.h"
 
 // Hardware configuration
 #define LEFT_TRACK_PWM 13

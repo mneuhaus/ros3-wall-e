@@ -19,7 +19,7 @@ set(CMAKE_CXX_STANDARD 17)
 pico_sdk_init()
 
 # Include Pimoroni libraries
-include_directories(pimoroni-pico/drivers)
+include_directories(${PIMORONI_PICO_PATH}/drivers)
 
 add_executable(servo_controller
     main.c
@@ -29,7 +29,6 @@ add_executable(servo_controller
 target_link_libraries(servo_controller 
     pico_stdlib
     hardware_pwm
-    servo2040
 )
 
 # Enable USB output, disable UART output

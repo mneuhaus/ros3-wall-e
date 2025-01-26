@@ -21,10 +21,8 @@
 #define MAX_CMD_LENGTH 128
 #define BOOTLOADER_DELAY_MS 500
 
-namespace {
-    // Create a servo cluster for all possible servos, using PIO 0 and State Machine 0
-    servo::ServoCluster servos(pio0, 0, 0, 30);  // Support up to pin 29
-}
+// Create a servo cluster for all possible servos, using PIO 0 and State Machine 0
+servo::ServoCluster* servos = nullptr;
 
 void send_response(const char* cmd, const char* status, const char* message) {
     printf("%s: %s %s\n", cmd, status, message);
@@ -36,8 +34,8 @@ bool init_gpio(uint pin, const char* mode, uint count, uint freq) {
     }
 
     if (strcmp(mode, "PWM") == 0 || strcmp(mode, "SERVO") == 0) {
-        servos.init();
-        servos.enable(pin);
+        servos->init();
+        servos->enable(pin);
         return true;
     }
     else if (strcmp(mode, "OUTPUT") == 0) {
@@ -54,7 +52,7 @@ void set_servo_position(uint pin, float degrees) {
         return;
     }
 
-    servos.to_value(pin, degrees);
+    servos->to_value(pin, degrees);
 }
 
 void set_track_speed(uint pwm_pin, uint dir_pin, int speed) {
@@ -64,7 +62,7 @@ void set_track_speed(uint pwm_pin, uint dir_pin, int speed) {
     gpio_put(dir_pin, speed >= 0);
     
     // Set PWM value
-    servos.to_percent(pwm_pin, abs(speed), 0, 100);
+    servos->to_percent(pwm_pin, abs(speed), 0, 100);
 }
 
 bool process_command(char* command) {
@@ -159,6 +157,9 @@ bool process_command(char* command) {
 
 int main() {
     stdio_init_all();
+    
+    // Initialize servo cluster
+    servos = new servo::ServoCluster(pio0, 0, 0, 30);
     
     // Initialize track controls with default 1kHz PWM
     init_gpio(LEFT_TRACK_PWM, "PWM", 0, 1000);

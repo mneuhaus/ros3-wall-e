@@ -1,9 +1,15 @@
-#include "LCD_test.h"  //example
-
+#include <stdio.h>
+#include "pico/stdlib.h"
 
 int main(void)
 {
-    LCD_1in28_LVGL_Test();
-
+    stdio_init_all();
+    printf("Hello from Wall-E's Eyes!\n");
+    
+    while(1) {
+        sleep_ms(1000);
+        printf("Blink!\n");
+    }
+    
     return 0;
 }

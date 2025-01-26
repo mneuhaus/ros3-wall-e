@@ -1,3 +1,4 @@
+import os
 from setuptools import find_packages, setup
 
 package_name = 'audio'
@@ -10,6 +11,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/resource/audio', 
+         [os.path.join('resource/audio', f) for f in os.listdir('resource/audio') if f != '.gitkeep']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

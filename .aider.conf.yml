@@ -22,7 +22,7 @@ file:
 
   - src/eyes/firmware/CMakeLists.txt
   - src/eyes/firmware/display.h
-  - src/eyes/firmware/main.cpp
+  - src/eyes/firmware/main.c
   - src/eyes/firmware/pico_sdk_import.cmake
   - src/eyes/package.xml
   - src/eyes/scripts/flash_firmware.py

@@ -2333,3 +2333,153 @@
 
 # 2025-01-26 23:53:55.159375
 +n
+
+# 2025-01-26 23:56:58.694401
++ok, i can see the display in red now. i've added lens.jpg to the resource folder, how can we show this on the screen ?
+
+# 2025-01-27 00:00:05.787773
++n
+
+# 2025-01-27 00:00:21.752320
++do you know some kind of way to convert that jpg into lcd format in the build process?
+
+# 2025-01-27 00:01:07.938458
++/run pip3 install pillow
+
+# 2025-01-27 00:01:07.938691
++/run pip3 install pillow
+
+# 2025-01-27 00:01:19.383000
++n
+
+# 2025-01-27 00:01:28.095573
++/run apt-get install python3-pillow
+
+# 2025-01-27 00:01:39.496345
++n
+
+# 2025-01-27 00:01:44.258708
++/run sudo apt-get install python3-pillow
+
+# 2025-01-27 00:03:02.399255
++please update the makefile, i'd like a */update command for each build/flash group to build and then flash in asingle command
+
+# 2025-01-27 00:04:17.623784
++n
+
+# 2025-01-27 00:04:40.751638
++[ 87%] Building C object CMakeFiles/eyes.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.c:3:10: fatal error: generated/image_data.h: No such file or directory
++    3 | #include "generated/image_data.h"
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~
++compilation terminated.
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1923: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:81: eyes/build] Error 2
+
+# 2025-01-27 00:05:20.440381
++n
+
+# 2025-01-27 00:06:15.870595
++[ 87%] Converting lens.jpg to header file
++Converted /home/mneuhaus/ros2_ws/src/eyes/firmware/../resource/lens.jpg to /home/mneuhaus/ros2_ws/src/eyes/firmware/build/generated/image_data.h
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++[ 87%] Built target generate_image_header
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++[ 87%] Building C object CMakeFiles/eyes.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/eyes/firmware/main.c:3:10: fatal error: ../generated/image_data.h: No such file or directory
++    3 | #include "../generated/image_data.h"
++      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
++compilation terminated.
++make[3]: *** [CMakeFiles/eyes.dir/build.make:76: CMakeFiles/eyes.dir/main.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1924: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:81: eyes/build] Error 2
+
+# 2025-01-27 00:06:47.523671
++n
+
+# 2025-01-27 00:09:09.061737
++seems like you've distorted the image somehow, i can see the image 2 times and i think there is still some parts of the old "lens" emulation
+
+# 2025-01-27 00:09:53.374987
++i want the image we've converted to be display in full on the lcd, nothing else
+
+# 2025-01-27 00:10:24.602093
++n
+
+# 2025-01-27 00:11:20.990157
++/paste 
+
+# 2025-01-27 00:13:02.703811
++instead of using LCD_1in28 itself please create a fresh implemeentation based on the examples
+
+# 2025-01-27 00:15:07.605377
++n
+
+# 2025-01-27 00:16:07.062040
++[ 88%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.o
++[ 88%] Linking CXX executable eyes.elf
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lLCD: No such file or directory
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lLCD: No such file or directory
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/eyes.dir/build.make:1073: eyes.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1923: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:81: eyes/build] Error 2
+
+# 2025-01-27 00:16:35.450472
++n
+
+# 2025-01-27 00:16:53.477325
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++[ 76%] Building C object lib/Display/CMakeFiles/Display.dir/Display.c.o
++In file included from /home/mneuhaus/ros2_ws/src/eyes/firmware/lib/Display/Display.c:1:
++/home/mneuhaus/ros2_ws/src/eyes/firmware/lib/Display/Display.h:4:10: fatal error: DEV_Config.h: No such file or directory
++    4 | #include "DEV_Config.h"
++      |          ^~~~~~~~~~~~~~
++compilation terminated.
++make[3]: *** [lib/Display/CMakeFiles/Display.dir/build.make:76: lib/Display/CMakeFiles/Display.dir/Display.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:2107: lib/Display/CMakeFiles/Display.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:81: eyes/build] Error 2
+
+# 2025-01-27 00:19:19.683568
++ 97%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/pico_printf/printf.c.o
++[ 97%] Building ASM object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/pico_crt0/crt0.S.o
++[ 97%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/pico_clib_interface/newlib_interface.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_spi/spi.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_i2c/i2c.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_adc/adc.c.o
++[ 98%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_dma/dma.c.o
++[100%] Building C object CMakeFiles/eyes.dir/home/mneuhaus/pico/pico-sdk/src/rp2_common/hardware_rtc/rtc.c.o
++[100%] Linking CXX executable eyes.elf
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lLCD: No such file or directory
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/eyes.dir/build.make:1074: eyes.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1924: CMakeFiles/eyes.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/eyes/firmware/build'
++make: *** [Makefile:81: eyes/build] Error 2
+
+# 2025-01-27 00:20:35.610582
++n

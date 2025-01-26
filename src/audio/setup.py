@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'sound'
+package_name = 'audio'
 
 setup(
     name=package_name,

@@ -9,21 +9,29 @@
             font-family: 'Arial', sans-serif;
             max-width: 100%;
             margin: 0;
-            padding: 10px;
-            background-color: #f0f0f0;
-            touch-action: none; /* Prevent scrolling while using joystick */
+            padding: 0;
+            background-color: #2c3e50;
+            touch-action: none;
+            color: white;
         }
         .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .control-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 15px;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        .gamepad-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .left-side, .right-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
         .control-section {
             background-color: #f8f8f8;
@@ -86,40 +94,25 @@
     <div class="container">
         <h1>🤖 Wall-E Control Panel</h1>
         
-        <div class="control-panel">
-            <div class="control-section">
-                <h2>Movement Controls</h2>
-                <div id="joystick-zone" style="width: 200px; height: 200px; position: relative; background: rgba(0,0,0,0.1); border-radius: 50%; margin-bottom: 20px;"></div>
-                <p>Use the joystick to control Wall-E's movement</p>
+        <div class="gamepad-layout">
+            <!-- Left side with joystick -->
+            <div class="left-side">
+                <div id="joystick-zone" style="width: 200px; height: 200px; position: relative; background: rgba(255,255,255,0.1); border-radius: 50%; margin-bottom: 20px;"></div>
+                <p>Movement Control</p>
             </div>
 
-            <div class="control-section">
-                <h2>Head Controls</h2>
-                <div class="head-controls">
-                    <button class="head-button" onclick="setServoPosition(0, 90)">Look Up</button>
-                    <button class="head-button" onclick="setServoPosition(0, 45)">Center</button>
-                    <button class="head-button" onclick="setServoPosition(0, 0)">Look Down</button>
-                </div>
-                <div class="servo-controls">
-                    <div class="slider-container">
-                        <label>Head Tilt:</label>
-                        <input type="range" id="headTilt" min="0" max="180" step="1" value="90">
-                        <span id="headTiltValue" class="value-display">90</span>
+            <!-- Right side with action buttons -->
+            <div class="right-side">
+                <div class="action-buttons">
+                    <div class="button-grid">
+                        <button onclick="setServoPosition(0, 90)" class="action-btn">Look Up</button>
+                        <button onclick="setServoPosition(0, 45)" class="action-btn">Center</button>
+                        <button onclick="setServoPosition(0, 0)" class="action-btn">Look Down</button>
+                        <button onclick="playSound('wall-e-1.mp3')" class="action-btn">Voice</button>
+                        <button onclick="playSound('gorgeus.mp3')" class="action-btn">Gorgeous</button>
+                        <button onclick="playSound('whoa.mp3')" class="action-btn">Whoa</button>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="control-section">
-            <h2>Sound Controls</h2>
-            <div class="sound-controls">
-                <button onclick="playSound('startup.mp3')">Startup Sound</button>
-                <button onclick="playSound('wall-e-1.mp3')">Voice 1</button>
-                <button onclick="playSound('wall-e-4.mp3')">Voice 2</button>
-                <button onclick="playSound('gorgeus.mp3')">Gorgeous</button>
-                <button onclick="playSound('background-music.mp3')">Background Music</button>
-                <button onclick="playSound('destruct.mp3')">Destruct</button>
-                <button onclick="playSound('whoa.mp3')">Whoa</button>
             </div>
         </div>
 
@@ -128,25 +121,35 @@
     </div>
 
     <style>
-        .sound-controls {
+        .button-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .sound-controls button {
-            background-color: #4CAF50;
-            color: white;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
         
-        .sound-controls button:hover {
-            background-color: #45a049;
+        .action-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .action-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
     </style>
 

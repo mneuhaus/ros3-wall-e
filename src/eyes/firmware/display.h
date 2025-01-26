@@ -1,5 +1,6 @@
 #pragma once
 
+#include "lvgl.h"
 #include <cstdint>
 
 // Display configuration
@@ -16,12 +17,14 @@
 #define CMD_MADCTL  0x36
 
 // Function declarations
-void write_cmd(uint8_t cmd);
-void write_data(uint8_t data);
-void set_window(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
-void init_display();
-void display_image();
+void display_init();
+void display_flush_ready();
+void display_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
+void display_set_pixel(uint16_t x, uint16_t y, lv_color_t color);
+void display_rounder(lv_disp_drv_t * disp_drv, lv_area_t * area);
 
-// Default test pattern - replace with actual image data
-// 16-bit RGB565 format, 240x240 pixels
-extern uint16_t default_image[240 * 240];
+// Display driver structure
+extern lv_disp_drv_t disp_drv;
+extern lv_disp_draw_buf_t draw_buf;
+extern lv_color_t buf_1[DISP_WIDTH * 10];
+extern lv_color_t buf_2[DISP_WIDTH * 10];

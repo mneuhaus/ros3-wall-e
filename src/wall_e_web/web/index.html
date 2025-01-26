@@ -3,6 +3,7 @@
 <head>
     <title>Wall-E Control</title>
     <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -87,6 +88,7 @@
         <div class="control-panel">
             <div class="control-section">
                 <h2>Movement Controls</h2>
+                <div id="joystick-zone" style="width: 200px; height: 200px; position: relative; background: rgba(0,0,0,0.1); border-radius: 50%; margin-bottom: 20px;"></div>
                 <div class="slider-container">
                     <label>Forward/Back:</label>
                     <input type="range" id="linearVel" min="-1.0" max="1.0" step="0.1" value="0">
@@ -174,6 +176,34 @@
         // Connect to ROS
         var ros = new ROSLIB.Ros({
             url: 'ws://wall-e.local:9090'
+        });
+
+        // Create joystick
+        var joystickManager = nipplejs.create({
+            zone: document.getElementById('joystick-zone'),
+            mode: 'static',
+            position: {left: '50%', top: '50%'},
+            color: 'green',
+            size: 150
+        });
+
+        joystickManager.on('move', function(evt, data) {
+            var angle = data.angle.radian;
+            var force = Math.min(data.force, 1.0);
+            
+            // Convert polar coordinates to x/y velocities
+            var linear = -force * Math.cos(angle);  // Forward is -y in joystick space
+            var angular = -force * Math.sin(angle);  // Right is +x in joystick space
+            
+            // Scale velocities
+            linear *= 1.0;  // Max 1.0 m/s
+            angular *= 2.0;  // Max 2.0 rad/s
+            
+            publishVelocity(linear, angular);
+        });
+
+        joystickManager.on('end', function() {
+            publishVelocity(0, 0);
         });
 
         ros.on('connection', function() {

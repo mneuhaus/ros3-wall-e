@@ -13,8 +13,10 @@ def generate_launch_description():
                 'port': 9090
             }]
         ),
-        ExecuteProcess(
-            cmd=['ros2', 'run', 'wall_e_web', 'serve_web'],
+        Node(
+            package='wall_e_web',
+            executable='serve_web',
+            name='web_server',
             output='screen'
         )
     ])

@@ -9,15 +9,19 @@ The audio system provides Wall-E's voice and sound effects capabilities through 
 - **Sound Files**: Pre-recorded MP3s stored in package resources
 
 ## Available Sounds
-| Filename            | Description                    |
-|--------------------|--------------------------------|
-| startup.mp3        | Boot sequence sound            |
-| wall-e-1.mp3       | Main voice clip                |
-| wall-e-4.mp3       | Alternative voice clip         |
-| gorgeus.mp3        | Admiration sound               |
-| background-music.mp3| Ambient background music       |
-| destruct.mp3       | Destruction sound effect       |
-| whoa.mp3           | Surprise sound effect          |
+| Filename            | Description                    | Duration |
+|--------------------|--------------------------------|----------|
+| startup.mp3        | Boot sequence sound            | 2.1s     |
+| wall-e-1.mp3       | Main "Wall-E" voice clip       | 1.2s     |
+| wall-e-2.mp3       | Curious "Wall-E" voice         | 1.0s     |
+| wall-e-3.mp3       | Happy "Wall-E" voice           | 1.1s     |
+| wall-e-4.mp3       | Questioning "Wall-E" voice     | 1.3s     |
+| gorgeus.mp3        | "Gorgeous" admiration          | 1.0s     |
+| whoa.mp3           | "Whoa" surprise sound          | 0.8s     |
+| eva.mp3            | "Eva!" excited call            | 0.9s     |
+| directive.mp3      | "Directive?" question          | 1.2s     |
+| background-music.mp3| Ambient background music       | 60.0s    |
+| destruct.mp3       | Destruction sound effect       | 1.5s     |
 
 ## ROS2 Interface
 

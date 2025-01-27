@@ -143,6 +143,34 @@ scripts/                   # Development utilities
 - Protocol specifications and other system-wide documentation should have descriptive names
 - Use markdown format for all documentation files
 
+### Version Control
+- All version numbers follow semantic versioning (MAJOR.MINOR.PATCH)
+- Tag releases with version number (v1.0.0)
+- Include changelog entries for all changes
+- Reference issue numbers in commit messages when applicable
+
+### Code Review Process
+1. Create feature branch
+2. Submit pull request
+3. Pass automated tests
+4. Code review by team member
+5. Address feedback
+6. Merge to main branch
+
+### Error Handling
+- Use descriptive error messages
+- Log errors with appropriate severity
+- Include context in error messages
+- Handle all error cases gracefully
+- Provide user-friendly error responses
+
+### Configuration Management
+- Use ROS2 parameters for configurable values
+- Store constants in dedicated config files
+- Document all configuration options
+- Provide default values
+- Include parameter validation
+
 ### Documentation Content Requirements
 Each package documentation should include:
 1. Overview of the package's purpose

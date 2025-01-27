@@ -35,6 +35,12 @@ The audio system provides Wall-E's voice and sound effects capabilities through 
 | startup_sound | bool    | true    | Play sound on node start |
 | volume        | float   | 1.0     | Master volume (0.0-1.0)  |
 
+### Web Interface Integration
+The audio node is integrated with the web interface, providing:
+- Quick access buttons for all sound effects
+- Visual feedback on sound playback
+- Grouped sounds by type (voices, effects, etc)
+
 ### Topics
 | Topic         | Type              | Direction | Description        |
 |---------------|-------------------|-----------|-------------------|

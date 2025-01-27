@@ -33,12 +33,13 @@ ros2 launch wall_e_web all_launch.py
 2. Open browser to: `http://<wall-e-ip>:8000`
 
 ### Web Interface Features
-- Live video feed from cameras
-- Manual control interface
-- Battery status monitoring
+- Gamepad-style control layout
+- Virtual joystick for movement control (left side)
+- Action buttons for sounds and movements (right side)
+- Head position controls
 - Sound effect triggers
-- Behavior mode selection
-- System diagnostics
+- Emergency stop button
+- Connection status indicator
 
 ## Implementation Details
 
@@ -99,13 +100,20 @@ The web interface provides a JavaScript API for ROS2 interaction:
 
 ```javascript
 // Connect to ROS
-ros.connect('ws://localhost:9090')
+ros.connect('ws://wall-e.local:9090')
 
-// Publish command
-ros.publish('/cmd_vel', twist_msg)
+// Movement control
+publishVelocity(linear, angular)  // For joystick control
+setServoPosition(servoIndex, position)  // For head movement
 
-// Subscribe to status
-ros.subscribe('/battery_state', handleBattery)
+// Sound control
+playSound(soundFile)  // Trigger sound effects
+
+// Emergency stop
+stopButton.onclick = function() {
+    publishVelocity(0, 0)
+    publishTrackSpeeds(0, 0)
+}
 ```
 
 ## Development Guide

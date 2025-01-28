@@ -96,22 +96,22 @@ class PowerMonitorNode(Node):
                 self.get_logger().info(
                     f'Converted: {voltage:.4f}V {current:.4f}A {power:.4f}W'
                 )
-            
-            # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
-            percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
-            
-            msg = BatteryState()
-            msg.voltage = voltage
-            msg.current = current
-            msg.percentage = percentage
-            msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
-            msg.present = True
-            
-            self.battery_pub.publish(msg)
-            
-            self.get_logger().info(
-                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
-            )
+                
+                # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
+                percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
+                
+                msg = BatteryState()
+                msg.voltage = voltage
+                msg.current = current
+                msg.percentage = percentage
+                msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
+                msg.present = True
+                
+                self.battery_pub.publish(msg)
+                
+                self.get_logger().info(
+                    f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
+                )
             
         except Exception as e:
             self.get_logger().error(f'Error reading power data: {str(e)}')

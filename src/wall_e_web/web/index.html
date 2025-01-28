@@ -73,6 +73,27 @@
         .status-connected { background-color: #90EE90; }
         .status-disconnected { background-color: #FFB6C1; }
         .status-error { background-color: #FF6B6B; }
+        .volume-control {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .volume-control label {
+            color: white;
+            min-width: 70px;
+        }
+        .volume-control input[type="range"] {
+            flex-grow: 1;
+        }
+        .volume-control span {
+            color: white;
+            min-width: 50px;
+            text-align: right;
+        }
         .head-controls {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -121,6 +142,11 @@
             </div>
         </div>
 
+        <div class="volume-control">
+            <label for="volumeSlider">Volume: </label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="80">
+            <span id="volumeValue">80%</span>
+        </div>
         <button id="stopButton">⚠️ EMERGENCY STOP</button>
         <div id="status" class="status-disconnected">Status: Disconnected</div>
     </div>
@@ -232,6 +258,24 @@
             name: '/play_sound',
             messageType: 'std_msgs/msg/String'
         });
+
+        var volumeTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/set_volume',
+            messageType: 'std_msgs/msg/Int32'
+        });
+
+        // Volume control
+        var volumeSlider = document.getElementById('volumeSlider');
+        var volumeValue = document.getElementById('volumeValue');
+        
+        volumeSlider.oninput = function() {
+            volumeValue.textContent = this.value + '%';
+            var volumeMsg = new ROSLIB.Message({
+                data: parseInt(this.value)
+            });
+            volumeTopic.publish(volumeMsg);
+        };
 
         function playSound(soundFile) {
             var soundMsg = new ROSLIB.Message({

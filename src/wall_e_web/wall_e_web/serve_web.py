@@ -9,7 +9,9 @@ import socketserver
 import socket
 import os
 import rclpy
+import subprocess
 from rclpy.node import Node
+from std_msgs.msg import Int32
 from ament_index_python.packages import get_package_share_directory
 
 class WebServerNode(Node):
@@ -33,8 +35,27 @@ class WebServerNode(Node):
         self.httpd = NonBlockingHTTPServer(("", self.port), handler)
         
         # Create timer to process HTTP requests
+        # Create subscription for volume control
+        self.create_subscription(
+            Int32,
+            'set_volume',
+            self.volume_callback,
+            10
+        )
+        
         self.create_timer(0.1, self.serve_requests)
         self.get_logger().info(f"Serving Wall-E web interface at http://localhost:{self.port}")
+        
+    def volume_callback(self, msg):
+        """Handle volume control messages."""
+        try:
+            # Set ALSA Master volume
+            volume = max(0, min(100, msg.data))  # Clamp between 0-100
+            subprocess.run(['amixer', 'set', 'Master', f'{volume}%'], 
+                         capture_output=True, text=True, check=True)
+            self.get_logger().info(f'Volume set to {volume}%')
+        except subprocess.CalledProcessError as e:
+            self.get_logger().error(f'Failed to set volume: {e}')
 
     def serve_requests(self):
         try:

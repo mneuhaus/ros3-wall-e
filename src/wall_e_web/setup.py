@@ -10,7 +10,7 @@ setup(
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/web', [os.path.join('web', f) for f in os.listdir('web')]),  # Include all web files
+        ('share/' + package_name + '/web', [os.path.join('web', f) for f in os.listdir('web') if os.path.isfile(os.path.join('web', f))]),  # Include only files, not directories
         ('share/' + package_name + '/launch', ['launch/rosbridge_launch.py']),
         ('share/' + package_name + '/launch', ['launch/all_launch.py']),
     ],

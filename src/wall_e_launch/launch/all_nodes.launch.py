@@ -71,7 +71,7 @@ def generate_launch_description():
             name='rosbridge_websocket',
             output='screen',
             parameters=[{
-                'port': 9090
+                'port': 9091  # Changed port to avoid conflicts
             }]
         ),
         Node(

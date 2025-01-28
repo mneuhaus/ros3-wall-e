@@ -19,7 +19,7 @@ class BatteryTracker:
         self.power_history = deque(maxlen=window_size)
         self.timestamps = deque(maxlen=window_size)
         self.drop_rates = deque(maxlen=window_size)  # Store historical voltage drop rates
-        self.alpha = 0.1  # Exponential moving average factor
+        self.alpha = 0.01  # Exponential moving average factor (slower updates)
         self.last_voltage = None
         self.last_timestamp = None
         self.avg_drop_rate = None
@@ -65,8 +65,10 @@ class BatteryTracker:
             not self.voltage_history):
             return float('inf')
         
-        # Calculate time until 20% (9.72V for 3S Li-ion)
-        voltage_until_20 = current_voltage - 9.72
+        # Calculate time until 20% (10.2V for 3S Li-ion under load)
+        # 3S Li-ion voltage curve is non-linear, especially in lower ranges
+        # 10.2V is a safer cutoff considering voltage sag under load
+        voltage_until_20 = current_voltage - 10.2
         seconds_remaining = voltage_until_20 / self.avg_drop_rate
         
         return max(0, seconds_remaining)

@@ -7,21 +7,23 @@ Reads voltage and current from 12V battery system.
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import BatteryState
-import board
-import busio
-from adafruit_ina226 import INA226
+import smbus2
+import time
 
 class PowerMonitorNode(Node):
     def __init__(self):
         super().__init__('power_monitor')
         
         # Create I2C interface
-        i2c = busio.I2C(board.SCL, board.SDA)
-        self.ina226 = INA226(i2c, address=0x40)
+        self.bus = smbus2.SMBus(1)  # Use I2C bus 1
+        self.address = 0x40  # INA226 address
         
         # Configure INA226
-        self.ina226.averaging_count = 128  # Average over 128 samples
-        self.ina226.conversion_time = 0.008398  # 8.398ms conversion time
+        self.write_register(0x00, 0x4127)  # Config register: 128 samples avg, 8.244ms conversion
+        self.write_register(0x05, 0x0001)  # Enable continuous measurements
+        
+        # Wait for first conversion
+        time.sleep(0.1)
         
         # Create publisher
         self.battery_pub = self.create_publisher(BatteryState, 'battery_state', 10)
@@ -31,11 +33,28 @@ class PowerMonitorNode(Node):
         
         self.get_logger().info('Power monitor initialized')
 
+    def write_register(self, register, value):
+        """Write 16-bit value to register."""
+        bytes_val = value.to_bytes(2, byteorder='big')
+        self.bus.write_i2c_block_data(self.address, register, list(bytes_val))
+
+    def read_register(self, register):
+        """Read 16-bit value from register."""
+        result = self.bus.read_i2c_block_data(self.address, register, 2)
+        return int.from_bytes(bytes(result), byteorder='big')
+
     def publish_power_state(self):
         try:
-            voltage = self.ina226.bus_voltage
-            current = self.ina226.current
-            power = self.ina226.power
+            # Read voltage (mV)
+            voltage_raw = self.read_register(0x02)
+            voltage = voltage_raw * 1.25 / 1000.0  # Convert to volts
+            
+            # Read current (mA)
+            current_raw = self.read_register(0x04)
+            current = current_raw * 1.0 / 1000.0  # Convert to amps
+            
+            # Calculate power
+            power = voltage * current
             
             msg = BatteryState()
             msg.voltage = voltage

@@ -13,8 +13,7 @@ setup(
     ],
     install_requires=[
         'setuptools',
-        'adafruit-circuitpython-ina226',
-        'board'
+        'smbus2'
     ],
     zip_safe=True,
     maintainer='mneuhaus',

@@ -92,4 +92,15 @@ def generate_launch_description():
                 'volume': 1.0
             }]
         ),
+        
+        # Start the power monitoring node
+        Node(
+            package='power',
+            executable='power_monitor',
+            name='power_monitor',
+            output='screen',
+            respawn=True,  # Automatically restart if it crashes
+            respawn_delay=1,  # Wait 1 second before restarting
+            arguments=['--ros-args', '--log-level', 'info']
+        ),
     ])

@@ -2483,3 +2483,96 @@
 
 # 2025-01-27 00:20:35.610582
 +n
+
+# 2025-01-27 00:25:14.041512
++i've got a voltage sensor connected to the 12v battery (3x18650 Cells) and wand to measure the "battery status" with that, please add a gauge to the web server to display the battery percentage and tell me which pins i need to connect this voltage sensor to on the cm4
+
+# 2025-01-27 00:42:56.768513
++please add the audio node to the all_nodes.launch.py 
+
+# 2025-01-27 00:43:14.540101
++n
+
+# 2025-01-27 00:44:16.190937
++great, now could you please add a list of buttons to the web interface to play sounds, so one button for each avaible sound?
+
+# 2025-01-27 00:44:44.696430
++n
+
+# 2025-01-27 00:45:49.019681
++please also connect those buttons to actually play that sound when i push it
+
+# 2025-01-27 00:47:02.190586
++n
+
+# 2025-01-27 00:47:11.439490
++/run ros2 topic pub /play_sound std_msgs/String "data: 'startup.mp3'"
+
+# 2025-01-27 00:47:11.439736
++/run ros2 topic pub /play_sound std_msgs/String "data: 'startup.mp3'"
+
+# 2025-01-27 00:47:14.354097
++n
+
+# 2025-01-27 00:49:19.262947
++[audio_node-6] pygame 2.5.2 (SDL 2.30.0, Python 3.12.3)
++[audio_node-6] Hello from the pygame community. https://www.pygame.org/contribute.html
++[audio_node-6] Traceback (most recent call last):
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/audio/audio_node", line 33, in <module>
++[audio_node-6]     sys.exit(load_entry_point('audio==0.0.0', 'console_scripts', 'audio_node')())
++[audio_node-6]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 109, in main
++[audio_node-6]     node = AudioNode()
++[audio_node-6]            ^^^^^^^^^^^
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 22, in __init__
++[audio_node-6]     self.create_subscriptions()
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 95, in create_subscriptions
++[audio_node-6]     self.play_sound_sub = self.create_subscription(
++[audio_node-6]                           ^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 1625, in create_subscription
++[audio_node-6]     check_is_valid_msg_type(msg_type)
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/type_support.py", line 35, in check_is_valid_msg_type
++[audio_node-6]     check_for_type_support(msg_type)
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/type_support.py", line 20, in check_for_type_support
++[audio_node-6]     ts = msg_or_srv_type.__class__._TYPE_SUPPORT
++[audio_node-6]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6] AttributeError: type object 'str' has no attribute '_TYPE_SUPPORT' This might be a ROS 1 message type but it should be a ROS 2 message type. Make sure to source your ROS 2 workspace after your ROS 1 workspace.
+
+# 2025-01-27 00:49:54.023945
++n
+
+# 2025-01-27 00:52:52.611501
++ok, this seems to be working pretty good, thank you could you please add a joystick for the tracks to the bottom left corner of the web interface based on nipplejs?
+
+# 2025-01-27 00:53:26.574672
++n
+
+# 2025-01-27 00:55:54.240672
++you can remove the other track related sliders now, this interface should be optimized for a mobile phone, because that's where this will mostly be used
+
+# 2025-01-27 00:56:25.738097
++d
+
+# 2025-01-27 00:57:37.894454
++ok, now let's talk about the layout of the web interface, could you please structure it in a way that's similar to a gamepad?
+
+# 2025-01-27 01:00:39.982832
++yea, i like it, but where are the other soundbites?
+
+# 2025-01-27 01:01:08.997382
++n
+
+# 2025-01-27 01:01:41.723365
++ok, great almost done for the day, anything we should add/update in the docs/conventions?
+
+# 2025-01-27 01:02:46.233712
++great, what about the docs, anything we should update or add based on the latest changes?
+
+# 2025-01-27 01:03:42.518314
++d
+
+# 2025-01-27 01:04:09.150363
++great, thanks, signing off for today, have a great night
+
+# 2025-01-27 01:04:55.997468
++/ask although, wait. could you give me a short status report on this project to brag about this in a discord chat about this project?

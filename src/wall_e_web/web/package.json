@@ -1,0 +1,8 @@
+{
+  "name": "wall-e-web",
+  "version": "1.0.0",
+  "dependencies": {
+    "@nivo/core": "^0.84.0",
+    "@nivo/line": "^0.84.0"
+  }
+}

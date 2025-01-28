@@ -157,13 +157,17 @@ class PowerMonitorNode(Node):
             avg_power = self.battery_tracker.get_average_power()
             remaining_seconds = self.battery_tracker.estimate_remaining_time(voltage)
             
-            # Convert seconds to hours:minutes
-            hours = int(remaining_seconds // 3600)
-            minutes = int((remaining_seconds % 3600) // 60)
+            # Convert seconds to hours:minutes, handling inf/nan
+            if remaining_seconds == float('inf') or remaining_seconds != remaining_seconds:  # Check for inf/nan
+                time_str = "--:--"
+            else:
+                hours = int(remaining_seconds // 3600)
+                minutes = int((remaining_seconds % 3600) // 60)
+                time_str = f"{hours:02d}:{minutes:02d}"
             
             self.get_logger().info(
                 f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W\n'
-                f'Average Power: {avg_power:.4f}W, Estimated Runtime: {hours:02d}:{minutes:02d}'
+                f'Average Power: {avg_power:.4f}W, Estimated Runtime: {time_str}'
             )
             
         except Exception as e:

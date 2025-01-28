@@ -147,6 +147,16 @@
             <input type="range" id="volumeSlider" min="0" max="100" value="80">
             <span id="volumeValue">80%</span>
         </div>
+        <script>
+            // Get initial volume on page load
+            fetch('/volume')
+                .then(response => response.text())
+                .then(volume => {
+                    document.getElementById('volumeSlider').value = volume;
+                    document.getElementById('volumeValue').textContent = volume + '%';
+                })
+                .catch(error => console.error('Error getting volume:', error));
+        </script>
         <button id="stopButton">⚠️ EMERGENCY STOP</button>
         <div id="status" class="status-disconnected">Status: Disconnected</div>
     </div>

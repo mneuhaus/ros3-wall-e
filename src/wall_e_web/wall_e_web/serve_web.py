@@ -20,6 +20,7 @@ class WebServerNode(Node):
         self.declare_parameter('port', 8000)
         self.port = self.get_parameter('port').value
         self.web_dir = os.path.join(get_package_share_directory('wall_e_web'), 'web')
+        self.current_volume = self.get_current_volume()
         
         # Change to web directory
         os.chdir(self.web_dir)
@@ -46,6 +47,22 @@ class WebServerNode(Node):
         self.create_timer(0.1, self.serve_requests)
         self.get_logger().info(f"Serving Wall-E web interface at http://localhost:{self.port}")
         
+    def get_current_volume(self):
+        """Get current system volume level."""
+        try:
+            result = subprocess.run(['pactl', 'get-sink-volume', '@DEFAULT_SINK@'], 
+                                  capture_output=True, text=True, check=True)
+            # Parse the volume percentage from output
+            volume_str = result.stdout
+            if 'Volume:' in volume_str:
+                # Extract percentage from format like "Volume: front-left: 65536 / 100% / -0.00 dB"
+                volume = int(volume_str.split('%')[0].split('/')[-1].strip())
+                return volume
+            return 80  # Default if parsing fails
+        except subprocess.CalledProcessError:
+            self.get_logger().warning("Failed to get current volume, using default")
+            return 80
+
     def volume_callback(self, msg):
         """Handle volume control messages."""
         try:
@@ -61,6 +78,22 @@ class WebServerNode(Node):
     def serve_requests(self):
         try:
             self.httpd.handle_request()
+            
+            # Add custom handler for volume endpoint
+            class VolumeHandler(http.server.SimpleHTTPRequestHandler):
+                def do_GET(self):
+                    if self.path == '/volume':
+                        self.send_response(200)
+                        self.send_header('Content-type', 'text/plain')
+                        self.end_headers()
+                        self.wfile.write(str(self.server.node.current_volume).encode())
+                        return
+                    super().do_GET()
+            
+            # Update handler with volume support
+            self.httpd.node = self
+            self.httpd.RequestHandlerClass = VolumeHandler
+            
         except socket.timeout:
             pass  # Expected timeout for non-blocking socket
         except Exception as e:

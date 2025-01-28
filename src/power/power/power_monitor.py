@@ -2,6 +2,7 @@
 """
 Power monitoring node using INA226 sensor.
 Reads voltage and current from 12V battery system.
+Tracks power usage and estimates remaining runtime.
 """
 
 import rclpy
@@ -9,10 +10,53 @@ from rclpy.node import Node
 from sensor_msgs.msg import BatteryState
 import smbus2
 import time
+from collections import deque
+from datetime import datetime
+
+class BatteryTracker:
+    def __init__(self, window_size=300):  # 5 minutes at 1Hz
+        self.voltage_history = deque(maxlen=window_size)
+        self.power_history = deque(maxlen=window_size)
+        self.timestamps = deque(maxlen=window_size)
+        
+    def add_reading(self, voltage, current, power):
+        self.voltage_history.append(voltage)
+        self.power_history.append(power)
+        self.timestamps.append(datetime.now())
+        
+    def get_average_power(self):
+        if not self.power_history:
+            return 0.0
+        return sum(self.power_history) / len(self.power_history)
+    
+    def estimate_remaining_time(self, current_voltage):
+        if not self.voltage_history or not self.power_history:
+            return float('inf')
+            
+        # Calculate voltage drop rate (V/s)
+        if len(self.timestamps) < 2:
+            return float('inf')
+            
+        time_diff = (self.timestamps[-1] - self.timestamps[0]).total_seconds()
+        if time_diff == 0:
+            return float('inf')
+            
+        voltage_diff = self.voltage_history[0] - self.voltage_history[-1]
+        voltage_drop_rate = voltage_diff / time_diff
+        
+        if voltage_drop_rate <= 0:
+            return float('inf')
+            
+        # Calculate time until 20% (9.72V for 3S Li-ion)
+        voltage_until_20 = current_voltage - 9.72
+        seconds_remaining = voltage_until_20 / voltage_drop_rate
+        
+        return max(0, seconds_remaining)
 
 class PowerMonitorNode(Node):
     def __init__(self):
         super().__init__('power_monitor')
+        self.battery_tracker = BatteryTracker()
         
         # Create I2C interface
         self.bus = smbus2.SMBus(1)  # Use I2C bus 1
@@ -108,8 +152,18 @@ class PowerMonitorNode(Node):
             
             self.battery_pub.publish(msg)
             
+            # Track battery usage
+            self.battery_tracker.add_reading(voltage, current, power)
+            avg_power = self.battery_tracker.get_average_power()
+            remaining_seconds = self.battery_tracker.estimate_remaining_time(voltage)
+            
+            # Convert seconds to hours:minutes
+            hours = int(remaining_seconds // 3600)
+            minutes = int((remaining_seconds % 3600) // 60)
+            
             self.get_logger().info(
-                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
+                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W\n'
+                f'Average Power: {avg_power:.4f}W, Estimated Runtime: {hours:02d}:{minutes:02d}'
             )
             
         except Exception as e:

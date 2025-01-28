@@ -72,46 +72,45 @@ class PowerMonitorNode(Node):
 
     def publish_power_state(self):
         try:
-            try:
-                # Read voltage (mV)
-                voltage_raw = self.read_register(0x02)
-                # Bus voltage LSB is 1.25mV
-                voltage = voltage_raw * 1.25 / 1000.0  # Convert to volts
-                
-                # Read current (mA)
-                current_raw = self.read_register(0x04)
-                if current_raw > 32767:  # Handle negative values (2's complement)
-                    current_raw -= 65536
-                # Current LSB is 0.457mA (15A/32767)
-                current = current_raw * 0.457 / 1000.0  # Convert to amps
-                
-                # Read power register directly (W)
-                power_raw = self.read_register(0x03)
-                # Power LSB is 25 times the current LSB
-                power = power_raw * (0.457 * 25.0 / 1000.0)  # Convert to watts
-                
-                self.get_logger().info(
-                    f'Raw: V=0x{voltage_raw:04x} I=0x{current_raw:04x} P=0x{power_raw:04x}'
-                )
-                self.get_logger().info(
-                    f'Converted: {voltage:.4f}V {current:.4f}A {power:.4f}W'
-                )
-                
-                # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
-                percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
-                
-                msg = BatteryState()
-                msg.voltage = voltage
-                msg.current = current
-                msg.percentage = percentage
-                msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
-                msg.present = True
-                
-                self.battery_pub.publish(msg)
-                
-                self.get_logger().info(
-                    f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
-                )
+            # Read voltage (mV)
+            voltage_raw = self.read_register(0x02)
+            # Bus voltage LSB is 1.25mV
+            voltage = voltage_raw * 1.25 / 1000.0  # Convert to volts
+            
+            # Read current (mA)
+            current_raw = self.read_register(0x04)
+            if current_raw > 32767:  # Handle negative values (2's complement)
+                current_raw -= 65536
+            # Current LSB is 0.457mA (15A/32767)
+            current = current_raw * 0.457 / 1000.0  # Convert to amps
+            
+            # Read power register directly (W)
+            power_raw = self.read_register(0x03)
+            # Power LSB is 25 times the current LSB
+            power = power_raw * (0.457 * 25.0 / 1000.0)  # Convert to watts
+            
+            self.get_logger().info(
+                f'Raw: V=0x{voltage_raw:04x} I=0x{current_raw:04x} P=0x{power_raw:04x}'
+            )
+            self.get_logger().info(
+                f'Converted: {voltage:.4f}V {current:.4f}A {power:.4f}W'
+            )
+            
+            # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
+            percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
+            
+            msg = BatteryState()
+            msg.voltage = voltage
+            msg.current = current
+            msg.percentage = percentage
+            msg.power_supply_status = BatteryState.POWER_SUPPLY_STATUS_DISCHARGING
+            msg.present = True
+            
+            self.battery_pub.publish(msg)
+            
+            self.get_logger().info(
+                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
+            )
             
         except Exception as e:
             self.get_logger().error(f'Error reading power data: {str(e)}')

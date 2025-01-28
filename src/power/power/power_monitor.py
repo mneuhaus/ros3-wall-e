@@ -94,7 +94,7 @@ class PowerMonitorNode(Node):
                     f'Raw: V=0x{voltage_raw:04x} I=0x{current_raw:04x} P=0x{power_raw:04x}'
                 )
                 self.get_logger().info(
-                    f'Converted: {voltage:.2f}V {current:.3f}A {power:.2f}W'
+                    f'Converted: {voltage:.4f}V {current:.4f}A {power:.4f}W'
                 )
             
             # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
@@ -110,7 +110,7 @@ class PowerMonitorNode(Node):
             self.battery_pub.publish(msg)
             
             self.get_logger().info(
-                f'Battery: {voltage:.2f}V ({percentage:.1f}%), Current: {current:.2f}A, Power: {power:.2f}W'
+                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W'
             )
             
         except Exception as e:

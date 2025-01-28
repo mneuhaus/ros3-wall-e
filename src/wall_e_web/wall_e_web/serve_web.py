@@ -49,9 +49,10 @@ class WebServerNode(Node):
     def volume_callback(self, msg):
         """Handle volume control messages."""
         try:
-            # Set ALSA Master volume
+            # Set PulseAudio volume using pactl
             volume = max(0, min(100, msg.data))  # Clamp between 0-100
-            subprocess.run(['amixer', 'set', 'Master', f'{volume}%'], 
+            volume_float = volume / 100.0  # Convert to 0.0-1.0 range
+            subprocess.run(['pactl', 'set-sink-volume', '@DEFAULT_SINK@', f'{volume_float:0.2f}'], 
                          capture_output=True, text=True, check=True)
             self.get_logger().info(f'Volume set to {volume}%')
         except subprocess.CalledProcessError as e:

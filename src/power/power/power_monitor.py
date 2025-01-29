@@ -153,13 +153,6 @@ class PowerMonitorNode(Node):
             # Power LSB is 25 times the current LSB
             power = power_raw * (0.457 * 25.0 / 1000.0)  # Convert to watts
             
-            self.get_logger().info(
-                f'Raw: V=0x{voltage_raw:04x} I=0x{current_raw:04x} P=0x{power_raw:04x}'
-            )
-            self.get_logger().info(
-                f'Converted: {voltage:.4f}V {current:.4f}A {power:.4f}W'
-            )
-            
             # Calculate battery percentage (3S Li-ion: 9.0V empty to 12.6V full)
             percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
             
@@ -186,8 +179,9 @@ class PowerMonitorNode(Node):
                 time_str = f"{hours:02d}:{minutes:02d}"
             
             self.get_logger().info(
-                f'Battery: {voltage:.4f}V ({percentage:.1f}%), Current: {current:.4f}A, Power: {power:.4f}W\n'
-                f'Average Power: {avg_power:.4f}W, Estimated Runtime: {time_str}'
+                f'Power: {voltage:.4f}V ({percentage:.1f}%) {current:.4f}A {power:.4f}W | ' 
+                f'Raw: 0x{voltage_raw:04x}/0x{current_raw:04x}/0x{power_raw:04x} | '
+                f'Avg: {avg_power:.4f}W | Runtime: {time_str}'
             )
             
         except Exception as e:

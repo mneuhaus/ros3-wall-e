@@ -6,3 +6,4 @@ install
 build
 .aider*
 srv/servo_2040/firmware/pimoroni-pico/
+node_modules

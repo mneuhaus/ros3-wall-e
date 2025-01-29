@@ -177,8 +177,7 @@ class PowerMonitorNode(Node):
                 time_str = f"{hours:02d}:{minutes:02d}"
             
             self.get_logger().info(
-                f'Power: {voltage:.4f}V ({percentage:.1f}%) {current:.4f}A {power:.4f}W | ' 
-                f'Raw: 0x{voltage_raw:04x}/0x{current_raw:04x}/0x{power_raw:04x} | '
+                f'Power: {voltage:.4f}V ({percentage:.1f}%) {current:.4f}A {power:.4f}W | '
                 f'Avg: {avg_power:.4f}W | Runtime: {time_str}'
             )
             

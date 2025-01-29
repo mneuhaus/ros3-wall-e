@@ -8,6 +8,7 @@ Tracks power usage and estimates remaining runtime.
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import BatteryState
+from std_srvs.srv import Trigger
 import smbus2
 import time
 from collections import deque
@@ -150,11 +151,19 @@ class PowerMonitorNode(Node):
         # Wait for first conversion
         time.sleep(0.1)
         
-        # Create publisher
+        # Create publishers
         self.battery_pub = self.create_publisher(BatteryState, 'battery_state', 10)
+        
+        # Create shutdown service client
+        self.shutdown_client = self.create_client(Trigger, 'shutdown')
+        while not self.shutdown_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Shutdown service not available, waiting...')
         
         # Create timer for regular updates
         self.create_timer(1.0, self.publish_power_state)
+        
+        # Track if shutdown has been triggered
+        self.shutdown_triggered = False
         
         self.get_logger().info('Power monitor initialized')
 
@@ -212,6 +221,14 @@ class PowerMonitorNode(Node):
                 minutes = int((remaining_seconds % 3600) // 60)
                 time_str = f"{hours:02d}:{minutes:02d}"
             
+            # Check for low battery condition
+            if percentage < 10.0 and not self.shutdown_triggered:
+                self.get_logger().warning('CRITICAL: Battery below 10%! Initiating shutdown...')
+                self.shutdown_triggered = True
+                # Request system shutdown
+                shutdown_request = Trigger.Request()
+                self.shutdown_client.call_async(shutdown_request)
+
             self.get_logger().info(
                 f'Power: {voltage:.4f}V ({percentage:.1f}%) {current:.4f}A {power:.4f}W | '
                 f'Avg: {avg_power:.4f}W | Runtime: {time_str}'

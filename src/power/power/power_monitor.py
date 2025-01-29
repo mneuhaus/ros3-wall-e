@@ -15,61 +15,59 @@ from datetime import datetime
 
 class BatteryTracker:
     def __init__(self, window_size=300):  # 5 minutes at 1Hz
-        self.voltage_history = deque(maxlen=window_size)
-        self.power_history = deque(maxlen=window_size)
-        self.timestamps = deque(maxlen=window_size)
-        self.drop_rates = deque(maxlen=window_size)  # Store historical voltage drop rates
-        self.alpha = 0.01  # Exponential moving average factor (slower updates)
+        self.alpha_voltage = 0.005  # Very slow EMA for voltage trend (5 minute half-life)
+        self.alpha_power = 0.02    # Faster EMA for power (1 minute half-life)
+        self.ema_voltage = None
+        self.ema_power = None
         self.last_voltage = None
         self.last_timestamp = None
-        self.avg_drop_rate = None
+        self.voltage_trend = None  # V/s trend
         
     def add_reading(self, voltage, current, power):
         now = datetime.now()
         
-        # Calculate instantaneous voltage drop rate
+        # Initialize EMAs if first reading
+        if self.ema_voltage is None:
+            self.ema_voltage = voltage
+            self.ema_power = power
+        
+        # Update voltage EMA and calculate trend
+        self.ema_voltage = (self.alpha_voltage * voltage + 
+                          (1 - self.alpha_voltage) * self.ema_voltage)
+        
+        # Update power EMA
+        self.ema_power = (self.alpha_power * power + 
+                         (1 - self.alpha_power) * self.ema_power)
+        
+        # Calculate voltage trend
         if self.last_voltage is not None and self.last_timestamp is not None:
             time_diff = (now - self.last_timestamp).total_seconds()
             if time_diff > 0:
                 voltage_diff = self.last_voltage - voltage
-                instant_drop_rate = voltage_diff / time_diff
+                instant_trend = voltage_diff / time_diff
                 
-                # Update exponential moving average of drop rate
-                if instant_drop_rate > 0:  # Only consider positive drop rates
-                    if self.avg_drop_rate is None:
-                        self.avg_drop_rate = instant_drop_rate
-                    else:
-                        self.avg_drop_rate = (self.alpha * instant_drop_rate + 
-                                            (1 - self.alpha) * self.avg_drop_rate)
+                # Update voltage trend with very slow EMA
+                if self.voltage_trend is None:
+                    self.voltage_trend = instant_trend if instant_trend > 0 else 0
+                elif instant_trend > 0:  # Only consider voltage drops
+                    self.voltage_trend = (self.alpha_voltage * instant_trend + 
+                                        (1 - self.alpha_voltage) * self.voltage_trend)
         
         self.last_voltage = voltage
         self.last_timestamp = now
         
-        # Store history
-        self.voltage_history.append(voltage)
-        self.power_history.append(power)
-        self.timestamps.append(now)
-        
     def get_average_power(self):
-        if not self.power_history:
-            return 0.0
-        # Use exponential moving average for power too
-        weights = [(1 - self.alpha) ** i for i in range(len(self.power_history))]
-        weighted_sum = sum(p * w for p, w in zip(self.power_history, reversed(weights)))
-        weight_sum = sum(weights)
-        return weighted_sum / weight_sum if weight_sum > 0 else 0.0
+        return self.ema_power if self.ema_power is not None else 0.0
     
     def estimate_remaining_time(self, current_voltage):
-        if (self.avg_drop_rate is None or 
-            self.avg_drop_rate <= 0 or 
-            not self.voltage_history):
+        if (self.voltage_trend is None or 
+            self.voltage_trend <= 0):
             return float('inf')
         
         # Calculate time until 20% (10.2V for 3S Li-ion under load)
-        # 3S Li-ion voltage curve is non-linear, especially in lower ranges
-        # 10.2V is a safer cutoff considering voltage sag under load
-        voltage_until_20 = current_voltage - 10.2
-        seconds_remaining = voltage_until_20 / self.avg_drop_rate
+        # Using EMA voltage for more stable predictions
+        voltage_until_20 = self.ema_voltage - 10.2
+        seconds_remaining = voltage_until_20 / self.voltage_trend
         
         return max(0, seconds_remaining)
 

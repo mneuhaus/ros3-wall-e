@@ -30,10 +30,11 @@ class WebServerNode(Node):
             def server_bind(self):
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 self.socket.settimeout(0)  # Non-blocking
-                socketserver.TCPServer.server_bind(self)
+                self.socket.bind(('0.0.0.0', self.socket.getsockname()[1]))
+                self.server_address = self.socket.getsockname()
 
         handler = http.server.SimpleHTTPRequestHandler
-        self.httpd = NonBlockingHTTPServer(("", self.port), handler)
+        self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), handler)
         
         # Create timer to process HTTP requests
         # Create subscription for volume control

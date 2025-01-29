@@ -14,60 +14,63 @@ from collections import deque
 from datetime import datetime
 
 class BatteryTracker:
-    def __init__(self, window_size=300):  # 5 minutes at 1Hz
-        self.alpha_voltage = 0.005  # Very slow EMA for voltage trend (5 minute half-life)
-        self.alpha_power = 0.02    # Faster EMA for power (1 minute half-life)
-        self.ema_voltage = None
+    def __init__(self):
+        # Battery specifications
+        self.capacity_ah = 9.0  # Total capacity in Amp-hours
+        self.threshold_soc = 20.0  # Threshold percentage
+        self.delta_t = 1/60  # Time step in hours (1 minute)
+        
+        # EMA parameters
+        self.alpha_current = 0.2  # EMA smoothing factor for current
+        self.alpha_power = 0.02   # EMA smoothing factor for power display
+        
+        # State tracking
+        self.soc = 100.0  # Initial state of charge
+        self.ema_current = None
         self.ema_power = None
-        self.last_voltage = None
         self.last_timestamp = None
-        self.voltage_trend = None  # V/s trend
         
     def add_reading(self, voltage, current, power):
         now = datetime.now()
         
         # Initialize EMAs if first reading
-        if self.ema_voltage is None:
-            self.ema_voltage = voltage
+        if self.ema_current is None:
+            self.ema_current = current
             self.ema_power = power
+            self.last_timestamp = now
+            return
+            
+        # Calculate time difference in hours
+        time_diff = (now - self.last_timestamp).total_seconds() / 3600
         
-        # Update voltage EMA and calculate trend
-        self.ema_voltage = (self.alpha_voltage * voltage + 
-                          (1 - self.alpha_voltage) * self.ema_voltage)
-        
-        # Update power EMA
+        # Update EMAs
+        self.ema_current = (self.alpha_current * current + 
+                           (1 - self.alpha_current) * self.ema_current)
         self.ema_power = (self.alpha_power * power + 
                          (1 - self.alpha_power) * self.ema_power)
         
-        # Calculate voltage trend
-        if self.last_voltage is not None and self.last_timestamp is not None:
-            time_diff = (now - self.last_timestamp).total_seconds()
-            if time_diff > 0:
-                voltage_diff = self.last_voltage - voltage
-                instant_trend = voltage_diff / time_diff
-                
-                # Update voltage trend with very slow EMA
-                if self.voltage_trend is None:
-                    self.voltage_trend = instant_trend if instant_trend > 0 else 0
-                elif instant_trend > 0:  # Only consider voltage drops
-                    self.voltage_trend = (self.alpha_voltage * instant_trend + 
-                                        (1 - self.alpha_voltage) * self.voltage_trend)
+        # Update State of Charge
+        capacity_used = (self.ema_current * time_diff)
+        soc_change = (capacity_used / self.capacity_ah) * 100
+        self.soc = max(min(self.soc - soc_change, 100.0), 0.0)
         
-        self.last_voltage = voltage
         self.last_timestamp = now
         
     def get_average_power(self):
         return self.ema_power if self.ema_power is not None else 0.0
     
     def estimate_remaining_time(self, current_voltage):
-        if (self.voltage_trend is None or 
-            self.voltage_trend <= 0):
+        if self.ema_current is None or self.ema_current <= 0:
             return float('inf')
+            
+        # Calculate remaining capacity until threshold
+        remaining_capacity = (self.soc / 100) * self.capacity_ah
+        target_capacity = (self.threshold_soc / 100) * self.capacity_ah
+        capacity_difference = remaining_capacity - target_capacity
         
-        # Calculate time until 20% (10.2V for 3S Li-ion under load)
-        # Using EMA voltage for more stable predictions
-        voltage_until_20 = self.ema_voltage - 10.2
-        seconds_remaining = voltage_until_20 / self.voltage_trend
+        # Calculate time remaining in seconds
+        hours_remaining = capacity_difference / self.ema_current
+        seconds_remaining = hours_remaining * 3600
         
         return max(0, seconds_remaining)
 

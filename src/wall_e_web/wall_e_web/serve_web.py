@@ -27,15 +27,19 @@ class WebServerNode(Node):
         
         # Setup HTTP server with custom handler that doesn't block
         class NonBlockingHTTPServer(socketserver.TCPServer):
+            def __init__(self, server_address, RequestHandlerClass, node):
+                self.node = node
+                super().__init__(server_address, RequestHandlerClass)
+
             def server_bind(self):
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 self.socket.settimeout(0)  # Non-blocking
                 try:
                     self.socket.bind(('0.0.0.0', self.server_address[1]))
                     self.server_address = self.socket.getsockname()
-                    self.get_logger().info(f"Server bound to {self.server_address}")
+                    self.node.get_logger().info(f"Server bound to {self.server_address}")
                 except Exception as e:
-                    self.get_logger().error(f"Failed to bind server: {e}")
+                    self.node.get_logger().error(f"Failed to bind server: {e}")
                     raise
 
         class DebugHandler(http.server.SimpleHTTPRequestHandler):
@@ -46,8 +50,7 @@ class WebServerNode(Node):
                 self.server.node.get_logger().error(f"HTTP Error: {format%args}")
 
         try:
-            self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), DebugHandler)
-            self.httpd.node = self
+            self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), DebugHandler, self)
             self.get_logger().info(f"Web server initialized on port {self.port}")
         except Exception as e:
             self.get_logger().error(f"Failed to create HTTP server: {e}")

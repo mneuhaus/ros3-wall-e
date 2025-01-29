@@ -30,11 +30,28 @@ class WebServerNode(Node):
             def server_bind(self):
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 self.socket.settimeout(0)  # Non-blocking
-                self.socket.bind(('0.0.0.0', self.socket.getsockname()[1]))
-                self.server_address = self.socket.getsockname()
+                try:
+                    self.socket.bind(('0.0.0.0', self.server_address[1]))
+                    self.server_address = self.socket.getsockname()
+                    self.get_logger().info(f"Server bound to {self.server_address}")
+                except Exception as e:
+                    self.get_logger().error(f"Failed to bind server: {e}")
+                    raise
 
-        handler = http.server.SimpleHTTPRequestHandler
-        self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), handler)
+        class DebugHandler(http.server.SimpleHTTPRequestHandler):
+            def log_message(self, format, *args):
+                self.server.node.get_logger().info(f"HTTP {format%args}")
+            
+            def log_error(self, format, *args):
+                self.server.node.get_logger().error(f"HTTP Error: {format%args}")
+
+        try:
+            self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), DebugHandler)
+            self.httpd.node = self
+            self.get_logger().info(f"Web server initialized on port {self.port}")
+        except Exception as e:
+            self.get_logger().error(f"Failed to create HTTP server: {e}")
+            raise
         
         # Create timer to process HTTP requests
         # Create subscription for volume control
@@ -79,26 +96,12 @@ class WebServerNode(Node):
     def serve_requests(self):
         try:
             self.httpd.handle_request()
-            
-            # Add custom handler for volume endpoint
-            class VolumeHandler(http.server.SimpleHTTPRequestHandler):
-                def do_GET(self):
-                    if self.path == '/volume':
-                        self.send_response(200)
-                        self.send_header('Content-type', 'text/plain')
-                        self.end_headers()
-                        self.wfile.write(str(self.server.node.current_volume).encode())
-                        return
-                    super().do_GET()
-            
-            # Update handler with volume support
-            self.httpd.node = self
-            self.httpd.RequestHandlerClass = VolumeHandler
-            
         except socket.timeout:
             pass  # Expected timeout for non-blocking socket
         except Exception as e:
             self.get_logger().error(f"HTTP server error: {e}")
+            import traceback
+            self.get_logger().error(traceback.format_exc())
 
 def main(args=None):
     rclpy.init(args=args)

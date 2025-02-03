@@ -110,6 +110,9 @@ int main()
 
     gpio_put(LED_PIN, 1);
     printf("Hello world from micro-ROS\n");
+    fflush(stdout);
+    rosidl_runtime_c__String__assign((rosidl_runtime_c__String *)&connect_msg, "Connected");
+    rcl_publish(&connect_publisher, &connect_msg, NULL);
     rosidl_runtime_c__String__assign((rosidl_runtime_c__String *)&hello_msg, "Hello World");
 
     msg.data = 0;

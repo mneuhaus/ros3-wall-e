@@ -37,7 +37,7 @@ pico_add_extra_outputs(tracks_firmware)
 
 add_executable(flash_neopixel flash_neopixel.c)
 target_link_libraries(flash_neopixel pico_stdlib)
-target_include_directories(flash_neopixel PUBLIC ${PICO_SDK_PATH}/src/rp2_common/hardware_pio/include)
+target_include_directories(flash_neopixel PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${PICO_SDK_PATH}/src/rp2_common/hardware_pio/include)
 pico_add_extra_outputs(flash_neopixel)
 
 add_executable(micro_ros_task micro_ros_task.c)

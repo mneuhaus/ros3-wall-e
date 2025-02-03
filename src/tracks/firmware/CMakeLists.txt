@@ -34,3 +34,7 @@ add_compile_definitions(PICO_STDIO_DEFAULT_CRLF=0)
 
 # Generate UF2
 pico_add_extra_outputs(tracks_firmware)
+
+add_executable(flash_neopixel flash_neopixel.c)
+target_link_libraries(flash_neopixel pico_stdlib)
+pico_add_extra_outputs(flash_neopixel)

@@ -20,6 +20,9 @@ std_msgs__msg__Int32 msg;
 rcl_publisher_t hello_publisher;
 std_msgs__msg__String hello_msg;
 
+rcl_publisher_t connect_publisher;
+std_msgs__msg__String connect_msg;
+
 void timer_callback(rcl_timer_t *timer, int64_t last_call_time)
 {
     rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
@@ -82,6 +85,11 @@ int main()
         &node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
         "hello_world");
+    rclc_publisher_init_default(
+        &connect_publisher,
+        &node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
+        "connect_topic");
 
     rclc_timer_init_default2(
         &timer,

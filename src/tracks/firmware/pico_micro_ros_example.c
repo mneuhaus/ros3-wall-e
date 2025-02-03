@@ -50,6 +50,9 @@ int main()
 
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_init(16);
+    gpio_set_dir(16, GPIO_OUT);
+    gpio_put(16, 1);
 
     rcl_timer_t timer;
     rcl_node_t node;

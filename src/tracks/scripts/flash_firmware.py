@@ -20,7 +20,7 @@ def flash_firmware(device_path: str) -> None:
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_path}...")
     try:
-        subprocess.run(["picotool", "load", firmware_file, "-f", device_path], check=True)
+        subprocess.run(["picotool", "load", firmware_file, device_path], check=True)
         print("Firmware flashed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Error flashing firmware: {e}")

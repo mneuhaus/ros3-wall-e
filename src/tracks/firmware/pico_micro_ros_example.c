@@ -5,6 +5,7 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 #include <std_msgs/msg/int32.h>
+#include <std_msgs/msg/string.h>
 #include <rmw_microros/rmw_microros.h>
 
 #include "pico/stdlib.h"
@@ -15,10 +16,19 @@ const uint LED_PIN = 25;
 rcl_publisher_t publisher;
 std_msgs__msg__Int32 msg;
 
+rcl_publisher_t hello_publisher;
+std_msgs__msg__String hello_msg;
+
 void timer_callback(rcl_timer_t *timer, int64_t last_call_time)
 {
     rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
     msg.data++;
+}
+
+void hello_timer_callback(rcl_timer_t *timer, int64_t last_call_time)
+{
+    (void) last_call_time;
+    rcl_publish(&hello_publisher, &hello_msg, NULL);
 }
 
 int main()
@@ -40,6 +50,7 @@ int main()
     rcl_allocator_t allocator;
     rclc_support_t support;
     rclc_executor_t executor;
+    rcl_timer_t hello_timer;
 
     allocator = rcl_get_default_allocator();
 
@@ -63,18 +74,30 @@ int main()
         &node,
         ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
         "pico_publisher");
+    rclc_publisher_init_default(
+        &hello_publisher,
+        &node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String),
+        "hello_world");
 
     rclc_timer_init_default(
         &timer,
         &support,
         RCL_MS_TO_NS(1000),
         timer_callback);
+    rclc_timer_init_default(
+        &hello_timer,
+        &support,
+        RCL_MS_TO_NS(1000),
+        hello_timer_callback);
 
-    rclc_executor_init(&executor, &support.context, 1, &allocator);
+    rclc_executor_init(&executor, &support.context, 2, &allocator);
     rclc_executor_add_timer(&executor, &timer);
+    rclc_executor_add_timer(&executor, &hello_timer);
 
     gpio_put(LED_PIN, 1);
     printf("Hello world from micro-ROS\n");
+    hello_msg.data = "Hello World";
 
     msg.data = 0;
     while (true)

@@ -85,12 +85,14 @@ int main()
         &timer,
         &support,
         RCL_MS_TO_NS(1000),
-        timer_callback);
+        timer_callback,
+        allocator);
     rclc_timer_init_default2(
         &hello_timer,
         &support,
         RCL_MS_TO_NS(1000),
-        hello_timer_callback);
+        hello_timer_callback,
+        allocator);
 
     rclc_executor_init(&executor, &support.context, 2, &allocator);
     rclc_executor_add_timer(&executor, &timer);
@@ -98,7 +100,7 @@ int main()
 
     gpio_put(LED_PIN, 1);
     printf("Hello world from micro-ROS\n");
-    rosidl_runtime_c__String__assign(&hello_msg, "Hello World");
+    rosidl_runtime_c__String__assign((rosidl_runtime_c__String *)&hello_msg, "Hello World");
 
     msg.data = 0;
     while (true)

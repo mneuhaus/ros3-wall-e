@@ -14,7 +14,7 @@ import subprocess
 import os
 
 def flash_firmware(device_path: str) -> None:
-    firmware_file = os.path.join("build", "tracks_controller.uf2")
+    firmware_file = os.path.join("build", "tracks_firmware.uf2")
     if not os.path.isfile(firmware_file):
         print(f"Firmware file not found: {firmware_file}")
         sys.exit(1)

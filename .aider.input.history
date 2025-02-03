@@ -3285,3 +3285,105 @@
 
 # 2025-01-29 01:37:18.712684
 +a
+
+# 2025-01-29 01:40:10.444820
++/add src/wall_e_web/
+
+# 2025-01-29 01:40:27.596997
++i'm getting ERR_CONNECTION_TIMED_OUT from the webserver at port 8000
+
+# 2025-01-29 01:41:54.243940
++n
+
+# 2025-01-29 01:46:19.843993
++/add src/wall_e_web
+
+# 2025-01-29 01:46:39.146095
++the webserver is still not working, can't reach it how can we debug this
+
+# 2025-01-29 01:54:32.893990
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:57:00.315731
++[ERROR] [1738112210.039874989] [web_server]: Failed to create HTTP server: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
++Traceback (most recent call last):
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 36, in server_bind
++    self.get_logger().info(f"Server bound to {self.server_address}")
++    ^^^^^^^^^^^^^^^
++AttributeError: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
++
++During handling of the above exception, another exception occurred:
++
++Traceback (most recent call last):
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/wall_e_web/serve_web", line 33, in <module>
++    sys.exit(load_entry_point('wall-e-web==0.0.0', 'console_scripts', 'serve_web')())
++             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 108, in main
++    node = WebServerNode()
++           ^^^^^^^^^^^^^^^
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 49, in __init__
++    self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), DebugHandler)
++                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++  File "/usr/lib/python3.12/socketserver.py", line 457, in __init__
++    self.server_bind()
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 38, in server_bind
++    self.get_logger().error(f"Failed to bind server: {e}")
++    ^^^^^^^^^^^^^^^
++AttributeError: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
+
+# 2025-01-29 01:58:44.996808
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:58:46.693758
++n
+
+# 2025-01-29 01:58:48.585478
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:59:16.569458
++n
+
+# 2025-01-29 02:00:37.576482
++lets implement an safety shutdown at 10% battery
+
+# 2025-01-29 02:01:48.187796
++/add src/power/power/power_monitor.py lets add an safety system shutdown when we're under 10% of battery
+
+# 2025-01-29 02:02:08.781112
++> /add src/power/power/power_monitor.py
+
+# 2025-01-29 02:02:27.123232
++lets add an safety system shutdown when we're under 10% of battery
+
+# 2025-01-29 02:03:00.586701
++n
+
+# 2025-01-29 02:03:34.985905
++/add src/power/*
+
+# 2025-01-29 02:03:36.795655
++please add docs/power.md ad document this new package
+
+# 2025-01-29 02:04:45.865325
++n
+
+# 2025-01-29 02:04:53.259948
++sudo shutdown 0
+
+# 2025-02-03 22:54:17.882370
++y
+
+# 2025-02-03 22:56:36.159272
++n
+
+# 2025-02-03 22:57:17.774713
++/ask take a look around, what do you see?
+
+# 2025-02-03 22:59:58.010357
++please create a short TLDR.md in the docs folder containing a short, concise overview over the main components, goals and principles we're working on
+
+# 2025-02-03 23:10:45.485123
++/ask i've got a new MCU attached with an RP2040 chip, how could we integrate this using micro-ros into this project
+
+# 2025-02-03 23:12:49.972115
++n

@@ -1,5 +1,5 @@
 #include "pico/stdlib.h"
-#include "hardware/pio.h"
+#include <hardware/pio.h>
 #include "ws2812.pio.h"
 
 #define NEOPIXEL_PIN 16

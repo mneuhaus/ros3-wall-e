@@ -58,6 +58,7 @@ ros2/clean:
 # Variables
 FIRMWARE_DIR = src/servo_2040/firmware
 EYES_FIRMWARE_DIR = src/eyes/firmware
+TRACKS_FIRMWARE_DIR = src/tracks/firmware
 
 # Build firmware for Servo 2040
 servo2040/build:
@@ -88,6 +89,21 @@ eyes/flash:
 # Build and flash Eyes firmware
 eyes/update: eyes/build eyes/flash
 	@echo "Eyes firmware updated"
+
+# Build firmware for Tracks
+tracks/build:
+	@echo "Building Tracks firmware..."
+	mkdir -p $(TRACKS_FIRMWARE_DIR)/build
+	cd $(TRACKS_FIRMWARE_DIR)/build && cmake .. && make
+
+# Flash firmware to Tracks
+tracks/flash:
+	@echo "Flashing Tracks firmware..."
+	python3 src/tracks/scripts/flash_firmware.py /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6632891E3959D25-if00
+
+# Build and flash Tracks firmware
+tracks/update: tracks/build tracks/flash
+	@echo "Tracks firmware updated"
 
 help:
 	@echo "Makefile Commands:"

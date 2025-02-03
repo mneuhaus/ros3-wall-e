@@ -74,6 +74,7 @@ int main()
     rclc_executor_add_timer(&executor, &timer);
 
     gpio_put(LED_PIN, 1);
+    printf("Hello world from micro-ROS\n");
 
     msg.data = 0;
     while (true)

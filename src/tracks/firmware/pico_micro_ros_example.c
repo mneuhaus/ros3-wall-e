@@ -29,6 +29,7 @@ void timer_callback(rcl_timer_t *timer, int64_t last_call_time)
 void hello_timer_callback(rcl_timer_t *timer, int64_t last_call_time)
 {
     (void) last_call_time;
+    printf("Publishing hello world message\n");
     rcl_publish(&hello_publisher, &hello_msg, NULL);
 }
 

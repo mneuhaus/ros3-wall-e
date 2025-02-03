@@ -86,13 +86,13 @@ int main()
         &support,
         RCL_MS_TO_NS(1000),
         timer_callback,
-        allocator);
+        true);
     rclc_timer_init_default2(
         &hello_timer,
         &support,
         RCL_MS_TO_NS(1000),
         hello_timer_callback,
-        allocator);
+        true);
 
     rclc_executor_init(&executor, &support.context, 2, &allocator);
     rclc_executor_add_timer(&executor, &timer);

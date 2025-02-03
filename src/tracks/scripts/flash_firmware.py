@@ -6,7 +6,7 @@ Usage:
     python3 flash_firmware.py /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6632891E3959D25-if00
 
 This script uses picotool to load the UF2 firmware file onto the device.
-Ensure that the UF2 firmware file is located at "build/tracks_controller.uf2".
+Ensure that the UF2 firmware file is located at "firmware/build/tracks_firmware.uf2".
 """
 
 import sys

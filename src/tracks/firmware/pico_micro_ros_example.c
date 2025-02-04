@@ -12,6 +12,8 @@
 #include "pico/stdlib.h"
 #include "pico_uart_transports.h"
 
+const uint8_t USB_PRODUCT_STRING[] = "Wall-E Tracks MCU";
+
 const uint LED_PIN = 25;
 
 rcl_publisher_t publisher;

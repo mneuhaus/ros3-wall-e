@@ -32,6 +32,7 @@ pico_enable_stdio_uart(tracks_firmware 0)
 add_compile_definitions(PICO_UART_ENABLE_CRLF_SUPPORT=0)
 add_compile_definitions(PICO_STDIO_ENABLE_CRLF_SUPPORT=0)
 add_compile_definitions(PICO_STDIO_DEFAULT_CRLF=0)
+add_compile_definitions(PICO_DEFAULT_USB_PRODUCT="wall-e: tracks controller")
 
 # Generate UF2
 pico_add_extra_outputs(tracks_firmware)

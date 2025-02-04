@@ -118,5 +118,10 @@ help:
 	@echo "  make eyes/flash     - Flash firmware to Eyes (BOOTSEL mode)"
 	@echo "  make help           - Show this help message"
 
+# Flash neopixel LED
+neopixel/flash:
+	@echo "Flashing neopixel LED on GPIO16..."
+	python3 src/neopixel/flash_led.py
+
 # Phony targets (not associated with files)
-.PHONY: all ros2/build ros2/run ros2/rebuild ros2/clean help pico/setup servo2040/flash servo2040/build eyes/build eyes/flash
+.PHONY: all ros2/build ros2/run ros2/rebuild ros2/clean help pico/setup servo2040/flash servo2040/build eyes/build eyes/flash neopixel/flash

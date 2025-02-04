@@ -2484,8 +2484,906 @@
 # 2025-01-27 00:20:35.610582
 +n
 
-# 2025-01-27 01:22:34.425153
-+please update the behaviors.md with a general concept for how we could implement and structure common wall-e behaviors
+# 2025-01-27 00:25:14.041512
++i've got a voltage sensor connected to the 12v battery (3x18650 Cells) and wand to measure the "battery status" with that, please add a gauge to the web server to display the battery percentage and tell me which pins i need to connect this voltage sensor to on the cm4
 
-# 2025-01-27 09:27:51.781884
-+exit
+# 2025-01-27 00:42:56.768513
++please add the audio node to the all_nodes.launch.py 
+
+# 2025-01-27 00:43:14.540101
++n
+
+# 2025-01-27 00:44:16.190937
++great, now could you please add a list of buttons to the web interface to play sounds, so one button for each avaible sound?
+
+# 2025-01-27 00:44:44.696430
++n
+
+# 2025-01-27 00:45:49.019681
++please also connect those buttons to actually play that sound when i push it
+
+# 2025-01-27 00:47:02.190586
++n
+
+# 2025-01-27 00:47:11.439490
++/run ros2 topic pub /play_sound std_msgs/String "data: 'startup.mp3'"
+
+# 2025-01-27 00:47:11.439736
++/run ros2 topic pub /play_sound std_msgs/String "data: 'startup.mp3'"
+
+# 2025-01-27 00:47:14.354097
++n
+
+# 2025-01-27 00:49:19.262947
++[audio_node-6] pygame 2.5.2 (SDL 2.30.0, Python 3.12.3)
++[audio_node-6] Hello from the pygame community. https://www.pygame.org/contribute.html
++[audio_node-6] Traceback (most recent call last):
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/audio/audio_node", line 33, in <module>
++[audio_node-6]     sys.exit(load_entry_point('audio==0.0.0', 'console_scripts', 'audio_node')())
++[audio_node-6]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 109, in main
++[audio_node-6]     node = AudioNode()
++[audio_node-6]            ^^^^^^^^^^^
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 22, in __init__
++[audio_node-6]     self.create_subscriptions()
++[audio_node-6]   File "/home/mneuhaus/ros2_ws/install/audio/lib/python3.12/site-packages/audio/audio_node.py", line 95, in create_subscriptions
++[audio_node-6]     self.play_sound_sub = self.create_subscription(
++[audio_node-6]                           ^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 1625, in create_subscription
++[audio_node-6]     check_is_valid_msg_type(msg_type)
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/type_support.py", line 35, in check_is_valid_msg_type
++[audio_node-6]     check_for_type_support(msg_type)
++[audio_node-6]   File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/type_support.py", line 20, in check_for_type_support
++[audio_node-6]     ts = msg_or_srv_type.__class__._TYPE_SUPPORT
++[audio_node-6]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[audio_node-6] AttributeError: type object 'str' has no attribute '_TYPE_SUPPORT' This might be a ROS 1 message type but it should be a ROS 2 message type. Make sure to source your ROS 2 workspace after your ROS 1 workspace.
+
+# 2025-01-27 00:49:54.023945
++n
+
+# 2025-01-27 00:52:52.611501
++ok, this seems to be working pretty good, thank you could you please add a joystick for the tracks to the bottom left corner of the web interface based on nipplejs?
+
+# 2025-01-27 00:53:26.574672
++n
+
+# 2025-01-27 00:55:54.240672
++you can remove the other track related sliders now, this interface should be optimized for a mobile phone, because that's where this will mostly be used
+
+# 2025-01-27 00:56:25.738097
++d
+
+# 2025-01-27 00:57:37.894454
++ok, now let's talk about the layout of the web interface, could you please structure it in a way that's similar to a gamepad?
+
+# 2025-01-27 01:00:39.982832
++yea, i like it, but where are the other soundbites?
+
+# 2025-01-27 01:01:08.997382
++n
+
+# 2025-01-27 01:01:41.723365
++ok, great almost done for the day, anything we should add/update in the docs/conventions?
+
+# 2025-01-27 01:02:46.233712
++great, what about the docs, anything we should update or add based on the latest changes?
+
+# 2025-01-27 01:03:42.518314
++d
+
+# 2025-01-27 01:04:09.150363
++great, thanks, signing off for today, have a great night
+
+# 2025-01-27 01:04:55.997468
++/ask although, wait. could you give me a short status report on this project to brag about this in a discord chat about this project?
+
+# 2025-01-28 23:12:04.945234
++n
+
+# 2025-01-28 23:15:24.819746
++/add src/wall_e_web/*
+
+# 2025-01-28 23:15:50.291530
++please add a volume control for the alsamixer to the web interface
+
+# 2025-01-28 23:16:42.502252
++/run sudo apt install alsa-utils
+
+# 2025-01-28 23:16:42.502488
++/run sudo apt install alsa-utils
+
+# 2025-01-28 23:16:49.139395
++n
+
+# 2025-01-28 23:17:57.600476
++
++[serve_web-5] [ERROR] [1738102672.299982880] [web_server]: Failed to set volume: Command '['amixer', 'set', 'Master', '65%']' returned non-zero exit status 1.
++[serve_web-5] [ERROR] [1738102672.333642925] [web_server]: Failed to set volume: Command '['amixer', 'set', 'Master', '66%']' returned non-zero exit status 1.
++[serve_web-5] [ERROR] [1738102672.366806140] [web_server]: Failed to set volume: Command '['amixer', 'set', 'Master', '67%']' returned non-zero exit status 1.
++[serve_web-5] [ERROR] [1738102672.400209965] [web_server]: Failed to set volume: Command '['amixer', 'set', 'Master', '68%']' returned non-zero exit status 1.
+
+# 2025-01-28 23:21:11.484199
++n
+
+# 2025-01-28 23:22:48.597118
++please make sure the volume displayed at launch is the volume currently set
+
+# 2025-01-28 23:23:21.422143
++n
+
+# 2025-01-28 23:30:04.914198
++/add src/wall_e_launch/*
+
+# 2025-01-28 23:32:15.532594
++/add src/power
+
+# 2025-01-28 23:34:22.820125
++please add a new node to the power package to measure voltage and current, i've added an INA226 sensor to the GPIO2/GPIO3 pins of this CM2 with the i2c address 0x40. that node should read the voltage of the 12V Battery pack and effetive current being drawn and publish it as a topic and print the values to the output log
+
+# 2025-01-28 23:37:03.384442
++/run pip3 install adafruit-circuitpython-ina226
+
+# 2025-01-28 23:37:03.384704
++/run pip3 install adafruit-circuitpython-ina226
+
+# 2025-01-28 23:37:31.327680
++n
+
+# 2025-01-28 23:37:40.868683
++/run run apt-get install adafruit-circuitpython-ina226
+
+# 2025-01-28 23:37:48.268975
++/run sudo apt-get install adafruit-circuitpython-ina226
+
+# 2025-01-28 23:38:02.917252
++/run sudo apt-get install python3-adafruit-circuitpython-ina226
+
+# 2025-01-28 23:38:08.062519
++n
+
+# 2025-01-28 23:40:41.004219
++/run sudo apt-get install python3-pi_ina226
+
+# 2025-01-28 23:40:45.973259
++n
+
+# 2025-01-28 23:45:07.496823
++nice, now please add this node to all_nodes.launch.py
+
+# 2025-01-28 23:45:43.204223
++n
+
+# 2025-01-28 23:46:41.606601
++[INFO] [launch]: All log files can be found below /home/mneuhaus/.ros/log/2025-01-28-23-46-23-387767-wall-e-2575
++[INFO] [launch]: Default logging verbosity is set to INFO
++[ERROR] [launch]: Caught exception in launch (see debug for traceback): "package 'power' not found, searching: ['/home/mneuhaus/ros2_ws/install/wall_e_web', '/home/mneuhaus/ros2_ws/install/wall_e_launch', '/home/mneuhaus/ros2_ws/install/servo_2040', '/home/mneuhaus/ros2_ws/install/motor_controller', '/home/mneuhaus/ros2_ws/install/eyes', '/home/mneuhaus/ros2_ws/install/audio', '/opt/ros/jazzy']"
++make: *** [Makefile:48: ros2/run] Error 1
+
+# 2025-01-28 23:49:09.086054
++[power_monitor-7] Traceback (most recent call last):
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/power/power_monitor", line 33, in <module>
++[power_monitor-7]     sys.exit(load_entry_point('power==0.0.0', 'console_scripts', 'power_monitor')())
++[power_monitor-7]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/power/power_monitor", line 25, in importlib_load_entry_point
++[power_monitor-7]     return next(matches).load()
++[power_monitor-7]            ^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/usr/lib/python3.12/importlib/metadata/__init__.py", line 205, in load
++[power_monitor-7]     module = import_module(match.group('module'))
++[power_monitor-7]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
++[power_monitor-7]     return _bootstrap._gcd_import(name[level:], package, level)
++[power_monitor-7]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
++[power_monitor-7]   File "<frozen importlib._bootstrap_external>", line 995, in exec_module
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/python3.12/site-packages/power/power_monitor.py", line 10, in <module>
++[power_monitor-7]     import board
++[power_monitor-7]   File "/usr/local/lib/python3.12/dist-packages/board.py", line 45, in <module>
++[power_monitor-7]     from adafruit_blinka.board.raspberrypi.raspi_4b import *
++[power_monitor-7]   File "/usr/local/lib/python3.12/dist-packages/adafruit_blinka/board/raspberrypi/raspi_4b.py", line 6, in <module>
++[power_monitor-7]     from adafruit_blinka.microcontroller.bcm2711 import pin
++[power_monitor-7]   File "/usr/local/lib/python3.12/dist-packages/adafruit_blinka/microcontroller/bcm2711/pin.py", line 5, in <module>
++[power_monitor-7]     from RPi import GPIO
++[power_monitor-7] ModuleNotFoundError: No module named 'RPi'
+
+# 2025-01-28 23:50:25.885449
++n
+
+# 2025-01-28 23:51:40.808976
++[rosbridge_websocket-4] [WARN] [1738104674.110521223] [rosbridge_websocket]: Unable to start server: [Errno 98] Address already in use Retrying in 2.0s.
++
+
+# 2025-01-28 23:52:10.433481
++n
+
+# 2025-01-28 23:53:29.452230
++nice, now please calculate a Battery percentage based on the voltage, the Battery is a "12V" Battery with 3 x 18650 cells in series
+
+# 2025-01-28 23:54:02.639270
++d
+
+# 2025-01-29 00:00:58.820157
++power outputs 0, is there something wrong?
+
+# 2025-01-29 00:01:36.017150
++power outputs 0, is there something wrong, src/power/power/power_monitor.py
+
+# 2025-01-29 00:02:14.757934
++n
+
+# 2025-01-29 00:05:40.893510
++still not getting any power measurement
+
+# 2025-01-29 00:06:28.915877
++n
+
+# 2025-01-29 00:07:34.399640
++maybe it's just very little that's going through, could you please output it with 4 decimal places?
+
+# 2025-01-29 00:08:14.963563
++n
+
+# 2025-01-29 00:08:55.421649
++--- stderr: power                                                                                  
++  File "/home/mneuhaus/ros2_ws/install/power/lib/python3.12/site-packages/power/power_monitor.py", line 101
++    percentage = max(0.0, min(100.0, (voltage - 9.0) * 100.0 / (12.6 - 9.0)))
++    ^^^^^^^^^^
++SyntaxError: expected 'except' or 'finally' block
+
+# 2025-01-29 00:09:21.838339
++n
+
+# 2025-01-29 00:09:58.474793
++[INFO] [power_monitor-7]: process started with pid [2898]
++[power_monitor-7] Traceback (most recent call last):
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/power/power_monitor", line 33, in <module>
++[power_monitor-7]     sys.exit(load_entry_point('power==0.0.0', 'console_scripts', 'power_monitor')())
++[power_monitor-7]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/power/power_monitor", line 25, in importlib_load_entry_point
++[power_monitor-7]     return next(matches).load()
++[power_monitor-7]            ^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/usr/lib/python3.12/importlib/metadata/__init__.py", line 205, in load
++[power_monitor-7]     module = import_module(match.group('module'))
++[power_monitor-7]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
++[power_monitor-7]     return _bootstrap._gcd_import(name[level:], package, level)
++[power_monitor-7]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
++[power_monitor-7]   File "<frozen importlib._bootstrap_external>", line 991, in exec_module
++[power_monitor-7]   File "<frozen importlib._bootstrap_external>", line 1129, in get_code
++[power_monitor-7]   File "<frozen importlib._bootstrap_external>", line 1059, in source_to_code
++[power_monitor-7]   File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
++[power_monitor-7]   File "/home/mneuhaus/ros2_ws/install/power/lib/python3.12/site-packages/power/power_monitor.py", line 116
++[power_monitor-7]     except Exception as e:
++[power_monitor-7] SyntaxError: expected 'except' or 'finally' block
+
+# 2025-01-29 00:10:37.632035
++d
+
+# 2025-01-29 00:12:24.119239
++nice, now log the battery voltage and usage to calculate a moving average of how long we still have until we fall under 20%
+
+# 2025-01-29 00:13:46.333363
++[power_monitor-7] [INFO] [1738106018.731485976] [power_monitor]: Raw: V=0x22c4 I=0x020e P=0x00ea
++[power_monitor-7] [INFO] [1738106018.735727597] [power_monitor]: Converted: 11.1250V 0.2404A 2.6735W
++[power_monitor-7] [ERROR] [1738106018.739535191] [power_monitor]: Error reading power data: cannot convert float NaN to integer
++[power_monitor-7] [INFO] [1738106019.731007249] [power_monitor]: Raw: V=0x22c0 I=0x0219 P=0x00ef
++[power_monitor-7] [INFO] [1738106019.734457096] [power_monitor]: Converted: 11.1200V 0.2454A 2.7306W
++[power_monitor-7] [ERROR] [1738106019.738894908] [power_monitor]: Error reading power data: cannot convert float NaN to integer
++[power_monitor-7] [INFO] [1738106020.731209675] [power_monitor]: Raw: V=0x22c2 I=0x0210 P=0x00ea
++[power_monitor-7] [INFO] [1738106020.734808063] [power_monitor]: Converted: 11.1225V 0.2413A 2.6735W
++
+
+# 2025-01-29 00:37:05.239603
++that estimated runtime is jumping quite a bit, it should be an moving average over time to be more precise
+
+# 2025-01-29 00:49:50.978026
++the estimated time seems quite low to be honest, could you recheck please?
+
+# 2025-01-29 00:51:54.306977
++ok, now could you please add the voltage, current, battery state and a chart based on the library nivo to the web interface?
+
+# 2025-01-29 00:52:24.870523
++/add src/wall_e_web
+
+# 2025-01-29 00:52:27.734270
++there you go
+
+# 2025-01-29 00:53:30.929853
++/run cd ~/ros2_ws/src/wall_e_web/web
+
+# 2025-01-29 00:53:30.930141
++/run cd ~/ros2_ws/src/wall_e_web/web
+
+# 2025-01-29 00:53:33.260170
++/run npm install
+
+# 2025-01-29 00:53:33.260490
++/run npm install
+
+# 2025-01-29 00:53:35.590781
++/run ros2 launch wall_e_web all_launch.py
+
+# 2025-01-29 00:53:35.591165
++/run ros2 launch wall_e_web all_launch.py
+
+# 2025-01-29 00:58:54.758991
++                                                     
++Finished <<< wall_e_launch [1.77s]                                                   
++--- stderr: wall_e_web                    
++error: can't copy 'web/node_modules': doesn't exist or not a regular file
++---
++Failed   <<< wall_e_web [5.87s, exited with code 1]
++
++Summary: 5 packages finished [19.7s]
++
+
+# 2025-01-29 01:00:23.003438
++please update the power monitor node to only output a single line instead of these 4: [power_monitor-7] [INFO] [1738108807.960849477] [power_monitor]: Raw: V=0x2228 I=0x021e P=0x00ee
++[power_monitor-7] [INFO] [1738108807.964483850] [power_monitor]: Converted: 10.9300V 0.2477A 2.7192W
++[power_monitor-7] [INFO] [1738108807.968764992] [power_monitor]: Battery: 10.9300V (53.6%), Current: 0.2477A, Power: 2.7192W
++[power_monitor-7] Average Power: 3.0830W, Estimated Runtime: 00:00
+
+# 2025-01-29 01:01:32.766212
++also please update the calculation to use a Exponential Moving Average
+
+# 2025-01-29 01:03:25.840321
++you can omit the raw data from the logger
+
+# 2025-01-29 01:10:13.238686
++please refactor the estimated time remaining based on this specification: To calculate the Exponential Moving Average (EMA) of the time remaining until your 3x18650 12V battery falls below 20% charge, you can follow the specification outlined below. This approach leverages your logged voltage and current data to provide a smooth and responsive estimate of remaining battery life.
++
++1. Define Battery Specifications
++Before performing any calculations, establish the key parameters of your battery system:
++
++Battery Configuration: 3x18650 cells in series
++
++Nominal Voltage per Cell: Typically 3.7V (total nominal voltage ≈ 11.1V; however, you've referenced a 12V system, which is common for practical purposes)
++
++Total Capacity (C): Determine the capacity of a single 18650 cell (e.g., 3Ah). For three cells in series, the total capacity remains the same as a single cell (3Ah) unless using parallel configurations. However, if your setup is parallel, adjust accordingly (e.g., 3 cells in parallel × 3Ah = 9Ah).
++
++Assumption for this specification: Let's assume a total capacity (C) of 9Ah for the 3x18650 configuration.
++
++2. Establish State of Charge (SoC)
++State of Charge (SoC) represents the current charge level of the battery as a percentage of its total capacity.
++
++Full Charge: 100% SoC
++Discharge Threshold: 20% SoC
++3. Data Logging Parameters
++Ensure that your system logs the following at regular intervals (Δt):
++
++Timestamp
++Voltage (V)
++Current Consumption (I)
++4. Calculate Exponential Moving Average (EMA) of Current
++The EMA smooths out short-term fluctuations and highlights longer-term trends in current consumption, providing a more stable estimate for predicting remaining time.
++
++EMA Formula:
++
++EMA
++(
++𝑡
++)
++=
++𝛼
++×
++𝐼
++(
++𝑡
++)
+++
++(
++1
++−
++𝛼
++)
++×
++EMA
++(
++𝑡
++−
++1
++)
++EMA(t)=α×I(t)+(1−α)×EMA(t−1)
++𝛼
++α: Smoothing factor (0 < α ≤ 1). A common choice is α = 0.1 to 0.3, depending on how responsive you want the EMA to be.
++𝐼
++(
++𝑡
++)
++I(t): Current consumption at time t.
++EMA
++(
++𝑡
++−
++1
++)
++EMA(t−1): EMA value at the previous time step.
++Initialization:
++
++At the first time step, set:
++
++EMA
++(
++0
++)
++=
++𝐼
++(
++0
++)
++EMA(0)=I(0)
++5. Update State of Charge (SoC)
++Continuously update the SoC based on current consumption:
++
++SoC
++(
++𝑡
++)
++=
++SoC
++(
++𝑡
++−
++1
++)
++−
++(
++𝐼
++(
++𝑡
++)
++×
++Δ
++𝑡
++𝐶
++)
++×
++100
++%
++SoC(t)=SoC(t−1)−( 
++C
++I(t)×Δt
++​
++ )×100%
++Ensure SoC does not drop below 0% or exceed 100%.
++6. Calculate Remaining Capacity
++Determine the remaining capacity based on SoC:
++
++Remaining Capacity
++=
++(
++SoC
++(
++𝑡
++)
++100
++)
++×
++𝐶
++Remaining Capacity=( 
++100
++SoC(t)
++​
++ )×C
++7. Estimate Time Remaining Until 20% SoC
++Using the EMA of current consumption, estimate the time remaining until the battery reaches 20% SoC:
++
++Time Remaining (hours)
++=
++Remaining Capacity
++−
++(
++20
++100
++×
++𝐶
++)
++EMA
++(
++𝑡
++)
++Time Remaining (hours)= 
++EMA(t)
++Remaining Capacity−( 
++100
++20
++​
++ ×C)
++​
++ 
++Interpretation:
++
++Numerator: The capacity that can still be utilized before reaching the 20% threshold.
++Denominator: The smoothed average current consumption.
++Handling Edge Cases:
++
++If EMA(t) ≈ 0: Indicate that the battery is not discharging significantly, or handle as an error condition to prevent division by zero.
++If Time Remaining < 0: The battery has already fallen below 20% SoC.
++8. Implementation Steps
++Initialize Variables:
++
++Set initial SoC (e.g., 100%).
++Set initial EMA (e.g., first logged current value).
++Iterate Over Logged Data:
++
++For each logged data point at time t:
++
++a. Update EMA:
++
++EMA
++(
++𝑡
++)
++=
++𝛼
++×
++𝐼
++(
++𝑡
++)
+++
++(
++1
++−
++𝛼
++)
++×
++EMA
++(
++𝑡
++−
++1
++)
++EMA(t)=α×I(t)+(1−α)×EMA(t−1)
++b. Update SoC:
++
++SoC
++(
++𝑡
++)
++=
++SoC
++(
++𝑡
++−
++1
++)
++−
++(
++𝐼
++(
++𝑡
++)
++×
++Δ
++𝑡
++𝐶
++)
++×
++100
++%
++SoC(t)=SoC(t−1)−( 
++C
++I(t)×Δt
++​
++ )×100%
++Clamp SoC between 0% and 100%.
++c. Calculate Remaining Capacity:
++
++Remaining Capacity
++=
++(
++SoC
++(
++𝑡
++)
++100
++)
++×
++𝐶
++Remaining Capacity=( 
++100
++SoC(t)
++​
++ )×C
++d. Estimate Time Remaining:
++
++Time Remaining
++=
++Remaining Capacity
++−
++(
++20
++100
++×
++𝐶
++)
++EMA
++(
++𝑡
++)
++Time Remaining= 
++EMA(t)
++Remaining Capacity−( 
++100
++20
++​
++ ×C)
++​
++ 
++Convert Δt to consistent units (e.g., hours) if necessary.
++e. Handle Threshold Condition:
++
++If SoC(t) ≤ 20%, set Time Remaining to 0 or indicate that the threshold has been reached.
++f. Log or Display the Time Remaining:
++
++Update your monitoring system with the new estimate.
++9. Example Calculation
++Assumptions:
++
++C = 9Ah
++α = 0.2
++Δt = 1 minute = 1/60 hours
++Initial SoC = 100%
++Initial EMA = 1A
++At time t:
++
++Logged Current, I(t) = 1.2A
++Calculations:
++
++EMA(t) = 0.2 × 1.2 + 0.8 × 1 = 0.24 + 0.8 = 1.04A
++
++SoC(t) = 100% - (1.2 × (1/60) / 9) × 100% ≈ 100% - (0.02 / 9) × 100% ≈ 100% - 0.222% ≈ 99.778%
++
++Remaining Capacity = (99.778 / 100) × 9 ≈ 8.980Ah
++
++Time Remaining = (8.980 - 1.8) / 1.04 ≈ 7.18 / 1.04 ≈ 6.9 hours
++
++Note: This example assumes minimal discharge; in practice, adjust the initial values and parameters according to your actual usage patterns.
++
++10. Considerations and Enhancements
++Battery Discharge Characteristics:
++
++The relationship between SoC and voltage can be nonlinear. For more accurate SoC estimation, consider using voltage profiles or coulomb counting alongside EMA.
++Temperature Effects:
++
++Temperature can impact battery performance. If temperature data is available, incorporate it into your calculations for improved accuracy.
++Dynamic Capacity Adjustment:
++
++Battery capacity can degrade over time. Implement mechanisms to adjust C based on usage history to account for capacity fade.
++Smoothing Factor (α) Tuning:
++
++Experiment with different α values to balance responsiveness and noise reduction in the EMA.
++Validation:
++
++Periodically validate your time remaining estimates against actual battery performance to ensure accuracy and recalibrate as necessary.
++11. Sample Pseudocode
++python
++Kopieren
++Bearbeiten
++# Parameters
++C = 9.0  # Ah
++alpha = 0.2
++threshold_soc = 20.0  # %
++delta_t = 1/60  # hours (1 minute)
++
++# Initialization
++SoC = 100.0  # percent
++EMA = initial_current  # e.g., first logged current value
++
++for each data_point in logged_data:
++    I = data_point.current  # in Amperes
++    
++    # Update EMA
++    EMA = alpha * I + (1 - alpha) * EMA
++    
++    # Update SoC
++    SoC -= (I * delta_t / C) * 100
++    SoC = max(min(SoC, 100.0), 0.0)
++    
++    # Calculate Remaining Capacity
++    remaining_capacity = (SoC / 100) * C
++    
++    # Calculate Time Remaining
++    target_capacity = (threshold_soc / 100) * C
++    capacity_difference = remaining_capacity - target_capacity
++    
++    if EMA > 0:
++        time_remaining = capacity_difference / EMA  # in hours
++    else:
++        time_remaining = float('inf')  # or handle appropriately
++    
++    if SoC <= threshold_soc:
++        time_remaining = 0
++    
++    # Output or store the time_remaining value
++    log_time_remaining(time_remaining)
++12. Tools and Implementation
++Programming Languages: Python, MATLAB, or any language suitable for data processing.
++
++Libraries:
++
++Python: pandas for data handling, numpy for numerical computations.
++Visualization:
++
++Plot SoC and Time Remaining over time to monitor battery health and performance.
++13. Final Notes
++Accuracy: The accuracy of the Time Remaining estimate depends on the precision of your logged data and the appropriateness of the smoothing factor α.
++Battery Health: Regularly monitor battery health indicators to adjust calculations for aging effects.
++Safety: Always ensure that battery discharge does not exceed manufacturer specifications to prevent damage or hazards.
++By following this specification, you can implement a robust system to estimate the remaining time until your battery reaches 20% charge using the Exponential Moving Average of current consumption. This approach provides a balance between responsiveness to changes in consumption patterns and stability against transient fluctuations.
+
+# 2025-01-29 01:17:51.837948
++/add src/power/power/power_monitor.py
+
+# 2025-01-29 01:17:53.075910
++Brief Troubleshooting Tips
++
++Confirm Actual Capacity
++
++A 3S (3 × 18650 in series) pack has the same capacity in Ah as a single cell (typically ~2–3 Ah).
++If you assumed 9 Ah but only have ~2.5 Ah, your runtime estimates will be way off.
++Avoid Simple Voltage→SoC
++
++Voltage under load doesn’t linearly map to SoC.
++Best practice: use coulomb counting (accumulate current over time) to track how many Ah are used.
++Tame Fluctuations with Smoothing
++
++If load changes a lot, your average power/current jumps around.
++Tune your EMA smoothing factor (
++𝛼
++α) or use a rolling average of current.
++Check Your Math
++
++For time-to-20%:
++𝑇
++r
++e
++m
++  
++=
++  
++(
++SoC
++−
++0.20
++)
++×
++Battery
++ 
++Ah
++Smoothed
++ 
++Current
++.
++T 
++rem
++​
++ = 
++SmoothedCurrent
++(SoC−0.20)×BatteryAh
++​
++ .
++Make sure SoC is accurate, battery Ah is real, and the current is smoothed sensibly.
++Validate with a Real Discharge Test
++
++Charge fully, discharge at a known constant load, measure runtime.
++Compare measured capacity to your assumption and adjust.
+
+# 2025-01-29 01:19:05.836053
++n
+
+# 2025-01-29 01:35:09.610931
++i'm getting a ERR_CONNECTION_TIMED_OUT from the web server
+
+# 2025-01-29 01:37:18.712684
++a
+
+# 2025-01-29 01:40:10.444820
++/add src/wall_e_web/
+
+# 2025-01-29 01:40:27.596997
++i'm getting ERR_CONNECTION_TIMED_OUT from the webserver at port 8000
+
+# 2025-01-29 01:41:54.243940
++n
+
+# 2025-01-29 01:46:19.843993
++/add src/wall_e_web
+
+# 2025-01-29 01:46:39.146095
++the webserver is still not working, can't reach it how can we debug this
+
+# 2025-01-29 01:54:32.893990
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:57:00.315731
++[ERROR] [1738112210.039874989] [web_server]: Failed to create HTTP server: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
++Traceback (most recent call last):
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 36, in server_bind
++    self.get_logger().info(f"Server bound to {self.server_address}")
++    ^^^^^^^^^^^^^^^
++AttributeError: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
++
++During handling of the above exception, another exception occurred:
++
++Traceback (most recent call last):
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/wall_e_web/serve_web", line 33, in <module>
++    sys.exit(load_entry_point('wall-e-web==0.0.0', 'console_scripts', 'serve_web')())
++             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 108, in main
++    node = WebServerNode()
++           ^^^^^^^^^^^^^^^
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 49, in __init__
++    self.httpd = NonBlockingHTTPServer(('0.0.0.0', self.port), DebugHandler)
++                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++  File "/usr/lib/python3.12/socketserver.py", line 457, in __init__
++    self.server_bind()
++  File "/home/mneuhaus/ros2_ws/install/wall_e_web/lib/python3.12/site-packages/wall_e_web/serve_web.py", line 38, in server_bind
++    self.get_logger().error(f"Failed to bind server: {e}")
++    ^^^^^^^^^^^^^^^
++AttributeError: 'NonBlockingHTTPServer' object has no attribute 'get_logger'
+
+# 2025-01-29 01:58:44.996808
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:58:46.693758
++n
+
+# 2025-01-29 01:58:48.585478
++/run curl http://localhost:8000/  
+
+# 2025-01-29 01:59:16.569458
++n
+
+# 2025-01-29 02:00:37.576482
++lets implement an safety shutdown at 10% battery
+
+# 2025-01-29 02:01:48.187796
++/add src/power/power/power_monitor.py lets add an safety system shutdown when we're under 10% of battery
+
+# 2025-01-29 02:02:08.781112
++> /add src/power/power/power_monitor.py
+
+# 2025-01-29 02:02:27.123232
++lets add an safety system shutdown when we're under 10% of battery
+
+# 2025-01-29 02:03:00.586701
++n
+
+# 2025-01-29 02:03:34.985905
++/add src/power/*
+
+# 2025-01-29 02:03:36.795655
++please add docs/power.md ad document this new package
+
+# 2025-01-29 02:04:45.865325
++n
+
+# 2025-01-29 02:04:53.259948
++sudo shutdown 0
+
+# 2025-02-03 22:54:17.882370
++y
+
+# 2025-02-03 22:56:36.159272
++n
+
+# 2025-02-03 22:57:17.774713
++/ask take a look around, what do you see?
+
+# 2025-02-03 22:59:58.010357
++please create a short TLDR.md in the docs folder containing a short, concise overview over the main components, goals and principles we're working on
+
+# 2025-02-03 23:10:45.485123
++/ask i've got a new MCU attached with an RP2040 chip, how could we integrate this using micro-ros into this project
+
+# 2025-02-03 23:12:49.972115
++n

@@ -71,7 +71,7 @@ def generate_launch_description():
             name='rosbridge_websocket',
             output='screen',
             parameters=[{
-                'port': 9090
+                'port': 9091  # Changed port to avoid conflicts
             }]
         ),
         Node(
@@ -91,5 +91,16 @@ def generate_launch_description():
                 'startup_sound': True,
                 'volume': 1.0
             }]
+        ),
+        
+        # Start the power monitoring node
+        Node(
+            package='power',
+            executable='power_monitor',
+            name='power_monitor',
+            output='screen',
+            respawn=True,  # Automatically restart if it crashes
+            respawn_delay=1,  # Wait 1 second before restarting
+            arguments=['--ros-args', '--log-level', 'info']
         ),
     ])

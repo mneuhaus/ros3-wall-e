@@ -73,6 +73,63 @@
         .status-connected { background-color: #90EE90; }
         .status-disconnected { background-color: #FFB6C1; }
         .status-error { background-color: #FF6B6B; }
+        .volume-control {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .volume-control label {
+            color: white;
+            min-width: 70px;
+        }
+        .volume-control input[type="range"] {
+            flex-grow: 1;
+        }
+        .volume-control span {
+            color: white;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .battery-monitor {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .battery-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stat-box {
+            background-color: #2c3e50;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .stat-box label {
+            display: block;
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-box span {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
         .head-controls {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -121,6 +178,116 @@
             </div>
         </div>
 
+        <div class="battery-monitor">
+            <div class="battery-stats">
+                <div class="stat-box">
+                    <label>Voltage:</label>
+                    <span id="batteryVoltage">--V</span>
+                </div>
+                <div class="stat-box">
+                    <label>Current:</label>
+                    <span id="batteryCurrent">--A</span>
+                </div>
+                <div class="stat-box">
+                    <label>Power:</label>
+                    <span id="batteryPower">--W</span>
+                </div>
+                <div class="stat-box">
+                    <label>Remaining:</label>
+                    <span id="batteryRemaining">--%</span>
+                </div>
+                <div class="stat-box">
+                    <label>Runtime:</label>
+                    <span id="batteryRuntime">--:--</span>
+                </div>
+            </div>
+            <div id="powerChart" style="height: 200px;"></div>
+        </div>
+
+        <div class="volume-control">
+            <label for="volumeSlider">Volume: </label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="80">
+            <span id="volumeValue">80%</span>
+        </div>
+        <script src="https://unpkg.com/@nivo/core@0.84.0/dist/nivo-core.umd.min.js"></script>
+        <script src="https://unpkg.com/@nivo/line@0.84.0/dist/nivo-line.umd.min.js"></script>
+        <script>
+            // Battery data storage
+            const maxDataPoints = 300; // 5 minutes at 1 reading per second
+            let powerData = [];
+        
+            // Initialize nivo chart
+            const chart = new nivo.Line({
+                container: document.getElementById('powerChart'),
+                width: document.getElementById('powerChart').offsetWidth,
+                height: 200,
+                margin: { top: 20, right: 20, bottom: 30, left: 40 },
+                data: [{
+                    id: 'power',
+                    data: []
+                }],
+                xScale: { type: 'time' },
+                yScale: { type: 'linear', min: 0 },
+                axisBottom: { format: '%H:%M:%S', tickValues: 5 },
+                axisLeft: { tickSize: 5, tickPadding: 5, tickRotation: 0 },
+                enablePoints: false,
+                enableGridX: true,
+                enableGridY: true,
+                colors: ['#2ecc71'],
+                lineWidth: 2,
+                animate: false
+            });
+        
+            // Subscribe to battery state
+            var batteryTopic = new ROSLIB.Topic({
+                ros: ros,
+                name: '/battery_state',
+                messageType: 'sensor_msgs/msg/BatteryState'
+            });
+        
+            batteryTopic.subscribe(function(message) {
+                // Update stats
+                document.getElementById('batteryVoltage').textContent = message.voltage.toFixed(2) + 'V';
+                document.getElementById('batteryCurrent').textContent = message.current.toFixed(2) + 'A';
+                document.getElementById('batteryPower').textContent = (message.voltage * message.current).toFixed(2) + 'W';
+                document.getElementById('batteryRemaining').textContent = message.percentage.toFixed(1) + '%';
+            
+                // Update chart data
+                const now = new Date();
+                powerData.push({
+                    x: now,
+                    y: message.voltage * message.current
+                });
+            
+                // Keep only last 5 minutes of data
+                if (powerData.length > maxDataPoints) {
+                    powerData = powerData.slice(-maxDataPoints);
+                }
+            
+                // Update chart
+                chart.updateData([{
+                    id: 'power',
+                    data: powerData
+                }]);
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                chart.setDimensions({
+                    width: document.getElementById('powerChart').offsetWidth,
+                    height: 200
+                });
+            });
+
+            // Get initial volume on page load
+            fetch('/volume')
+                .then(response => response.text())
+                .then(volume => {
+                    document.getElementById('volumeSlider').value = volume;
+                    document.getElementById('volumeValue').textContent = volume + '%';
+                })
+                .catch(error => console.error('Error getting volume:', error));
+        </script>
         <button id="stopButton">⚠️ EMERGENCY STOP</button>
         <div id="status" class="status-disconnected">Status: Disconnected</div>
     </div>
@@ -232,6 +399,24 @@
             name: '/play_sound',
             messageType: 'std_msgs/msg/String'
         });
+
+        var volumeTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/set_volume',
+            messageType: 'std_msgs/msg/Int32'
+        });
+
+        // Volume control
+        var volumeSlider = document.getElementById('volumeSlider');
+        var volumeValue = document.getElementById('volumeValue');
+        
+        volumeSlider.oninput = function() {
+            volumeValue.textContent = this.value + '%';
+            var volumeMsg = new ROSLIB.Message({
+                data: parseInt(this.value)
+            });
+            volumeTopic.publish(volumeMsg);
+        };
 
         function playSound(soundFile) {
             var soundMsg = new ROSLIB.Message({

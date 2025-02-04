@@ -37,7 +37,7 @@ add_compile_definitions(PICO_STDIO_DEFAULT_CRLF=0)
 pico_add_extra_outputs(tracks_firmware)
 
 add_executable(flash_neopixel flash_neopixel.c)
-target_link_libraries(flash_neopixel pico_stdlib ws2812)
+target_link_libraries(flash_neopixel pico_stdlib)
 target_include_directories(flash_neopixel PUBLIC ${PICO_SDK_PATH}/src/rp2_common/hardware_pio/include)
 pico_add_extra_outputs(flash_neopixel)
 

@@ -3387,3 +3387,233 @@
 
 # 2025-02-03 23:12:49.972115
 +n
+
+# 2025-02-04 00:41:56.770084
++/add src/tracks/firmware/*
+
+# 2025-02-04 00:42:38.192531
++/add src/tracks/firmware/pico_*
+
+# 2025-02-04 00:43:09.434356
++please add a simple hello world log output for micro-ros
+
+# 2025-02-04 00:43:51.609818
++ok, now please create a new task that publishes a hello world topic
+
+# 2025-02-04 00:44:25.625547
++n
+
+# 2025-02-04 00:44:35.722508
++ok, now please create a new task that publishes a hello world topic through the tracks firmware
+
+# 2025-02-04 00:44:42.354821
++ok, now please create a new task that publishes a hello world topic through the tracks micro-ros firmware
+
+# 2025-02-04 00:45:56.697902
++Building Tracks firmware...
++mkdir -p src/tracks/firmware/build
++cd src/tracks/firmware/build && cmake .. && make
++PICO_SDK_PATH is /home/mneuhaus/pico/pico-sdk
++Target board (PICO_BOARD) is 'pico'.
++Using board configuration from /home/mneuhaus/pico/pico-sdk/src/boards/include/boards/pico.h
++Pico Platform (PICO_PLATFORM) is 'rp2040'.
++Build type is Release
++TinyUSB available at /home/mneuhaus/pico/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040; enabling build support for USB.
++BTstack available at /home/mneuhaus/pico/pico-sdk/lib/btstack
++cyw43-driver available at /home/mneuhaus/pico/pico-sdk/lib/cyw43-driver
++lwIP available at /home/mneuhaus/pico/pico-sdk/lib/lwip
++mbedtls available at /home/mneuhaus/pico/pico-sdk/lib/mbedtls
++Using PICO_EXAMPLES_PATH from environment ('/home/mneuhaus/pico/pico-examples')
++-- Configuring done (1.1s)
++-- Generating done (0.3s)
++-- Build files have been written to: /home/mneuhaus/ros2_ws/src/tracks/firmware/build
++make[1]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++[  2%] Built target bs2_default
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++[  5%] Built target bs2_default_library
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++[  6%] Building C object CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'main':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:83:5: warning: 'rclc_timer_init_default' is deprecated: Call rclc_timer_init_default2 instead [-Wdeprecated-declarations]
++   83 |     rclc_timer_init_default(
++      |     ^~~~~~~~~~~~~~~~~~~~~~~
++In file included from /home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/rclc.h:32,
++                 from /home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:5:
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:63:1: note: declared here
++   63 | rclc_timer_init_default(
++      | ^~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:88:5: warning: 'rclc_timer_init_default' is deprecated: Call rclc_timer_init_default2 instead [-Wdeprecated-declarations]
++   88 |     rclc_timer_init_default(
++      |     ^~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:63:1: note: declared here
++   63 | rclc_timer_init_default(
++      | ^~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:100:22: error: incompatible types when assigning to type 'rosidl_runtime_c__String' from type 'char *'
++  100 |     hello_msg.data = "Hello World";
++      |                      ^~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'hello_timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:31:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   31 |     rcl_publish(&hello_publisher, &hello_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++make[3]: *** [CMakeFiles/tracks_firmware.dir/build.make:76: CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/tracks_firmware.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
++
+
+# 2025-02-04 00:46:39.048922
++[  6%] Building C object CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'main':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:84:5: error: too few arguments to function 'rclc_timer_init_default2'
++   84 |     rclc_timer_init_default2(
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~
++In file included from /home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/rclc.h:32,
++                 from /home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:5:
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:49:1: note: declared here
++   49 | rclc_timer_init_default2(
++      | ^~~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:89:5: error: too few arguments to function 'rclc_timer_init_default2'
++   89 |     rclc_timer_init_default2(
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:49:1: note: declared here
++   49 | rclc_timer_init_default2(
++      | ^~~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:101:38: warning: passing argument 1 of 'rosidl_runtime_c__String__assign' from incompatible pointer type [-Wincompatible-pointer-types]
++  101 |     rosidl_runtime_c__String__assign(&hello_msg, "Hello World");
++      |                                      ^~~~~~~~~~
++      |                                      |
++      |                                      std_msgs__msg__String *
++In file included from /home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:9:
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rosidl_runtime_c/string_functions.h:119:30: note: expected 'rosidl_runtime_c__String *' but argument is of type 'std_msgs__msg__String *'
++  119 |   rosidl_runtime_c__String * str, const char * value);
++      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'hello_timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:32:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   32 |     rcl_publish(&hello_publisher, &hello_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++make[3]: *** [CMakeFiles/tracks_firmware.dir/build.make:76: CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/tracks_firmware.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
++
+
+# 2025-02-04 00:47:22.248194
++make[3]: Entering directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++[  6%] Building C object CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'main':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:89:9: error: incompatible type for argument 5 of 'rclc_timer_init_default2'
++   89 |         allocator);
++      |         ^~~~~~~~~
++      |         |
++      |         rcl_allocator_t {aka struct rcutils_allocator_s}
++In file included from /home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/rclc.h:32,
++                 from /home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:5:
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:54:8: note: expected '_Bool' but argument is of type 'rcl_allocator_t' {aka 'struct rcutils_allocator_s'}
++   54 |   bool autostart);
++      |        ^
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:95:9: error: incompatible type for argument 5 of 'rclc_timer_init_default2'
++   95 |         allocator);
++      |         ^~~~~~~~~
++      |         |
++      |         rcl_allocator_t {aka struct rcutils_allocator_s}
++/home/mneuhaus/ros2_ws/src/tracks/firmware/libmicroros/include/rclc/timer.h:54:8: note: expected '_Bool' but argument is of type 'rcl_allocator_t' {aka 'struct rcutils_allocator_s'}
++   54 |   bool autostart);
++      |        ^
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'hello_timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:32:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   32 |     rcl_publish(&hello_publisher, &hello_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++make[3]: *** [CMakeFiles/tracks_firmware.dir/build.make:76: CMakeFiles/tracks_firmware.dir/pico_micro_ros_example.c.o] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1782: CMakeFiles/tracks_firmware.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
++
+
+# 2025-02-04 00:50:55.666658
++i don't think i can see that hello-world: [1738626593.499663] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x462A60A1, topic_id: 0x001(2), participant_id: 0x000(1)
++[1738626593.502989] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x462A60A1, publisher_id: 0x001(3), participant_id: 0x000(1)
++[1738626593.507030] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x462A60A1, datawriter_id: 0x001(5), publisher_id: 0x001(3)
++[1738626597.229513] info     | TermiosAgentLinux.cpp | fini                     | server stopped         | fd: 3
++[1738626597.239818] info     | TermiosAgentLinux.cpp | init                     | Serial port not found. | device: /dev/ttyACM0, error 2, waiting for connection...
++[1738626597.844031] info     | TermiosAgentLinux.cpp | init                     | running...             | fd: 3
++[1738626598.386937] info     | Root.cpp           | delete_client            | delete                 | client_key: 0x462A60A1
++[1738626598.387088] info     | SessionManager.hpp | destroy_session          | session closed         | client_key: 0x462A60A1, address: 0
++[1738626598.387194] info     | Root.cpp           | create_client            | create                 | client_key: 0x73BCF852, session_id: 0x81
++[1738626598.387282] info     | SessionManager.hpp | establish_session        | session established    | client_key: 0x73BCF852, address: 0
++[1738626598.397916] info     | ProxyClient.cpp    | create_participant       | participant created    | client_key: 0x73BCF852, participant_id: 0x000(1)
++[1738626598.403249] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x73BCF852, topic_id: 0x000(2), participant_id: 0x000(1)
++[1738626598.406194] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x73BCF852, publisher_id: 0x000(3), participant_id: 0x000(1)
++[1738626598.410451] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x73BCF852, datawriter_id: 0x000(5), publisher_id: 0x000(3)
++[1738626598.415908] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x73BCF852, topic_id: 0x001(2), participant_id: 0x000(1)
++[1738626598.419197] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x73BCF852, publisher_id: 0x001(3), participant_id: 0x000(1)
++[1738626598.423251] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x73BCF852, datawriter_id: 0x001(5), publisher_id: 0x001(3)
+
+# 2025-02-04 00:53:27.703960
++i meant i can't see that hello world topic published at an interval in the log output: [1738626593.499663] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x462A60A1, topic_id: 0x001(2), participant_id: 0x000(1)
++[1738626593.502989] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x462A60A1, publisher_id: 0x001(3), participant_id: 0x000(1)
++[1738626593.507030] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x462A60A1, datawriter_id: 0x001(5), publisher_id: 0x001(3)
++[1738626597.229513] info     | TermiosAgentLinux.cpp | fini                     | server stopped         | fd: 3
++[1738626597.239818] info     | TermiosAgentLinux.cpp | init                     | Serial port not found. | device: /dev/ttyACM0, error 2, waiting for connection...
++[1738626597.844031] info     | TermiosAgentLinux.cpp | init                     | running...             | fd: 3
++[1738626598.386937] info     | Root.cpp           | delete_client            | delete                 | client_key: 0x462A60A1
++[1738626598.387088] info     | SessionManager.hpp | destroy_session          | session closed         | client_key: 0x462A60A1, address: 0
++[1738626598.387194] info     | Root.cpp           | create_client            | create                 | client_key: 0x73BCF852, session_id: 0x81
++[1738626598.387282] info     | SessionManager.hpp | establish_session        | session established    | client_key: 0x73BCF852, address: 0
++[1738626598.397916] info     | ProxyClient.cpp    | create_participant       | participant created    | client_key: 0x73BCF852, participant_id: 0x000(1)
++[1738626598.403249] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x73BCF852, topic_id: 0x000(2), participant_id: 0x000(1)
++[1738626598.406194] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x73BCF852, publisher_id: 0x000(3), participant_id: 0x000(1)
++[1738626598.410451] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x73BCF852, datawriter_id: 0x000(5), publisher_id: 0x000(3)
++[1738626598.415908] info     | ProxyClient.cpp    | create_topic             | topic created          | client_key: 0x73BCF852, topic_id: 0x001(2), participant_id: 0x000(1)
++[1738626598.419197] info     | ProxyClient.cpp    | create_publisher         | publisher created      | client_key: 0x73BCF852, publisher_id: 0x001(3), participant_id: 0x000(1)
++[1738626598.423251] info     | ProxyClient.cpp    | create_datawriter        | datawriter created     | client_key: 0x73BCF852, datawriter_id: 0x001(5), publisher_id: 0x001(3)
+
+# 2025-02-04 00:54:16.886525
++please publish a topic on connect
+
+# 2025-02-04 00:57:00.046923
++/ask ok i got some output from the micro-ros with sudo docker run -it --rm -v /dev:/dev --privileged --net=host microros/micro-ros-agent:jazzy serial --dev /dev/ttyACM0 -b 115200 what can i do now to test that micro-ros instance?
+
+# 2025-02-04 00:59:20.486573
++ok, great, now please turn the led on gpio16 on at start
+
+# 2025-02-04 01:00:23.260413
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'hello_timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:37:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   37 |     rcl_publish(&hello_publisher, &hello_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'main':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:118:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++  118 |     rcl_publish(&connect_publisher, &connect_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[  7%] Linking CXX executable tracks_firmware.elf
++
+
+# 2025-02-04 01:01:13.253470
++home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'hello_timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:37:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   37 |     rcl_publish(&hello_publisher, &hello_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c: In function 'main':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/pico_micro_ros_example.c:118:5: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++  118 |     rcl_publish(&connect_publisher, &connect_msg, NULL);
++      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++[  7%] Linking CXX executable tracks_firmware.elf
++
+
+# 2025-02-04 01:02:10.401177
++great, now could we add some debug logging to the serial output of that micro-ros when the topics are published?

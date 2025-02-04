@@ -13,14 +13,14 @@ import sys
 import subprocess
 import os
 
-def flash_firmware(device_path: str) -> None:
+def flash_firmware(device_id: str) -> None:
     firmware_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "firmware", "build", "tracks_firmware.uf2")
     if not os.path.isfile(firmware_file):
         print(f"Firmware file not found: {firmware_file}")
         sys.exit(1)
-    print(f"Flashing firmware from {firmware_file} to {device_path}...")
+    print(f"Flashing firmware from {firmware_file} to {device_id}...")
     try:
-        subprocess.run(["picotool", "load", firmware_file, "--bus", '001', '--ser', os.environ.get("TRACKS_MCU_SERIAL")], check=True)
+        subprocess.run(["picotool", "load", firmware_file, "--bus", '001', '--ser', device_id], check=True)
         print("Firmware flashed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Error flashing firmware: {e}")

@@ -3617,3 +3617,95 @@
 
 # 2025-02-04 01:02:10.401177
 +great, now could we add some debug logging to the serial output of that micro-ros when the topics are published?
+
+# 2025-02-05 00:12:33.996327
++ls -la
+
+# 2025-02-05 00:12:44.995696
++/ask where did we leave off?
+
+# 2025-02-05 00:13:24.036577
++n
+
+# 2025-02-05 00:27:03.241271
++--ser for the tracks mcu is: 0xE6632891E3959D25 please update the Makefile and also replace 0xE6632891E3959D25 inside src/tracks/scripts/flash_firmware.py with the env
+
+# 2025-02-05 00:31:49.034460
++can we change the name of the mcu device when i scan using lsusb?
+
+# 2025-02-05 00:34:21.360014
++its the freertos firmware in src/tracks/firmware
+
+# 2025-02-05 00:35:51.293776
++it
++➜  ros2_ws git:(master) ✗ make tracks/update
++Building Tracks firmware...
++mkdir -p src/tracks/firmware/build
++cd src/tracks/firmware/build && cmake .. && make
++PICO_SDK_PATH is /home/mneuhaus/pico/pico-sdk
++Target board (PICO_BOARD) is 'pico'.
++Using board configuration from /home/mneuhaus/pico/pico-sdk/src/boards/include/boards/pico.h
++Pico Platform (PICO_PLATFORM) is 'rp2040'.
++Build type is Release
++TinyUSB available at /home/mneuhaus/pico/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040; enabling build support for USB.
++BTstack available at /home/mneuhaus/pico/pico-sdk/lib/btstack
++cyw43-driver available at /home/mneuhaus/pico/pico-sdk/lib/cyw43-driver
++lwIP available at /home/mneuhaus/pico/pico-sdk/lib/lwip
++mbedtls available at /home/mneuhaus/pico/pico-sdk/lib/mbedtls
++Using PICO_EXAMPLES_PATH from environment ('/home/mneuhaus/pico/pico-examples')
++CMake Error at CMakeLists.txt:10 (add_subdirectory):
++  add_subdirectory given source
++  "/home/mneuhaus/ros2_ws/src/tracks/firmware/../../external/pico-examples/ws2812"
++  which is not an existing directory.
++
++
++-- Configuring incomplete, errors occurred!
++make: *** [Makefile:97: tracks/build] Error 1
+
+# 2025-02-05 00:36:20.168846
++please fix
+
+# 2025-02-05 00:38:01.039901
++the main file of that firmware is pico_micro_ros_example.c feal free to rename it to main.c
+
+# 2025-02-05 00:39:41.432502
++CMake Error at CMakeLists.txt:10 (add_subdirectory):
++  add_subdirectory given source
++  "/home/mneuhaus/ros2_ws/src/tracks/firmware/../../external/pico-examples/ws2812"
++  which is not an existing directory.
+
+# 2025-02-05 00:41:48.903209
++/usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lws2812: No such file or directory
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/flash_neopixel.dir/build.make:984: flash_neopixel.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1812: CMakeFiles/flash_neopixel.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
+
+# 2025-02-05 00:42:04.150618
++usr/lib/gcc/arm-none-eabi/13.2.1/../../../arm-none-eabi/bin/ld: cannot find -lws2812: No such file or directory
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/flash_neopixel.dir/build.make:984: flash_neopixel.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1812: CMakeFiles/flash_neopixel.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
+
+# 2025-02-05 00:43:00.769554
++ndefined reference to `ws2812_program'
++collect2: error: ld returned 1 exit status
++make[3]: *** [CMakeFiles/flash_neopixel.dir/build.make:984: flash_neopixel.elf] Error 1
++make[3]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[2]: *** [CMakeFiles/Makefile2:1812: CMakeFiles/flash_neopixel.dir/all] Error 2
++make[2]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make[1]: *** [Makefile:91: all] Error 2
++make[1]: Leaving directory '/home/mneuhaus/ros2_ws/src/tracks/firmware/build'
++make: *** [Makefile:97: tracks/build] Error 2
+
+# 2025-02-05 00:44:32.031390
++please remove the ws2812 stuff and the other test/boilerplate code from the tracks firmware

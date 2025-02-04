@@ -26,6 +26,8 @@ std_msgs__msg__String connect_msg;
 void timer_callback(rcl_timer_t *timer, int64_t last_call_time)
 {
     rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
+    printf("Pico publisher sent message with value: %d\n", msg.data);
+    fflush(stdout);
     msg.data++;
 }
 
@@ -116,6 +118,8 @@ int main()
     fflush(stdout);
     rosidl_runtime_c__String__assign((rosidl_runtime_c__String *)&connect_msg, "Connected");
     (void) rcl_publish(&connect_publisher, &connect_msg, NULL);
+    printf("Publishing connect topic: 'Connected'\n");
+    fflush(stdout);
     rosidl_runtime_c__String__assign((rosidl_runtime_c__String *)&hello_msg, "Hello World");
 
     msg.data = 0;

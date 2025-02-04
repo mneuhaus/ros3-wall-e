@@ -1,6 +1,14 @@
 #include "pico/stdlib.h"
 #include <hardware/pio.h>
 #include "ws2812.pio.h"
+#ifndef WS2812_PROGRAM_DEFINED
+const pio_program_t ws2812_program = {
+    .instructions = NULL,
+    .length = 0,
+    .origin = -1,
+};
+#define WS2812_PROGRAM_DEFINED
+#endif
 
 #define NEOPIXEL_PIN 16
 #define NUM_PIXELS 1

@@ -3709,3 +3709,9 @@
 
 # 2025-02-05 00:44:32.031390
 +please remove the ws2812 stuff and the other test/boilerplate code from the tracks firmware
+
+# 2025-02-05 00:48:10.269111
++please update the src/tracks/firmware/README.md based on the firmware in src/tracks/firmware/main.c
+
+# 2025-02-05 00:51:15.209331
++great, now please to some cleanup of the main.c, i want to start with a fresh clean micro_ros to implement the tracks firmware

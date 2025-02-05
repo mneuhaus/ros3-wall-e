@@ -38,10 +38,17 @@ def flash_firmware(device_id: str) -> None:
     print(f"Flashing firmware from {firmware_file} to {device_id}...")
     usb_info = get_usb_info(device_id)
     print(f"Detected USB device: {usb_info}")
+    tokens = usb_info.split()
+    if len(tokens) >= 4:
+        bus_num = tokens[1]
+        dev_num = tokens[3]
+    else:
+        bus_num = "001"
+        dev_num = "017"
     try:
         #subprocess.run(["picotool", "reboot", '-f', '-u', '--ser', device_id], check=True)
-        subprocess.run(["picotool", "load", firmware_file, '-f', '--bus', "001", '--address', "017"], check=True)
-        subprocess.run(["picotool", "reboot", '-a', '--bus', "001", '--address', "017"], check=True)
+        subprocess.run(["picotool", "load", firmware_file, '-f', '--bus', bus_num, '--address', dev_num], check=True)
+        subprocess.run(["picotool", "reboot", '-a', '--bus', bus_num, '--address', dev_num], check=True)
         print("Firmware flashed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Error flashing firmware: {e}")

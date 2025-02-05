@@ -21,20 +21,17 @@ def flash_firmware(device_path: str) -> None:
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_path}...")
 
-    real_device = os.path.realpath(device_path)
-    tty_name = os.path.basename(real_device)
-    sysfs_path = f"/sys/class/tty/{tty_name}/device"
-    with open(os.path.join(sysfs_path, "busnum"), "r") as f:
-        bus_num = f.read().strip()
-    with open(os.path.join(sysfs_path, "devnum"), "r") as f:
-        dev_num = f.read().strip()
-
-    print(output)
-    print(dev_num)
+    import re
+    match = re.search(r'Pico_([A-Za-z0-9]+)-if', device_path)
+    if not match:
+        print("Could not determine iSerial from device path")
+        sys.exit(1)
+    iserial = match.group(1)
+    print(f"Using iSerial: {iserial}")
     try:
-        subprocess.run(["picotool", "reboot",  '-u', '--bus', bus_num, '--address', dev_num, '-f'], check=True)
-        subprocess.run(["picotool", "load", firmware_file, '-f', '--bus', bus_num, '--address', dev_num], check=True)
-        subprocess.run(["picotool", "reboot", '-a', '--bus', bus_num, '--address', dev_num], check=True)
+        subprocess.run(["picotool", "reboot", '-u', '--iserial', iserial, '-f'], check=True)
+        subprocess.run(["picotool", "load", firmware_file, '-f', '--iserial', iserial], check=True)
+        subprocess.run(["picotool", "reboot", '-a', '--iserial', iserial], check=True)
         print("Firmware flashed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Error flashing firmware: {e}")

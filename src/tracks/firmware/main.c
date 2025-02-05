@@ -7,6 +7,8 @@
 #include <rmw_microros/rmw_microros.h>
 #include "pico_uart_transports.h"
 #include <string.h>
+#define NEOPIXEL_PIN 16
+#define NEOPIXEL_COUNT 1
 
 rcl_publisher_t publisher;
 std_msgs__msg__String msg;
@@ -35,8 +37,6 @@ int main() {
                                    pico_serial_transport_write, pico_serial_transport_read);
     stdio_init_all();
     // Initialize neopixel on GPIO16 without external dependency
-    #define NEOPIXEL_PIN 16
-    #define NEOPIXEL_COUNT 1
     gpio_init(NEOPIXEL_PIN);
     gpio_set_dir(NEOPIXEL_PIN, GPIO_OUT);
     // Minimal manual implementation: set neopixel to green (0,255,0)

@@ -3894,3 +3894,27 @@
 
 # 2025-02-05 02:50:18.033145
 +n
+
+# 2025-02-05 02:53:53.323255
++do we need to enable/add/include the adafruit neopixel library in the src/tracks/firmware/CMakeLists.txt ? CMakeFiles/tracks_firmware.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/tracks/firmware/main.c:3:10: fatal error: Adafruit_NeoPixel: No such file or directory
++    3 | #include <Adafruit_NeoPixel>
+
+# 2025-02-05 02:56:03.768758
++/ask i'm still getting keFiles/tracks_firmware.dir/main.c.o
++/home/mneuhaus/ros2_ws/src/tracks/firmware/main.c:3:10: fatal error: Adafruit_NeoPixel.h: No such file or directory
++    3 | #include <Adafruit_NeoPixel.h>
++      |          ^~~~~~~~~~~~~~~~~~~~~
++ how can i debug this?
+
+# 2025-02-05 02:58:44.241924
++${Adafruit_NeoPixel_SOURCE_DIR} seems to be empty
+
+# 2025-02-05 03:00:10.885283
++CMake Error at /usr/share/cmake-3.28/Modules/FetchContent.cmake:1734 (message):
++  Content Adafruit_NeoPixel already populated in
++  /home/mneuhaus/ros2_ws/src/tracks/firmware/build/_deps/adafruit_neopixel-src
++Call Stack (most recent call first):
++  CMakeLists.txt:32 (FetchContent_Populate)
++
++

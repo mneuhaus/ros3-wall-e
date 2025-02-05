@@ -27,12 +27,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Adafruit_NeoPixel)
 
-set(NEOPIXEL_DIR ${Adafruit_NeoPixel_SOURCE_DIR})
-message(STATUS "Adafruit NeoPixel source dir: ${NEOPIXEL_DIR}")
-
 target_include_directories(tracks_firmware PUBLIC
     libmicroros/include
-    ${NEOPIXEL_DIR}
+    build/_deps/adafruit_neopixel-src
 )
 
 SET(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -ffunction-sections -fdata-sections")

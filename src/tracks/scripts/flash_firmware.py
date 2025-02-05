@@ -45,17 +45,23 @@ def flash_firmware(device_path: str) -> None:
         print(f"Device with iSerial {iserial} not found in /dev/serial/by-id")
         sys.exit(1)
     
-    # Resolve the real device and read its bus and device numbers from sysfs.
-    real_device = os.path.realpath(device_found)
-    tty_name = os.path.basename(real_device)
-    sysfs_path = f"/sys/class/tty/{tty_name}/device"
+    # Use udevadm to obtain bus and device numbers from the by-id path.
     try:
-        with open(os.path.join(sysfs_path, "busnum"), "r") as f:
-            bus_num = f.read().strip()
-        with open(os.path.join(sysfs_path, "devnum"), "r") as f:
-            dev_num = f.read().strip()
-    except Exception as e:
-        print(f"Error reading sysfs for device {tty_name}: {e}")
+        output = subprocess.check_output(["udevadm", "info", "-a", "-n", device_found], encoding="utf-8")
+    except subprocess.CalledProcessError as e:
+        print(f"Error calling udevadm: {e}")
+        sys.exit(1)
+    bus_num = None
+    dev_num = None
+    for line in output.splitlines():
+        if 'ATTRS{busnum}' in line and bus_num is None:
+            bus_num = line.split("==")[1].strip().strip('"')
+        if 'ATTRS{devnum}' in line and dev_num is None:
+            dev_num = line.split("==")[1].strip().strip('"')
+        if bus_num and dev_num:
+            break
+    if not (bus_num and dev_num):
+        print("Could not determine busnum and devnum from udevadm output")
         sys.exit(1)
     
     try:

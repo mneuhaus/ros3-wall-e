@@ -13,12 +13,31 @@ import sys
 import subprocess
 import os
 
+def get_usb_info(device_path: str) -> str:
+    try:
+        output = subprocess.check_output(["udevadm", "info", "--query=property", "--name", device_path], encoding='utf-8')
+        bus_num = None
+        dev_num = None
+        for line in output.splitlines():
+            if line.startswith("ID_USB_BUS="):
+                bus_num = line.split("=")[1]
+            if line.startswith("ID_USB_DEVICE="):
+                dev_num = line.split("=")[1]
+        if bus_num and dev_num:
+            return f"Bus {bus_num} Device {dev_num}"
+        else:
+            return "Unknown USB bus/device"
+    except Exception as e:
+        return f"Error determining USB bus/device: {e}"
+
 def flash_firmware(device_id: str) -> None:
     firmware_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "firmware", "build", "tracks_firmware.uf2")
     if not os.path.isfile(firmware_file):
         print(f"Firmware file not found: {firmware_file}")
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_id}...")
+    usb_info = get_usb_info(device_id)
+    print(f"Detected USB device: {usb_info}")
     try:
         #subprocess.run(["picotool", "reboot", '-f', '-u', '--ser', device_id], check=True)
         subprocess.run(["picotool", "load", firmware_file, '-f', '--ser', device_id], check=True)

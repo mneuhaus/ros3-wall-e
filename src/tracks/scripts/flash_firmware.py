@@ -21,14 +21,13 @@ def flash_firmware(device_path: str) -> None:
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_path}...")
 
-    output = subprocess.check_output(["udevadm", "info", "--query=property", "--name", device_path], encoding='utf-8')
-    bus_num = None
-    dev_num = None
-    for line in output.splitlines():
-        if line.startswith("ID_USB_BUS="):
-            bus_num = line.split("=")[1]
-        if line.startswith("ID_USB_DEVICE="):
-            dev_num = line.split("=")[1]
+    real_device = os.path.realpath(device_path)
+    tty_name = os.path.basename(real_device)
+    sysfs_path = f"/sys/class/tty/{tty_name}/device"
+    with open(os.path.join(sysfs_path, "busnum"), "r") as f:
+        bus_num = f.read().strip()
+    with open(os.path.join(sysfs_path, "devnum"), "r") as f:
+        dev_num = f.read().strip()
 
     print(output)
     print(dev_num)

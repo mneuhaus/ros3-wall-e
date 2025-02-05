@@ -35,6 +35,9 @@
 
 #ifndef ADAFRUIT_NEOPIXEL_H
 #define ADAFRUIT_NEOPIXEL_H
+#ifndef PROGMEM
+  #define PROGMEM
+#endif
 
 #ifdef ARDUINO
 #if (ARDUINO >= 100)

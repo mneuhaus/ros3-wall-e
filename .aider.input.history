@@ -3715,3 +3715,104 @@
 
 # 2025-02-05 00:51:15.209331
 +great, now please to some cleanup of the main.c, i want to start with a fresh clean micro_ros to implement the tracks firmware
+
+# 2025-02-05 00:52:36.718884
++/help
+
+# 2025-02-05 00:52:51.256469
++/map-refresh
+
+# 2025-02-05 00:53:09.621562
++/chat-mode
+
+# 2025-02-05 00:53:46.367734
++Using PICO_EXAMPLES_PATH from environment ('/home/mneuhaus/pico/pico-examples')
++-- Configuring done (2.1s)
++CMake Error at CMakeLists.txt:13 (add_executable):
++  Cannot find source file:
++
++    pico_micro_ros_example.c
++
++  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm
++  .ccm .cxxm .c++m .h .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90
++  .f95 .f03 .hip .ispc
++
++
++-- Generating done (0.8s)
++CMake Generate step failed.  Build files cannot be regenerated correctly.
++make: *** [Makefile:97: tracks/build] Error 1
+
+# 2025-02-05 00:55:21.383127
++now please change the product name of that usb device to "wall-e: tracks controller"
+
+# 2025-02-05 00:56:23.700516
++warning: 'rclc_timer_init_default' is deprecated: Call rclc_timer_init_default2 instead [-Wdeprecated-declarations]
++   48 |     rclc_timer_init_default(&timer, &support, RCL_MS_TO_NS(1000), timer_callback);
+
+# 2025-02-05 00:56:49.926888
++warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   16 |     rcl_publish(&publisher, &msg, NULL);
++
+
+# 2025-02-05 01:00:58.678667
++error: too few arguments to function 'rclc_timer_init_default2'
++   48 |     rclc_timer_init_default2(&timer, &support, RCL_MS_TO_NS(1000), timer_callback);
+
+# 2025-02-05 01:02:49.203934
++rcl_ret_t rclc_timer_init_default2(rcl_timer_t *timer, rclc_support_t *support, const uint64_t timeout_ns, const rcl_timer_callback_t callback, bool autostart)
++Creates an rcl timer.
++
++Attribute
++
++Adherence
++
++Allocates Memory
++
++Yes (in RCL)
++
++Thread-Safe
++
++No
++
++Uses Atomics
++
++No
++
++Lock-Free
++
++Yes
++
++Parameters
++:
++timer – [inout] a zero-initialized rcl_timer_t
++
++support – [in] the rclc_support_t object
++
++timeout_ns – [in] the time out in nanoseconds of the timer
++
++callback – [in] the callback of the timer
++
++autostart – [in] the state of the timer at initialization
++
++Returns
++:
++RCL_RET_OK if successful
++
++Returns
++:
++RCL_ERROR (or other error code) if an error occurred
+
+# 2025-02-05 01:02:56.085596
++https://docs.ros.org/en/jazzy/p/rclc/generated/function_timer_8h_1a5ec488ae787fd26afb8656b798abf3e1.html
+
+# 2025-02-05 01:04:21.885200
++https://docs.ros.org/en/iron/p/rcl/generated/function_publisher_8h_1ab494cbdf535dd0fae6a508b38fce52ac.html
+
+# 2025-02-05 01:05:51.435309
++ction 'timer_callback':
++/home/mneuhaus/ros2_ws/src/tracks/firmware/main.c:16:12: warning: ignoring return value of 'rcl_publish' declared with attribute 'warn_unused_result' [-Wunused-result]
++   16 |     (void) rcl_publish(&publisher, &msg, NULL);
++      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# 2025-02-05 01:20:43.053827
++can we determine the bus and device number of the usb device in the src/tracks/scripts/flash_firmware.py

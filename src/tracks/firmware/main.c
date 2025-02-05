@@ -13,7 +13,8 @@ std_msgs__msg__String msg;
 
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time) {
     (void) last_call_time;
-    (void) rcl_publish(&publisher, &msg, NULL);
+    rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
+    (void) ret;
     printf("Published: %s\n", msg.data.data);
     fflush(stdout);
 }

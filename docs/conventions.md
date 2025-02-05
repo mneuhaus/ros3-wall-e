@@ -250,3 +250,7 @@ Examples of when to suggest shell commands:
 - Suggest OS-appropriate commands to delete or rename files/directories, or other file system operations.
 - If your code changes add new dependencies, suggest the command to install them.
 - Etc.
+
+## Firmware Language Conventions
+
+- Firmware source files written in C MUST remain as C. Do not convert C files to C++.

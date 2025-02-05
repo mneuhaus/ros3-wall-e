@@ -3822,3 +3822,30 @@
 
 # 2025-02-05 01:24:19.114432
 +replace the 001 and 017 with the determined values based on the device_path
+
+# 2025-02-05 01:31:30.540783
++/map-reloaf
+
+# 2025-02-05 01:32:20.403686
++is there any other way to determine the bus and device number in src/tracks/scripts/flash_firmware.py
+
+# 2025-02-05 01:35:22.296691
++this isn't working, lets use the iSerial like "E6632891E3959D25" in the Makefile and flash_firmware.py to determine the bus/device
+
+# 2025-02-05 01:36:28.162579
++change the makefile to use the E6632891E3959D25 instead of the by-id path
+
+# 2025-02-05 01:38:53.841110
++no, flash_firmware needs to use the serial number to fetch bus and device number because picotool does not work reliably with the serial number
+
+# 2025-02-05 01:44:21.730991
++ok, lets go back to the by-id path, this command gives the proper information: "udevadm info -a -n /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6632891E3959D25-if00"     ATTRS{bNumInterfaces}==" 3"
++    ATTRS{bcdDevice}=="0100"
++    ATTRS{bmAttributes}=="80"
++    ATTRS{busnum}=="1"
++    ATTRS{configuration}==""
++    ATTRS{devnum}=="18"
++    ATTRS{devpath}=="1.4"
++    ATTRS{devspec}=="(null)"
++    ATTRS{idProduct}=="000a"
++    ATTRS{idVendor}=="2e8a"

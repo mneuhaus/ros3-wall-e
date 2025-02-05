@@ -20,34 +20,10 @@ def flash_firmware(device_path: str) -> None:
         print(f"Firmware file not found: {firmware_file}")
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_path}...")
-
-    # Determine iSerial: if device_path is not a /dev path, assume it's the iSerial directly.
-    if device_path.startswith("/dev"):
-        import re
-        match = re.search(r'Pico_([A-Za-z0-9]+)-if', device_path)
-        if not match:
-            print("Could not determine iSerial from device path")
-            sys.exit(1)
-        iserial = match.group(1)
-    else:
-        iserial = device_path
-    print(f"Using iSerial: {iserial}")
-    
-    # Locate the device file in /dev/serial/by-id that contains the iSerial.
-    import glob
-    serial_links = glob.glob("/dev/serial/by-id/*")
-    device_found = None
-    for link in serial_links:
-        if iserial in link:
-            device_found = link
-            break
-    if not device_found:
-        print(f"Device with iSerial {iserial} not found in /dev/serial/by-id")
-        sys.exit(1)
     
     # Use udevadm to obtain bus and device numbers from the by-id path.
     try:
-        output = subprocess.check_output(["udevadm", "info", "-a", "-n", device_found], encoding="utf-8")
+        output = subprocess.check_output(["udevadm", "info", "-a", "-n", device_path], encoding="utf-8")
     except subprocess.CalledProcessError as e:
         print(f"Error calling udevadm: {e}")
         sys.exit(1)
@@ -65,9 +41,7 @@ def flash_firmware(device_path: str) -> None:
         sys.exit(1)
     
     try:
-        subprocess.run(["picotool", "reboot", '-u', '--bus', bus_num, '--address', dev_num, '-f'], check=True)
         subprocess.run(["picotool", "load", firmware_file, '-f', '--bus', bus_num, '--address', dev_num], check=True)
-        subprocess.run(["picotool", "reboot", '-a', '--bus', bus_num, '--address', dev_num], check=True)
         print("Firmware flashed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Error flashing firmware: {e}")

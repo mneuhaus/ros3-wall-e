@@ -99,7 +99,7 @@ tracks/build:
 # Flash firmware to Tracks
 tracks/flash:
 	@echo "Flashing Tracks firmware..."
-	python3 src/tracks/scripts/flash_firmware.py "E6632891E3959D25"
+	python3 src/tracks/scripts/flash_firmware.py "/dev/serial/by-id/usb-Raspberry_Pi_Pico_E6632891E3959D25-if00"
 
 # Build and flash Tracks firmware
 tracks/update: tracks/build tracks/flash

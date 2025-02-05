@@ -41,6 +41,10 @@ int main() {
     gpio_set_dir(NEOPIXEL_PIN, GPIO_OUT);
     // Minimal manual implementation: set neopixel to green (0,255,0)
     neopixel_set_color(0, 255, 0);
+    // Initialize simple LED on pin 14 and set it low initially
+    gpio_init(14);
+    gpio_set_dir(14, GPIO_OUT);
+    gpio_put(14, 0);
 
     const int timeout_ms = 1000;
     const uint8_t attempts = 120;
@@ -70,8 +74,15 @@ int main() {
     rclc_executor_init(&executor, &support.context, 1, &allocator);
     rclc_executor_add_timer(&executor, &timer);
 
+    absolute_time_t next_toggle = make_timeout_time_ms(500);
+    bool led_state = false;
     while (1) {
         rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100));
+        if (get_absolute_time() >= next_toggle) {
+            led_state = !led_state;
+            gpio_put(14, led_state);
+            next_toggle = delayed_by_ms(next_toggle, 500);
+        }
     }
     return 0;
 }

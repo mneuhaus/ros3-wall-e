@@ -11,7 +11,7 @@ pico_sdk_init()
 
 link_directories(libmicroros)
 add_executable(tracks_firmware
-    main.cpp
+    main.c
     pico_uart_transport.c
     libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp
 )

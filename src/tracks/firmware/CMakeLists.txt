@@ -27,10 +27,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Adafruit_NeoPixel)
 
-FetchContent_GetProperties(Adafruit_NeoPixel)
-if(NOT Adafruit_NeoPixel_POPULATED)
-  FetchContent_Populate(Adafruit_NeoPixel)
-endif()
 set(NEOPIXEL_DIR ${Adafruit_NeoPixel_SOURCE_DIR})
 message(STATUS "Adafruit NeoPixel source dir: ${NEOPIXEL_DIR}")
 

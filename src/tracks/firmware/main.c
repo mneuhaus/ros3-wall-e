@@ -45,7 +45,7 @@ int main() {
     msg.data.capacity = msg.data.size + 1;
 
     rcl_timer_t timer;
-    rclc_timer_init_default2(&timer, &support, RCL_MS_TO_NS(1000), timer_callback, allocator);
+    rclc_timer_init_default2(&timer, &support, RCL_MS_TO_NS(1000), timer_callback, true);
 
     rclc_executor_t executor;
     rclc_executor_init(&executor, &support.context, 1, &allocator);

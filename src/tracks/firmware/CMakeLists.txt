@@ -13,6 +13,7 @@ link_directories(libmicroros)
 add_executable(tracks_firmware
     main.cpp
     pico_uart_transport.c
+    libraries/Adafruit_NeoPixel/Adafruit_NeoPixel.cpp
 )
 target_link_libraries(tracks_firmware
     pico_stdlib

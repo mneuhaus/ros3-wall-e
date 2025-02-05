@@ -19,9 +19,17 @@ target_link_libraries(tracks_firmware
     microros
 )
 
+include(FetchContent)
+FetchContent_Declare(
+  Adafruit_NeoPixel
+  GIT_REPOSITORY https://github.com/adafruit/Adafruit_NeoPixel.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(Adafruit_NeoPixel)
+
 target_include_directories(tracks_firmware PUBLIC
     libmicroros/include
-    libraries/Adafruit_NeoPixel
+    ${Adafruit_NeoPixel_SOURCE_DIR}
 )
 
 SET(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -ffunction-sections -fdata-sections")

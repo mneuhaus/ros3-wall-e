@@ -276,7 +276,7 @@ public:
     // stall for 30+ minutes, or having to document and frequently remind
     // and/or provide tech support explaining an unintuitive need for
     // show() calls at least once an hour.
-    uint32_t now = micros();
+    uint32_t now = (uint32_t)time_us_64();
     if (endTime > now) {
       endTime = now;
     }

@@ -24,7 +24,7 @@ int main() {
     rmw_uros_set_custom_transport(true, NULL, pico_serial_transport_open, pico_serial_transport_close,
                                    pico_serial_transport_write, pico_serial_transport_read);
     stdio_init_all();
-    // Initialize neopixel on GPIO16 and set it green
+    // Initialize neopixel on GPIO16 using fetched Adafruit_NeoPixel and set it green
     #define NEOPIXEL_PIN 16
     #define NEOPIXEL_COUNT 1
     Adafruit_NeoPixel strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);

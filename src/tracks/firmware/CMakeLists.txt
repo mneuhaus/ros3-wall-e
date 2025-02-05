@@ -11,7 +11,7 @@ pico_sdk_init()
 
 link_directories(libmicroros)
 add_executable(tracks_firmware
-    main.cpp
+    main.c
     pico_uart_transport.c
 )
 target_link_libraries(tracks_firmware

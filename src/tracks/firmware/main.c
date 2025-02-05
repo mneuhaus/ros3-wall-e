@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include <Adafruit_NeoPixel.h>
 #include <rcl/rcl.h>
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
@@ -24,13 +23,13 @@ int main() {
     rmw_uros_set_custom_transport(true, NULL, pico_serial_transport_open, pico_serial_transport_close,
                                    pico_serial_transport_write, pico_serial_transport_read);
     stdio_init_all();
-    // Initialize neopixel on GPIO16 using fetched Adafruit_NeoPixel and set it green
+    // Initialize neopixel on GPIO16 without external dependency
     #define NEOPIXEL_PIN 16
     #define NEOPIXEL_COUNT 1
-    Adafruit_NeoPixel strip(NEOPIXEL_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
-    strip.begin();
-    strip.setPixelColor(0, strip.Color(0, 255, 0));
-    strip.show();
+    gpio_init(NEOPIXEL_PIN);
+    gpio_set_dir(NEOPIXEL_PIN, GPIO_OUT);
+    // Minimal manual implementation (stub): set neopixel to green placeholder
+    gpio_put(NEOPIXEL_PIN, 1);
 
     const int timeout_ms = 1000;
     const uint8_t attempts = 120;

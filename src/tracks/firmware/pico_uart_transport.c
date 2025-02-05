@@ -3,6 +3,9 @@
 #include "pico/stdlib.h"
 
 #include <uxr/client/profile/transport/custom/custom_transport.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void usleep(uint64_t us)
 {
@@ -47,6 +50,9 @@ size_t pico_serial_transport_write(struct uxrCustomTransport * transport, uint8_
     }
     return len;
 }
+#ifdef __cplusplus
+}
+#endif
 
 size_t pico_serial_transport_read(struct uxrCustomTransport * transport, uint8_t *buf, size_t len, int timeout, uint8_t *errcode)
 {

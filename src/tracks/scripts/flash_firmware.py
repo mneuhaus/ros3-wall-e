@@ -21,7 +21,7 @@ def flash_firmware(device_path: str) -> None:
         sys.exit(1)
     print(f"Flashing firmware from {firmware_file} to {device_path}...")
 
-    output = subprocess.check_output(["udevadm", "info", "-a", "-p", device_path], encoding='utf-8')
+    output = subprocess.check_output(["udevadm", "info", "--query=property", "--name", device_path], encoding='utf-8')
     bus_num = None
     dev_num = None
     for line in output.splitlines():

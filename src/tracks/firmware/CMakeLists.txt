@@ -7,7 +7,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
-# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/pico-examples/ws2812)
 
 link_directories(libmicroros)
 add_executable(tracks_firmware

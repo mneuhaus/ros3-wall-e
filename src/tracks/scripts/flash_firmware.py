@@ -13,40 +13,27 @@ import sys
 import subprocess
 import os
 
-def get_usb_info(device_path: str) -> str:
-    try:
-        output = subprocess.check_output(["udevadm", "info", "--query=property", "--name", device_path], encoding='utf-8')
-        bus_num = None
-        dev_num = None
-        for line in output.splitlines():
-            if line.startswith("ID_USB_BUS="):
-                bus_num = line.split("=")[1]
-            if line.startswith("ID_USB_DEVICE="):
-                dev_num = line.split("=")[1]
-        if bus_num and dev_num:
-            return f"Bus {bus_num} Device {dev_num}"
-        else:
-            return "Unknown USB bus/device"
-    except Exception as e:
-        return f"Error determining USB bus/device: {e}"
 
-def flash_firmware(device_id: str) -> None:
+def flash_firmware(device_path: str) -> None:
     firmware_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "firmware", "build", "tracks_firmware.uf2")
     if not os.path.isfile(firmware_file):
         print(f"Firmware file not found: {firmware_file}")
         sys.exit(1)
-    print(f"Flashing firmware from {firmware_file} to {device_id}...")
-    usb_info = get_usb_info(device_id)
-    print(f"Detected USB device: {usb_info}")
-    tokens = usb_info.split()
-    if len(tokens) >= 4:
-        bus_num = tokens[1]
-        dev_num = tokens[3]
-    else:
-        bus_num = "001"
-        dev_num = "017"
+    print(f"Flashing firmware from {firmware_file} to {device_path}...")
+
+    output = subprocess.check_output(["udevadm", "info", "-a", "-p", device_path], encoding='utf-8')
+    bus_num = None
+    dev_num = None
+    for line in output.splitlines():
+        if line.startswith("ID_USB_BUS="):
+            bus_num = line.split("=")[1]
+        if line.startswith("ID_USB_DEVICE="):
+            dev_num = line.split("=")[1]
+
+    print(output)
+    print(dev_num)
     try:
-        #subprocess.run(["picotool", "reboot", '-f', '-u', '--ser', device_id], check=True)
+        subprocess.run(["picotool", "reboot",  '-u', '--bus', bus_num, '--address', dev_num, '-f'], check=True)
         subprocess.run(["picotool", "load", firmware_file, '-f', '--bus', bus_num, '--address', dev_num], check=True)
         subprocess.run(["picotool", "reboot", '-a', '--bus', bus_num, '--address', dev_num], check=True)
         print("Firmware flashed successfully!")
@@ -58,4 +45,5 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 flash_firmware.py <device_path>")
         sys.exit(1)
+
     flash_firmware(sys.argv[1])

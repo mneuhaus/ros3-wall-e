@@ -3816,3 +3816,9 @@
 
 # 2025-02-05 01:20:43.053827
 +can we determine the bus and device number of the usb device in the src/tracks/scripts/flash_firmware.py
+
+# 2025-02-05 01:23:31.387310
++ok, so instead of '--ser', device_id use the bus and address like this: --bus 001 --address 017
+
+# 2025-02-05 01:24:19.114432
++replace the 001 and 017 with the determined values based on the device_path

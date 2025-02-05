@@ -21,6 +21,7 @@ target_link_libraries(tracks_firmware
 
 target_include_directories(tracks_firmware PUBLIC
     libmicroros/include
+    libraries/Adafruit_NeoPixel
 )
 
 SET(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -ffunction-sections -fdata-sections")

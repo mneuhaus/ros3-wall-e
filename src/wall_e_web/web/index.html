@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wall-E Control</title>
+    <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.10.1/nipplejs.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #2c3e50;
+            touch-action: none;
+            color: white;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        .gamepad-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .left-side, .right-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .control-section {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        input[type="range"] {
+            flex-grow: 1;
+        }
+        .value-display {
+            min-width: 50px;
+            text-align: right;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #stopButton {
+            background-color: #ff4444;
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+        }
+        #status {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .status-connected { background-color: #90EE90; }
+        .status-disconnected { background-color: #FFB6C1; }
+        .status-error { background-color: #FF6B6B; }
+        .volume-control {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .volume-control label {
+            color: white;
+            min-width: 70px;
+        }
+        .volume-control input[type="range"] {
+            flex-grow: 1;
+        }
+        .volume-control span {
+            color: white;
+            min-width: 50px;
+            text-align: right;
+        }
+        
+        .battery-monitor {
+            background-color: #34495e;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .battery-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stat-box {
+            background-color: #2c3e50;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .stat-box label {
+            display: block;
+            color: #95a5a6;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-box span {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .head-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .head-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .servo-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Wall-E Control Panel</h1>
+        
+        <div class="gamepad-layout">
+            <!-- Left side with joystick -->
+            <div class="left-side">
+                <div id="joystick-zone" style="width: 200px; height: 200px; position: relative; background: rgba(255,255,255,0.1); border-radius: 50%; margin-bottom: 20px;"></div>
+                <p>Movement Control</p>
+            </div>
+
+            <!-- Right side with action buttons -->
+            <div class="right-side">
+                <div class="action-buttons">
+                    <div class="button-grid">
+                        <button onclick="setServoPosition(0, 90)" class="action-btn">Look Up</button>
+                        <button onclick="setServoPosition(0, 45)" class="action-btn">Center</button>
+                        <button onclick="setServoPosition(0, 0)" class="action-btn">Look Down</button>
+                        <button onclick="playSound('wall-e-1.mp3')" class="action-btn">Voice 1</button>
+                        <button onclick="playSound('wall-e-2.mp3')" class="action-btn">Voice 2</button>
+                        <button onclick="playSound('wall-e-3.mp3')" class="action-btn">Voice 3</button>
+                        <button onclick="playSound('wall-e-4.mp3')" class="action-btn">Voice 4</button>
+                        <button onclick="playSound('gorgeus.mp3')" class="action-btn">Gorgeous</button>
+                        <button onclick="playSound('whoa.mp3')" class="action-btn">Whoa</button>
+                        <button onclick="playSound('eva.mp3')" class="action-btn">Eva!</button>
+                        <button onclick="playSound('directive.mp3')" class="action-btn">Directive</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="battery-monitor">
+            <div class="battery-stats">
+                <div class="stat-box">
+                    <label>Voltage:</label>
+                    <span id="batteryVoltage">--V</span>
+                </div>
+                <div class="stat-box">
+                    <label>Current:</label>
+                    <span id="batteryCurrent">--A</span>
+                </div>
+                <div class="stat-box">
+                    <label>Power:</label>
+                    <span id="batteryPower">--W</span>
+                </div>
+                <div class="stat-box">
+                    <label>Remaining:</label>
+                    <span id="batteryRemaining">--%</span>
+                </div>
+                <div class="stat-box">
+                    <label>Runtime:</label>
+                    <span id="batteryRuntime">--:--</span>
+                </div>
+            </div>
+            <div id="powerChart" style="height: 200px;"></div>
+        </div>
+
+        <div class="volume-control">
+            <label for="volumeSlider">Volume: </label>
+            <input type="range" id="volumeSlider" min="0" max="100" value="80">
+            <span id="volumeValue">80%</span>
+        </div>
+        <script src="https://unpkg.com/@nivo/core@0.84.0/dist/nivo-core.umd.min.js"></script>
+        <script src="https://unpkg.com/@nivo/line@0.84.0/dist/nivo-line.umd.min.js"></script>
+        <script>
+            // Battery data storage
+            const maxDataPoints = 300; // 5 minutes at 1 reading per second
+            let powerData = [];
+        
+            // Initialize nivo chart
+            const chart = new nivo.Line({
+                container: document.getElementById('powerChart'),
+                width: document.getElementById('powerChart').offsetWidth,
+                height: 200,
+                margin: { top: 20, right: 20, bottom: 30, left: 40 },
+                data: [{
+                    id: 'power',
+                    data: []
+                }],
+                xScale: { type: 'time' },
+                yScale: { type: 'linear', min: 0 },
+                axisBottom: { format: '%H:%M:%S', tickValues: 5 },
+                axisLeft: { tickSize: 5, tickPadding: 5, tickRotation: 0 },
+                enablePoints: false,
+                enableGridX: true,
+                enableGridY: true,
+                colors: ['#2ecc71'],
+                lineWidth: 2,
+                animate: false
+            });
+        
+            // Subscribe to battery state
+            var batteryTopic = new ROSLIB.Topic({
+                ros: ros,
+                name: '/battery_state',
+                messageType: 'sensor_msgs/msg/BatteryState'
+            });
+        
+            batteryTopic.subscribe(function(message) {
+                // Update stats
+                document.getElementById('batteryVoltage').textContent = message.voltage.toFixed(2) + 'V';
+                document.getElementById('batteryCurrent').textContent = message.current.toFixed(2) + 'A';
+                document.getElementById('batteryPower').textContent = (message.voltage * message.current).toFixed(2) + 'W';
+                document.getElementById('batteryRemaining').textContent = message.percentage.toFixed(1) + '%';
+            
+                // Update chart data
+                const now = new Date();
+                powerData.push({
+                    x: now,
+                    y: message.voltage * message.current
+                });
+            
+                // Keep only last 5 minutes of data
+                if (powerData.length > maxDataPoints) {
+                    powerData = powerData.slice(-maxDataPoints);
+                }
+            
+                // Update chart
+                chart.updateData([{
+                    id: 'power',
+                    data: powerData
+                }]);
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                chart.setDimensions({
+                    width: document.getElementById('powerChart').offsetWidth,
+                    height: 200
+                });
+            });
+
+            // Get initial volume on page load
+            fetch('/volume')
+                .then(response => response.text())
+                .then(volume => {
+                    document.getElementById('volumeSlider').value = volume;
+                    document.getElementById('volumeValue').textContent = volume + '%';
+                })
+                .catch(error => console.error('Error getting volume:', error));
+        </script>
+        <button id="stopButton">⚠️ EMERGENCY STOP</button>
+        <div id="status" class="status-disconnected">Status: Disconnected</div>
+    </div>
+
+    <style>
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 10px;
+        }
+        
+        .action-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border: none;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .action-btn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+    </style>
+
+    <script>
+        // Connect to ROS
+        var ros = new ROSLIB.Ros({
+            url: 'ws://wall-e.local:9090'
+        });
+
+        // Create joystick
+        var joystickManager = nipplejs.create({
+            zone: document.getElementById('joystick-zone'),
+            mode: 'static',
+            position: {left: '50%', top: '50%'},
+            color: 'green',
+            size: 150
+        });
+
+        joystickManager.on('move', function(evt, data) {
+            var angle = data.angle.radian;
+            var force = Math.min(data.force, 1.0);
+            
+            // Convert polar coordinates to x/y velocities
+            var linear = -force * Math.cos(angle);  // Forward is -y in joystick space
+            var angular = -force * Math.sin(angle);  // Right is +x in joystick space
+            
+            // Scale velocities
+            linear *= 1.0;  // Max 1.0 m/s
+            angular *= 2.0;  // Max 2.0 rad/s
+            
+            publishVelocity(linear, angular);
+        });
+
+        joystickManager.on('end', function() {
+            publishVelocity(0, 0);
+        });
+
+        ros.on('connection', function() {
+            document.getElementById('status').innerText = 'Status: Connected';
+            document.getElementById('status').className = 'status-connected';
+        });
+
+        ros.on('error', function(error) {
+            document.getElementById('status').innerText = 'Status: Error';
+            document.getElementById('status').className = 'status-error';
+            console.error(error);
+        });
+
+        ros.on('close', function() {
+            document.getElementById('status').innerText = 'Status: Disconnected';
+            document.getElementById('status').className = 'status-disconnected';
+        });
+
+        // Create topics
+        var cmdVel = new ROSLIB.Topic({
+            ros: ros,
+            name: '/cmd_vel',
+            messageType: 'geometry_msgs/msg/Twist'
+        });
+
+        var trackTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/servo_2040/track_speed',
+            messageType: 'std_msgs/msg/Float32MultiArray'
+        });
+
+        var servoTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/servo_2040/servo_position',
+            messageType: 'std_msgs/msg/Float32MultiArray'
+        });
+
+        var soundTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/play_sound',
+            messageType: 'std_msgs/msg/String'
+        });
+
+        var volumeTopic = new ROSLIB.Topic({
+            ros: ros,
+            name: '/set_volume',
+            messageType: 'std_msgs/msg/Int32'
+        });
+
+        // Volume control
+        var volumeSlider = document.getElementById('volumeSlider');
+        var volumeValue = document.getElementById('volumeValue');
+        
+        volumeSlider.oninput = function() {
+            volumeValue.textContent = this.value + '%';
+            var volumeMsg = new ROSLIB.Message({
+                data: parseInt(this.value)
+            });
+            volumeTopic.publish(volumeMsg);
+        };
+
+        function playSound(soundFile) {
+            var soundMsg = new ROSLIB.Message({
+                data: soundFile
+            });
+            soundTopic.publish(soundMsg);
+        }
+
+        // Publish velocity commands
+        function publishVelocity(linear, angular) {
+            var twist = new ROSLIB.Message({
+                linear: { x: linear, y: 0, z: 0 },
+                angular: { x: 0, y: 0, z: angular }
+            });
+            cmdVel.publish(twist);
+        }
+
+        // Publish servo position
+        function setServoPosition(servoIndex, position) {
+            var servoMsg = new ROSLIB.Message({
+                data: [servoIndex, position]
+            });
+            servoTopic.publish(servoMsg);
+            document.getElementById('headTilt').value = position;
+            document.getElementById('headTiltValue').innerText = position;
+        }
+
+        // Update velocity from sliders
+        var linearSlider = document.getElementById('linearVel');
+        var angularSlider = document.getElementById('angularVel');
+        var headTiltSlider = document.getElementById('headTilt');
+        var leftTrackSlider = document.getElementById('leftTrack');
+        var rightTrackSlider = document.getElementById('rightTrack');
+
+        function publishTrackSpeeds(left, right) {
+            var trackMsg = new ROSLIB.Message({
+                data: [left, right]
+            });
+            trackTopic.publish(trackMsg);
+        }
+
+
+        headTiltSlider.oninput = function() {
+            document.getElementById('headTiltValue').innerText = this.value;
+            setServoPosition(0, parseFloat(this.value));
+        };
+
+        // Stop button
+        document.getElementById('stopButton').onclick = function() {
+            linearSlider.value = 0;
+            angularSlider.value = 0;
+            leftTrackSlider.value = 0;
+            rightTrackSlider.value = 0;
+            document.getElementById('linearVelValue').innerText = '0';
+            document.getElementById('angularVelValue').innerText = '0';
+            document.getElementById('leftTrackValue').innerText = '0';
+            document.getElementById('rightTrackValue').innerText = '0';
+            publishVelocity(0, 0);
+            publishTrackSpeeds(0, 0);
+        };
+
+        // Keyboard controls
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowUp':
+                    linearSlider.value = 0.5;
+                    publishVelocity(0.5, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowDown':
+                    linearSlider.value = -0.5;
+                    publishVelocity(-0.5, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowLeft':
+                    angularSlider.value = 0.5;
+                    publishVelocity(parseFloat(linearSlider.value), 0.5);
+                    break;
+                case 'ArrowRight':
+                    angularSlider.value = -0.5;
+                    publishVelocity(parseFloat(linearSlider.value), -0.5);
+                    break;
+                case ' ':  // Spacebar
+                    document.getElementById('stopButton').click();
+                    break;
+            }
+            updateSliderDisplays();
+        });
+
+        document.addEventListener('keyup', function(event) {
+            switch(event.key) {
+                case 'ArrowUp':
+                case 'ArrowDown':
+                    linearSlider.value = 0;
+                    publishVelocity(0, parseFloat(angularSlider.value));
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowRight':
+                    angularSlider.value = 0;
+                    publishVelocity(parseFloat(linearSlider.value), 0);
+                    break;
+            }
+            updateSliderDisplays();
+        });
+
+        function updateSliderDisplays() {
+            document.getElementById('linearVelValue').innerText = linearSlider.value;
+            document.getElementById('angularVelValue').innerText = angularSlider.value;
+        }
+    </script>
+</body>
+</html>

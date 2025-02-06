@@ -136,6 +136,7 @@ int main()
 
     rcl_subscription_t cmd_vel_sub;
     geometry_msgs__msg__Twist cmd_vel_msg;
+    rclc_subscription_init_default(&cmd_vel_sub, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist), "/cmd_vel");
     rclc_executor_init(&executor, &support.context, 1, &allocator);
     rclc_executor_add_subscription(&executor, &cmd_vel_sub, &cmd_vel_msg, cmd_vel_callback, ON_NEW_DATA);
 

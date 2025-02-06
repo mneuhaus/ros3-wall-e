@@ -42,6 +42,7 @@ void cmd_vel_callback(const void * msgin)
     if (left_command < -255) left_command = -255;
     if (right_command > 255) right_command = 255;
     if (right_command < -255) right_command = -255;
+    printf("cmd_vel: left = %d, right = %d\n", left_command, right_command);
     std_msgs__msg__Int32 left_msg;
     left_msg.data = left_command;
     left_motor_callback(&left_msg);

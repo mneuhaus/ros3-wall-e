@@ -141,7 +141,6 @@ int main()
 
     gpio_put(LED_PIN, 0);
 
-    msg.data = 0;
     while (true)
     {
         rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100));

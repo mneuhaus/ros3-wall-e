@@ -5,6 +5,7 @@
 #include <rclc/rclc.h>
 #include <rclc/executor.h>
 #include <std_msgs/msg/int32.h>
+#include <geometry_msgs/msg/twist.h>
 #include <rmw_microros/rmw_microros.h>
 
 #include "pico/stdlib.h"
@@ -27,6 +28,26 @@ void right_motor_callback(const void * msgin)
         gpio_put(4, 0);
         pwm_set_gpio_level(3, (-command > 255 ? 255 : -command));
     }
+}
+
+void cmd_vel_callback(const void * msgin)
+{
+    const geometry_msgs__msg__Twist * twist = (const geometry_msgs__msg__Twist *) msgin;
+    float linear = twist->linear.x;
+    float angular = twist->angular.z;
+    float half_wheel_base = 0.5f; // adjust based on your robot geometry
+    int left_command = (int)((linear - angular * half_wheel_base) * 255.0f);
+    int right_command = (int)((linear + angular * half_wheel_base) * 255.0f);
+    if (left_command > 255) left_command = 255;
+    if (left_command < -255) left_command = -255;
+    if (right_command > 255) right_command = 255;
+    if (right_command < -255) right_command = -255;
+    std_msgs__msg__Int32 left_msg;
+    left_msg.data = left_command;
+    left_motor_callback(&left_msg);
+    std_msgs__msg__Int32 right_msg;
+    right_msg.data = right_command;
+    right_motor_callback(&right_msg);
 }
 
 void left_motor_callback(const void * msgin)
@@ -113,11 +134,10 @@ int main()
 
     rclc_node_init_default(&node, "pico_node", "", &support);
 
-    rcl_subscription_t right_motor_sub, left_motor_sub;
-    std_msgs__msg__Int32 right_motor_msg, left_motor_msg;
-    rclc_executor_init(&executor, &support.context, 2, &allocator);
-    rclc_executor_add_subscription(&executor, &right_motor_sub, &right_motor_msg, right_motor_callback, ON_NEW_DATA);
-    rclc_executor_add_subscription(&executor, &left_motor_sub, &left_motor_msg, left_motor_callback, ON_NEW_DATA);
+    rcl_subscription_t cmd_vel_sub;
+    geometry_msgs__msg__Twist cmd_vel_msg;
+    rclc_executor_init(&executor, &support.context, 1, &allocator);
+    rclc_executor_add_subscription(&executor, &cmd_vel_sub, &cmd_vel_msg, cmd_vel_callback, ON_NEW_DATA);
 
     gpio_put(LED_PIN, 0);
 
